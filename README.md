@@ -7,7 +7,9 @@ NodeJS React app with Typescript and Sass.
 
 **Created using:**
 
-`npx create-react-app frontend --typescript`
+`npx create-react-app client --typescript && cd client`
+
+`rm src/App.css src/App.test.tsx src/index.css src/logo.svg`
 
 `npm install @types/node`
 
@@ -15,7 +17,7 @@ NodeJS React app with Typescript and Sass.
 
 `npm install tslint tslint-react`
 
-add tslint.json to frontend/ and add `"plugins": [{"name": "typescript-tslint-plugin"}]` in tsconfig.json.
+add tslint.json to client/
 
 **Adding Sass:**
 
