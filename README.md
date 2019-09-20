@@ -15,19 +15,60 @@ NodeJS React app with Typescript and Sass.
 
 **Adding TS-Lint:**
 
+`cd client`
+
 `npm install tslint tslint-react`
 
 add tslint.json to client/
 
 **Adding Sass:**
 
-`cd frontend`
+`cd client`
 
 `npm install node-sass`
 
-Change all `.css` to `.scss` and change imports in all `.tsx` files.
-
 ## Database (MongoDB) + API (Express)
 
-more info on express and mongo here: https://medium.com/javascript-in-plain-english/full-stack-mongodb-react-node-js-express-js-in-one-simple-app-6cc8ed6de274
+`cd client && npm install axios`
+
+`cd ..`
+
+`mkdir backend && cd backend && npm init`
+
+**Create a new document in mongoDB:**
+
+Start mongo: `mongo`
+
+See current document: `db`
+
+Create new document: `use <new-document-name>`
+
+Update adress in `server.js`: `const dbRoute = 'mongodb://127.0.0.1:27017/<document-name>';`
+
+**Install packages in backend**
+
+`cd backend && npm install mongoose express body-parser morgan cors`
+
+**Add proxy in client/package.json**
+
+`"proxy": "http://localhost:3001"`
+
+**Add concurrently in order to run both client and backend at the same time**
+
+`cd "git-root"`
+
+`npm init -y`
+
+`npm i -S concurrently`
+
+Add a script in `./package.json`
+```
+"scripts": {
+  "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
+},
+```
+
+**More detailed info on express and mongo:** 
+
+https://medium.com/javascript-in-plain-english/full-stack-mongodb-react-node-js-express-js-in-one-simple-app-6cc8ed6de274
 
