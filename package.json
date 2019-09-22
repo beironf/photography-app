@@ -4,7 +4,7 @@
   "description": "I love to take landscape pictures and creating web apps. This will be my very own site where I can view my photos.",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
+    "start": "concurrently \"cd backend && node server.ts\" \"cd client && npm start\""
   },
   "repository": {
     "type": "git",

@@ -3,25 +3,21 @@ const express = require('express');
 var cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const Data = require('./data');
+
+import { Photo } from "./model/photo";
 
 const API_PORT = 3001;
 const app = express();
 app.use(cors());
 const router = express.Router();
 
-// this is our MongoDB database
-const dbRoute =
-  'mongodb://127.0.0.1:27017/photography-app';
+const dbRoute = 'mongodb://127.0.0.1:27017/photography-app';
 
-// connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
 
 let db = mongoose.connection;
 
 db.once('open', () => console.log('connected to the database'));
-
-// checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // (optional) only made for logging and
@@ -30,39 +26,33 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-// this is our get method
-// this method fetches all available data in our database
-router.get('/getData', (req, res) => {
-  Data.find((err, data) => {
+
+router.get('/photos', (req, res) => {
+  Photo.find((err, photos) => {
     if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
+    return res.json({ success: true, photos: photos });
   });
 });
 
-// this is our update method
-// this method overwrites existing data in our database
-router.post('/updateData', (req, res) => {
+router.post('/photos/update', (req, res) => {
   const { id, update } = req.body;
-  Data.findByIdAndUpdate(id, update, (err) => {
+  Photo.findByIdAndUpdate(id, update, (err) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
 });
 
-// this is our delete method
-// this method removes existing data in our database
-router.delete('/deleteData', (req, res) => {
+router.delete('/photos/delete', (req, res) => {
   const { id } = req.body;
-  Data.findByIdAndRemove(id, (err) => {
+  Photo.findByIdAndRemove(id, (err) => {
     if (err) return res.send(err);
     return res.json({ success: true });
   });
 });
 
-// this is our create methid
-// this method adds new data in our database
-router.post('/putData', (req, res) => {
-  let data = new Data();
+// TODO...
+router.post('/photos/add', (req, res) => {
+  let photo = new Photo();
 
   const { id, message } = req.body;
 
