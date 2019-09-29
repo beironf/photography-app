@@ -1,5 +1,3 @@
-import { Schema } from "mongoose"
-
 enum Camera {
   CANON_EOS_600D = "Canon EOS 600D",
   CANON_EOS_5D_MARK_II = "Canon EOS 5D Mark II",
@@ -17,22 +15,9 @@ export type CameraGear = {
   lens: Lens;
 };
 
-export const CameraGearSchema = new Schema({
-  camera: { type: String, enum: Object.values(Camera), required: true },
-  lens: { type: String, enum: Object.values(Lens), required: true },
-});
-
 export type CameraSettings = {
   focalLenght: number;
   fNumber: number;
   iso: number;
   exposureTime: string; // ex: 1/50
 };
-
-export const CameraSettingsSchema = new Schema({
-  focalLenght: { type: Number, required: true },
-  fNumber: { type: Number, required: true },
-  iso: { type: Number, required: true },
-  exposureTime: { type: String, required: true },
-});
-

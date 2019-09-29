@@ -3,8 +3,11 @@ const express = require('express');
 var cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-
-import { Photo } from "./model/photo";
+const Photo = require('./schemas/photo');
+const formidable = require('formidable')
+const fs = require('fs');
+const imageThumbnail = require('image-thumbnail');
+const imageSize = require('image-size');
 
 const API_PORT = 3001;
 const app = express();
@@ -26,14 +29,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-
+/**
+ * /api/photos - Get all photos
+ */
 router.get('/photos', (req, res) => {
+  console.log("ello");
   Photo.find((err, photos) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, photos: photos });
   });
 });
 
+/**
+ * /api/photos/update - Update existing photo
+ */
 router.post('/photos/update', (req, res) => {
   const { id, update } = req.body;
   Photo.findByIdAndUpdate(id, update, (err) => {
@@ -42,7 +51,10 @@ router.post('/photos/update', (req, res) => {
   });
 });
 
-router.delete('/photos/delete', (req, res) => {
+/**
+ * /api/photos/remove - Remove photo
+ */
+router.delete('/photos/remove', (req, res) => {
   const { id } = req.body;
   Photo.findByIdAndRemove(id, (err) => {
     if (err) return res.send(err);
@@ -50,28 +62,53 @@ router.delete('/photos/delete', (req, res) => {
   });
 });
 
-// TODO...
+/**
+ * /api/photos/add - Add new photo
+ */
 router.post('/photos/add', (req, res) => {
-  let photo = new Photo();
+  const { id, photo } = req.body;
 
-  const { id, message } = req.body;
-
-  if ((!id && id !== 0) || !message) {
-    return res.json({
-      success: false,
-      error: 'INVALID INPUTS',
-    });
-  }
-  data.message = message;
-  data.id = id;
-  data.save((err) => {
+  const newPhoto = new Photo(photo);
+  newPhoto.save((err) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
+});
+
+/**
+ * /api/images/upload - Upload new image and create a thumbnail
+ */
+router.post('/images/upload', (req, res) => {
+  new formidable.IncomingForm()
+    .on('fileBegin', (name, file) => {
+      file.path = __dirname + '/../storage/images/' + file.name
+    })
+    .on('file', function (name, file) {
+      console.log('Uploaded ' + file.name);
+    })
+    .on('end', () => {
+      res.json({ success: true });
+    })
+    .parse(req, (error, fields, files) => {
+      // Create a thumbnail
+      const size = imageSize(files.image.path);
+      const options = { percentage: 600 / size.height * 100 };
+      
+      imageThumbnail(files.image.path, options)
+        .then(thumbnail => { 
+          fs.writeFile(__dirname + '/../storage/thumbnails/' + files.image.name, thumbnail, (err) => { 
+            if (err) {
+              console.log("error:", err);
+            }
+          });
+        })
+        .catch(err => console.error(err));
+    });
 });
 
 // append /api for our http requests
 app.use('/api', router);
 
 // launch our backend into a port
+console.log(__dirname);
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));

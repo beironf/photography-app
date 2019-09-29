@@ -1,7 +1,8 @@
 import React from "react";
+import { PhotoForm } from "./PhotoEditor/PhotoForm";
 
 const App: React.FC = () => {
-  return <div>I'M READY TO USE THE BACK END APIS! :-)</div>;
+  return <PhotoForm onSubmit={() => 1}/>;
 };
 
 export default App;
