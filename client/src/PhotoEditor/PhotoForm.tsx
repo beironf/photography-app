@@ -6,7 +6,7 @@ import { PhotoSelector } from "./PhotoSelector";
 import { getExif, PhotoExif } from "./getExif";
 
 import { Photo } from "../model/photo";
-import { PhotoCategory } from "../model/metadata";
+import { PhotoCategory, CameraTechnique } from "../model/metadata";
 import { Camera, Lens } from "../model/camera";
 
 
@@ -71,13 +71,6 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
       <Image style={{height: 600}} id="image" src={PATH_TO_GET_IMAGE + imageFilename} onLoad={loadExif}/>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group as={Row}>
-          <Form.Label column sm="2">Filename</Form.Label>
-          <Col sm="10">
-            <Form.Control type="text" plaintext readOnly placeholder={imageFilename} required />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row}>
           <Form.Label column sm="2">Camera</Form.Label>
           <Col sm="10">
             <Form.Control 
@@ -130,6 +123,32 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           </Col>
         </Form.Group>
 
+        <Form.Group as={Row}>
+          <Form.Label column sm="2">Aperture</Form.Label>
+          <Col sm="10">
+            <Form.Control 
+              type="text"
+              plaintext={!isNaN(exif.cameraSettings.fNumber)}
+              readOnly={!isNaN(exif.cameraSettings.fNumber)}
+              placeholder={(!isNaN(exif.cameraSettings.fNumber)) ? exif.cameraSettings.fNumber.toString() : ""}
+              required
+            />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row}>
+          <Form.Label column sm="2">ISO</Form.Label>
+          <Col sm="10">
+            <Form.Control 
+              type="text"
+              plaintext={!isNaN(exif.cameraSettings.iso)}
+              readOnly={!isNaN(exif.cameraSettings.iso)}
+              placeholder={(!isNaN(exif.cameraSettings.iso)) ? exif.cameraSettings.iso.toString() : ""}
+              required
+            />
+          </Col>
+        </Form.Group>
+        
         <Form.Group>
           <Form.Label>Title</Form.Label>
           <Form.Control type="text" placeholder="Title of Photo" required />
@@ -142,6 +161,13 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
               return <option key={"category-" + category}>{category}</option>;
             })}
           </Form.Control>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label>Camera Technique</Form.Label>
+          {Object.values(CameraTechnique).map((technique) => {
+            return <Form.Check key={"camera-technique-" + technique} type="checkbox" label={technique}/>;
+          })}
         </Form.Group>
 
         <Button variant="primary" type="submit">
