@@ -1,4 +1,4 @@
-enum PhotoCategory {
+export enum PhotoCategory {
   ABSTRACT = "Abstract",
   ANIMAL = "Animal",
   CITY_AND_ARCHITECTURE = "City & Architecture",
@@ -8,7 +8,7 @@ enum PhotoCategory {
   PEOPLE = "People",
 }
 
-enum CameraTechnique {
+export enum CameraTechnique {
   LONG_EXPOSURE = "Long Exposure",
   PANORAMA = "Panorama",
   AERIAL = "Aerial",
@@ -18,7 +18,7 @@ enum CameraTechnique {
   MULTIPLE_FOCUS_POINTS = "Multiple Focus Points",
 }
 
-type Person = {
+export type Person = {
   firstName: string;
   lastName: string;
 };

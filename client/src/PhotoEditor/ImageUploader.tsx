@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { FormControl, FormGroup, FormLabel, Form, Button } from "react-bootstrap";
+import { FormControl, FormGroup, Form, Button } from "react-bootstrap";
 import axios from "axios";
 
 type props = {
-  onImageUploaded: (fileName: string) => void;
+  onImageUploaded: (filename: string) => void;
 };
 
 export const ImageUploader: React.FunctionComponent<props> = ({ onImageUploaded }) => {
@@ -13,17 +13,18 @@ export const ImageUploader: React.FunctionComponent<props> = ({ onImageUploaded 
     event.preventDefault();
     const formData = new FormData();
     const fileInput = document.querySelector("#file-input") as any;
-    if (fileInput) {
+    if (fileInput && fileInput.files[0]) {
       formData.append("image", fileInput.files[0]);
       axios.post("http://localhost:3001/api/images/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+      }).then((response: any) => {
+        onImageUploaded(fileInput.files[0].name);
       });
     }
   };
 
-  // TODO: FIX POST... multipart/form-data formidable
   return (
     <Form onSubmit={onSubmit}>
       <FormGroup>

@@ -6,6 +6,7 @@ const logger = require('morgan');
 const Photo = require('./schemas/photo');
 const formidable = require('formidable')
 const fs = require('fs');
+const path = require("path");
 const imageThumbnail = require('image-thumbnail');
 const imageSize = require('image-size');
 
@@ -33,7 +34,6 @@ app.use(logger('dev'));
  * /api/photos - Get all photos
  */
 router.get('/photos', (req, res) => {
-  console.log("ello");
   Photo.find((err, photos) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, photos: photos });
@@ -73,6 +73,22 @@ router.post('/photos/add', (req, res) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
+});
+
+/**
+ * /api/images - Get image
+ */
+router.get('/images', (req, res) => {
+  const pathToImage = path.join(__dirname, "/../storage/images/", req.query.filename);
+  res.sendFile(pathToImage);
+});
+
+/**
+ * /api/thumbnails - Get thumbnail
+ */
+router.get('/thumbnails', (req, res) => {
+  const pathToImage = path.join(__dirname, "/../storage/thumbnails/", req.query.filename);
+  res.sendFile(pathToImage);
 });
 
 /**

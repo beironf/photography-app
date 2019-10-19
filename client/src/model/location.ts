@@ -1,6 +1,6 @@
 import { Region } from "typed-countries";
 
-type Coordinates = {
+export type Coordinates = {
   longitude: number; // [-180, 180]
   latitude: number;  // [-90, 90]
 };
