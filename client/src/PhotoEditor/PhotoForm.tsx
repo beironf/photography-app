@@ -1,4 +1,4 @@
-import React, {useState, createRef} from "react";
+import React, {useState} from "react";
 import { Form, Button, Image, Row, Col } from "react-bootstrap";
 import { Map, Marker, TileLayer } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
@@ -10,6 +10,7 @@ import { getExif, PhotoExif } from "./getExif";
 import { Photo } from "../model/photo";
 import { PhotoCategory, CameraTechnique } from "../model/metadata";
 import { Camera, Lens } from "../model/camera";
+import { TagsFormGroup } from "./TagsFormGroup";
 
 const PATH_TO_GET_IMAGE = "http://localhost:3001/api/images?filename=";
 const PATH_TO_GET_THUMBNAIL = "http://localhost:3001/api/thumbnails?filename=";
@@ -22,6 +23,7 @@ const initialExif = {
     iso: NaN,
     exposureTime: "",
   },
+  date: "",
 };
 
 type Props = {
@@ -76,6 +78,19 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
     <div>
       <Image style={{height: 200}} id="image" src={PATH_TO_GET_IMAGE + imageFilename} onLoad={loadExif}/>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form.Group as={Row}>
+          <Form.Label column sm="2">Date</Form.Label>
+          <Col sm="10">
+            <Form.Control
+              as="text"
+              plaintext={exif.date != null}
+              disabled={exif.date !== null}
+              placeholder={exif.date}
+              requrired
+            />
+          </Col>
+        </Form.Group>
+
         <Form.Group as={Row}>
           <Form.Label column sm="2">Camera</Form.Label>
           <Col sm="10">
@@ -197,6 +212,21 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
             />
           </Col>
         </Form.Group>
+
+        <Form.Group as={Row}>
+          <Form.Label column sm="2">Date</Form.Label>
+          <Col sm="10">
+            <Form.Control 
+              type="text" 
+              plaintext={exif.date !== ""}
+              disabled={exif.date !== ""}
+              placeholder={(exif.date) ? exif.date : "YYYY:MM:DD HH:MM:SS"}
+              required  
+            />
+          </Col>
+        </Form.Group>
+
+        <TagsFormGroup name="Tags" placeholder="tags separated by space"/>
 
         <Button variant="primary" type="submit">
           Submit

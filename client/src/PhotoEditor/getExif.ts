@@ -1,6 +1,6 @@
 import * as EXIF from "exif-js";
 
-import { Camera, Lens, CameraGear, CameraSettings } from "../model/camera";
+import { Camera, Lens, CameraSettings } from "../model/camera";
 
 export type PhotoExif = {
   cameraGear: {
@@ -8,6 +8,7 @@ export type PhotoExif = {
     lens?: Lens,
   },
   cameraSettings: CameraSettings,
+  date: string,
 };
 
 export const getExif = (img: any, setExif: (exif: PhotoExif) => any) => {
@@ -18,7 +19,8 @@ export const getExif = (img: any, setExif: (exif: PhotoExif) => any) => {
     const focalLenght = EXIF.getTag(img, "FocalLength") as number & {numerator: number, denominator: number};
     const fNumber = EXIF.getTag(img, "FNumber") as number & {numerator: number, denominator: number};
     const iso = EXIF.getTag(img, "ISO");
-    const exposureTime = EXIF.getTag(img, "ExposureTime") as number & {numerator: number, denominator: number};
+    const exposureTime = EXIF.getTag(img, "ExposureTime") as number & {numerator: number, denominator: number};    
+    const date = EXIF.getTag(img, "DateTimeOriginal");
     setExif({
       cameraGear: {
         camera: Object.values(Camera).includes(camera) ? camera : undefined,
@@ -30,6 +32,7 @@ export const getExif = (img: any, setExif: (exif: PhotoExif) => any) => {
         iso,
         exposureTime: exposureTime.numerator + "/" + exposureTime.denominator,
       },
+      date,
     });
   });
 };
