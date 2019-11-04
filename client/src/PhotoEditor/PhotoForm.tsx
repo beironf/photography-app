@@ -11,6 +11,7 @@ import { Photo } from "../model/photo";
 import { PhotoCategory, CameraTechnique } from "../model/metadata";
 import { Camera, Lens } from "../model/camera";
 import { TagsFormGroup } from "./TagsFormGroup";
+import { RatingFormGroup } from "./RatingFormGroup";
 
 const PATH_TO_GET_IMAGE = "http://localhost:3001/api/images?filename=";
 const PATH_TO_GET_THUMBNAIL = "http://localhost:3001/api/thumbnails?filename=";
@@ -227,6 +228,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
         </Form.Group>
 
         <TagsFormGroup name="Tags" placeholder="tags separated by space"/>
+        <RatingFormGroup name="Rating" maxValue={5}/>
 
         <Button variant="primary" type="submit">
           Submit
