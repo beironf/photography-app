@@ -33,7 +33,7 @@ app.use(logger('dev'));
 /**
  * /api/photos - Get all photos
  */
-router.get('/photos', (req, res) => {
+router.get('/photos', (_, res) => {
   Photo.find((err, photos) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, photos: photos });
@@ -79,7 +79,7 @@ router.post('/photos/add', (req, res) => {
  * /api/images - Get image
  */
 router.get('/images', (req, res) => {
-  const pathToImage = path.join(__dirname, "/../storage/images/", req.query.filename);
+  const pathToImage = path.join(__dirname, '/../storage/images/', req.query.filename);
   res.sendFile(pathToImage);
 });
 
@@ -87,7 +87,7 @@ router.get('/images', (req, res) => {
  * /api/thumbnails - Get thumbnail
  */
 router.get('/thumbnails', (req, res) => {
-  const pathToImage = path.join(__dirname, "/../storage/thumbnails/", req.query.filename);
+  const pathToImage = path.join(__dirname, '/../storage/thumbnails/', req.query.filename);
   res.sendFile(pathToImage);
 });
 
@@ -96,19 +96,21 @@ router.get('/thumbnails', (req, res) => {
  */
 router.post('/images/upload', (req, res) => {
   new formidable.IncomingForm()
-    .on('fileBegin', (name, file) => {
+    .on('fileBegin', (_, file) => {
       file.path = __dirname + '/../storage/images/' + file.name
     })
-    .on('file', function (name, file) {
+    .on('file', function (_, file) {
       console.log('Uploaded ' + file.name);
     })
     .on('end', () => {
       res.json({ success: true });
     })
-    .parse(req, (error, fields, files) => {
+    .parse(req, (_, _, files) => {
       // Create a thumbnail
+      const smallestThumbnailSize = 600;
       const size = imageSize(files.image.path);
-      const options = { percentage: 600 / size.height * 100 };
+      const scaleFactor = smallestThumbnailSize / Math.min(size.height, size.width);
+      const options = { percentage: scaleFactor * 100 };
       
       imageThumbnail(files.image.path, options)
         .then(thumbnail => { 
