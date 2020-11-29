@@ -1,4 +1,4 @@
-import { Location } from "./location";
+import { Location } from "./location";
 import { CameraGear, CameraSettings } from "./camera";
 import { Metadata } from "./metadata";
 

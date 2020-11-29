@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Form, Button, Image, Row, Col } from "react-bootstrap";
 import { Map, Marker, TileLayer } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
@@ -17,7 +17,7 @@ const PATH_TO_GET_IMAGE = "http://localhost:3001/api/images?filename=";
 const PATH_TO_GET_THUMBNAIL = "http://localhost:3001/api/thumbnails?filename=";
 
 const initialExif = {
-  cameraGear: {}, 
+  cameraGear: {},
   cameraSettings: {
     focalLenght: NaN,
     fNumber: NaN,
@@ -41,7 +41,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
-    
+
     const form = event.currentTarget;
     if (form.checkValidity()) {
       onSubmit();
@@ -50,11 +50,11 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
     setValidated(true);
   };
 
-  const onImageUploaded = (filename: string) => {
+  const onImageUploaded = (filename: string) => {
     setImageFilename(filename);
   };
 
-  const onPhotoSelected = (filename: string) => {
+  const onPhotoSelected = (filename: string) => {
     setImageFilename(filename);
   };
 
@@ -69,18 +69,25 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
   if (imageFilename === undefined) {
     return (
       <div>
-        <ImageUploader onImageUploaded={onImageUploaded}/>
-        <PhotoSelector onPhotoSelected={onPhotoSelected}/>
+        <ImageUploader onImageUploaded={onImageUploaded} />
+        <PhotoSelector onPhotoSelected={onPhotoSelected} />
       </div>
     );
   }
 
   return (
     <div>
-      <Image style={{height: 200}} id="image" src={PATH_TO_GET_IMAGE + imageFilename} onLoad={loadExif}/>
+      <Image
+        style={{ height: 200 }}
+        id="image"
+        src={PATH_TO_GET_IMAGE + imageFilename}
+        onLoad={loadExif}
+      />
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group as={Row}>
-          <Form.Label column sm="2">Date</Form.Label>
+          <Form.Label column sm="2">
+            Date
+          </Form.Label>
           <Col sm="10">
             <Form.Control
               as="text"
@@ -93,50 +100,58 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
         </Form.Group>
 
         <Form.Group as={Row}>
-          <Form.Label column sm="2">Camera</Form.Label>
+          <Form.Label column sm="2">
+            Camera
+          </Form.Label>
           <Col sm="10">
-            <Form.Control 
-              as="select" 
+            <Form.Control
+              as="select"
               required
-              disabled={exif.cameraGear.camera != null} 
+              disabled={exif.cameraGear.camera != null}
             >
               {exif.cameraGear.camera != null && (
                 <option key={"camera-" + exif.cameraGear.camera}>
                   {exif.cameraGear.camera}
                 </option>
               )}
-              {exif.cameraGear.camera == null && Object.values(Object.values(Camera)).map((camera) => {
-                return <option key={"camera-" + camera}>{camera}</option>;
-              })}
+              {exif.cameraGear.camera == null &&
+                Object.values(Object.values(Camera)).map((camera) => {
+                  return <option key={"camera-" + camera}>{camera}</option>;
+                })}
             </Form.Control>
           </Col>
         </Form.Group>
 
         <Form.Group as={Row}>
-          <Form.Label column sm="2">Lens</Form.Label>
+          <Form.Label column sm="2">
+            Lens
+          </Form.Label>
           <Col sm="10">
-            <Form.Control 
-              as="select" 
+            <Form.Control
+              as="select"
               required
-              disabled={exif.cameraGear.lens != null} 
+              disabled={exif.cameraGear.lens != null}
             >
               {exif.cameraGear.lens != null && (
                 <option key={"lens-" + exif.cameraGear.lens}>
                   {exif.cameraGear.lens}
                 </option>
               )}
-              {exif.cameraGear.lens == null && Object.values(Object.values(Lens)).map((lens) => {
-                return <option key={"lens-" + lens}>{lens}</option>;
-              })}
+              {exif.cameraGear.lens == null &&
+                Object.values(Object.values(Lens)).map((lens) => {
+                  return <option key={"lens-" + lens}>{lens}</option>;
+                })}
             </Form.Control>
           </Col>
         </Form.Group>
 
         <Form.Group as={Row}>
-          <Form.Label column sm="2">Exposure Time</Form.Label>
+          <Form.Label column sm="2">
+            Exposure Time
+          </Form.Label>
           <Col sm="10">
-            <Form.Control 
-              type="text" 
+            <Form.Control
+              type="text"
               plaintext={exif.cameraSettings.exposureTime !== ""}
               disabled={exif.cameraSettings.exposureTime !== ""}
               placeholder={exif.cameraSettings.exposureTime}
@@ -146,31 +161,43 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
         </Form.Group>
 
         <Form.Group as={Row}>
-          <Form.Label column sm="2">Aperture</Form.Label>
+          <Form.Label column sm="2">
+            Aperture
+          </Form.Label>
           <Col sm="10">
-            <Form.Control 
+            <Form.Control
               type="text"
               plaintext={!isNaN(exif.cameraSettings.fNumber)}
               disabled={!isNaN(exif.cameraSettings.fNumber)}
-              placeholder={(!isNaN(exif.cameraSettings.fNumber)) ? exif.cameraSettings.fNumber.toString() : ""}
+              placeholder={
+                !isNaN(exif.cameraSettings.fNumber)
+                  ? exif.cameraSettings.fNumber.toString()
+                  : ""
+              }
               required
             />
           </Col>
         </Form.Group>
 
         <Form.Group as={Row}>
-          <Form.Label column sm="2">ISO</Form.Label>
+          <Form.Label column sm="2">
+            ISO
+          </Form.Label>
           <Col sm="10">
-            <Form.Control 
+            <Form.Control
               type="text"
               plaintext={!isNaN(exif.cameraSettings.iso)}
               disabled={!isNaN(exif.cameraSettings.iso)}
-              placeholder={(!isNaN(exif.cameraSettings.iso)) ? exif.cameraSettings.iso.toString() : ""}
+              placeholder={
+                !isNaN(exif.cameraSettings.iso)
+                  ? exif.cameraSettings.iso.toString()
+                  : ""
+              }
               required
             />
           </Col>
         </Form.Group>
-        
+
         <Form.Group>
           <Form.Label>Title</Form.Label>
           <Form.Control type="text" placeholder="Title of Photo" required />
@@ -188,7 +215,13 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
         <Form.Group>
           <Form.Label>Camera Technique</Form.Label>
           {Object.values(CameraTechnique).map((technique) => {
-            return <Form.Check key={"camera-technique-" + technique} type="checkbox" label={technique}/>;
+            return (
+              <Form.Check
+                key={"camera-technique-" + technique}
+                type="checkbox"
+                label={technique}
+              />
+            );
           })}
         </Form.Group>
 
@@ -198,16 +231,21 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
         </Form.Group>
 
         <Form.Group as={Row}>
-          <Form.Label column sm="2">Coordinates</Form.Label>
+          <Form.Label column sm="2">
+            Coordinates
+          </Form.Label>
           <Col sm="10">
-            <Form.Control 
-              type="text" 
+            <Form.Control
+              type="text"
               plaintext
               disabled
-              placeholder={(mapLatLng) 
-                ? "Latitude: " + Math.round(mapLatLng[0] * 1000) / 1000 + 
-                  "  Longitude: " + Math.round(mapLatLng[1] * 1000) / 1000 
-                : "Click on the map to choose"
+              placeholder={
+                mapLatLng
+                  ? "Latitude: " +
+                    Math.round(mapLatLng[0] * 1000) / 1000 +
+                    "  Longitude: " +
+                    Math.round(mapLatLng[1] * 1000) / 1000
+                  : "Click on the map to choose"
               }
               required
             />
@@ -215,20 +253,22 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
         </Form.Group>
 
         <Form.Group as={Row}>
-          <Form.Label column sm="2">Date</Form.Label>
+          <Form.Label column sm="2">
+            Date
+          </Form.Label>
           <Col sm="10">
-            <Form.Control 
-              type="text" 
+            <Form.Control
+              type="text"
               plaintext={exif.date !== ""}
               disabled={exif.date !== ""}
-              placeholder={(exif.date) ? exif.date : "YYYY:MM:DD HH:MM:SS"}
-              required  
+              placeholder={exif.date ? exif.date : "YYYY:MM:DD HH:MM:SS"}
+              required
             />
           </Col>
         </Form.Group>
 
-        <TagsFormGroup name="Tags" placeholder="tags separated by space"/>
-        <RatingFormGroup name="Rating" maxValue={5}/>
+        <TagsFormGroup name="Tags" placeholder="tags separated by space" />
+        <RatingFormGroup name="Rating" maxValue={5} />
 
         <Button variant="primary" type="submit">
           Submit
@@ -236,7 +276,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
       </Form>
 
       <Map
-        style={{height: 500}}
+        style={{ height: 500 }}
         center={[50, 10]}
         zoom={3}
         onclick={handleMapClick}
@@ -245,9 +285,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
-        {mapLatLng && (
-        <Marker position={mapLatLng as LatLngExpression}/>
-        )}
+        {mapLatLng && <Marker position={mapLatLng as LatLngExpression} />}
       </Map>
     </div>
   );

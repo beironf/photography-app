@@ -6,7 +6,9 @@ type props = {
   onImageUploaded: (filename: string) => void;
 };
 
-export const ImageUploader: React.FunctionComponent<props> = ({ onImageUploaded }) => {
+export const ImageUploader: React.FunctionComponent<props> = ({
+  onImageUploaded,
+}) => {
   const [fileName, setFileName] = useState("");
 
   const onSubmit = (event: React.FormEvent) => {
@@ -15,13 +17,15 @@ export const ImageUploader: React.FunctionComponent<props> = ({ onImageUploaded 
     const fileInput = document.querySelector("#file-input") as any;
     if (fileInput && fileInput.files[0]) {
       formData.append("image", fileInput.files[0]);
-      axios.post("http://localhost:3001/api/images/upload", formData, {
+      axios
+        .post("http://localhost:3001/api/images/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-      }).then((response: any) => {
-        onImageUploaded(fileInput.files[0].name);
-      });
+        })
+        .then((response: any) => {
+          onImageUploaded(fileInput.files[0].name);
+        });
     }
   };
 
@@ -33,7 +37,7 @@ export const ImageUploader: React.FunctionComponent<props> = ({ onImageUploaded 
           type="file"
           accept="image/jpeg"
           onChange={(e: any) => {
-            setFileName((e.target.files[0]) ? e.target.files[0].name : "");
+            setFileName(e.target.files[0] ? e.target.files[0].name : "");
           }}
         />
       </FormGroup>
