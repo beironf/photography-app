@@ -105,7 +105,7 @@ router.post('/images/upload', (req, res) => {
     .on('end', () => {
       res.json({ success: true });
     })
-    .parse(req, (_, _, files) => {
+    .parse(req, (error, _, files) => {
       // Create a thumbnail
       const smallestThumbnailSize = 600;
       const size = imageSize(files.image.path);

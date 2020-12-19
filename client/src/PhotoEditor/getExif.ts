@@ -16,7 +16,7 @@ export const getExif = (img: any, setExif: (exif: PhotoExif) => any) => {
     const all = EXIF.getAllTags(img);
     const camera = EXIF.getTag(img, "Model");
     const lens = Object.values(all).find((v: any) => {
-      Object.values(Lens).includes(v);
+      return Object.values(Lens).includes(v);
     }) as Lens | undefined;
     const focalLenght = EXIF.getTag(img, "FocalLength") as number & {
       numerator: number;

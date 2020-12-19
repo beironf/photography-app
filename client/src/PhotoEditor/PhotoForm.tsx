@@ -13,8 +13,11 @@ import { Camera, Lens } from "../model/camera";
 import { TagsFormGroup } from "./TagsFormGroup";
 import { RatingFormGroup } from "./RatingFormGroup";
 
-const PATH_TO_GET_IMAGE = "http://localhost:3001/api/images?filename=";
-const PATH_TO_GET_THUMBNAIL = "http://localhost:3001/api/thumbnails?filename=";
+const API_URL = "http://localhost:3001/api";
+
+const imageUrl = (filename: string) => `${API_URL}/images?filename=${filename}`;
+const thumbnailUrl = (filename: string) =>
+  `${API_URL}/thumbnails?filename=${filename}`;
 
 const initialExif = {
   cameraGear: {},
@@ -80,7 +83,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
       <Image
         style={{ height: 200 }}
         id="image"
-        src={PATH_TO_GET_IMAGE + imageFilename}
+        src={imageUrl(imageFilename)}
         onLoad={loadExif}
       />
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -90,11 +93,10 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           </Form.Label>
           <Col sm="10">
             <Form.Control
-              as="text"
               plaintext={exif.date != null}
               disabled={exif.date !== null}
               placeholder={exif.date}
-              requrired
+              required
             />
           </Col>
         </Form.Group>
