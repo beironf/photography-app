@@ -7,11 +7,12 @@ import { ImageUploader } from "./ImageUploader";
 import { PhotoSelector } from "./PhotoSelector";
 import { getExif, PhotoExif } from "./getExif";
 
-import { Photo } from "../model/photo";
-import { PhotoCategory, CameraTechnique } from "../model/metadata";
-import { Camera, Lens } from "../model/camera";
+import { Photo } from "../../model/photo";
+import { PhotoCategory, CameraTechnique } from "../../model/metadata";
+import { Camera, Lens } from "../../model/camera";
 import { TagsFormGroup } from "./TagsFormGroup";
 import { RatingFormGroup } from "./RatingFormGroup";
+import { formatDate } from "../../util/date-util";
 
 const API_URL = "http://localhost:3001/api";
 
@@ -27,7 +28,7 @@ const initialExif = {
     iso: NaN,
     exposureTime: "",
   },
-  date: "",
+  date: undefined,
 };
 
 type Props = {
@@ -36,7 +37,7 @@ type Props = {
 
 export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
   const [validated, setValidated] = useState(false);
-  const [imageFilename, setImageFilename] = useState<string>("IMG_4459.jpg");
+  const [imageFilename, setImageFilename] = useState<string>("IMG_6071.jpg");
   const [photo, setPhoto] = useState<Photo>();
   const [exif, setExif] = useState<PhotoExif>(initialExif);
   const [mapLatLng, setMapLatLng] = useState<number[]>();
@@ -93,9 +94,9 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           </Form.Label>
           <Col sm="10">
             <Form.Control
-              plaintext={exif.date != null}
-              disabled={exif.date !== null}
-              placeholder={exif.date}
+              plaintext={exif.date !== undefined}
+              disabled={exif.date !== undefined}
+              placeholder={exif.date !== undefined ? formatDate(exif.date) : ""}
               required
             />
           </Col>
@@ -261,9 +262,11 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           <Col sm="10">
             <Form.Control
               type="text"
-              plaintext={exif.date !== ""}
-              disabled={exif.date !== ""}
-              placeholder={exif.date ? exif.date : "YYYY:MM:DD HH:MM:SS"}
+              plaintext={exif.date !== undefined}
+              disabled={exif.date !== undefined}
+              placeholder={
+                exif.date ? formatDate(exif.date) : "YYYY-MM-DD HH:MM:SS"
+              }
               required
             />
           </Col>

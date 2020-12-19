@@ -1,6 +1,6 @@
 import * as EXIF from "exif-js";
 
-import { Camera, Lens, CameraSettings } from "../model/camera";
+import { Camera, Lens, CameraSettings } from "../../model/camera";
 
 export type PhotoExif = {
   cameraGear: {
@@ -8,7 +8,7 @@ export type PhotoExif = {
     lens?: Lens;
   };
   cameraSettings: CameraSettings;
-  date: string;
+  date?: Date;
 };
 
 export const getExif = (img: any, setExif: (exif: PhotoExif) => any) => {
@@ -31,7 +31,7 @@ export const getExif = (img: any, setExif: (exif: PhotoExif) => any) => {
       numerator: number;
       denominator: number;
     };
-    const date = EXIF.getTag(img, "DateTimeOriginal");
+    const date = toDate(EXIF.getTag(img, "DateTimeOriginal"));
     setExif({
       cameraGear: {
         camera: Object.values(Camera).includes(camera) ? camera : undefined,
@@ -46,4 +46,13 @@ export const getExif = (img: any, setExif: (exif: PhotoExif) => any) => {
       date,
     });
   });
+};
+
+// EXIF date time is formated as YYYY:MMY:DD HH:MM:SS
+const toDate = (dateTimeOriginal: string) => {
+  const dateTimeSplit = dateTimeOriginal.split(" ");
+  const properDateStr = dateTimeSplit[0].replace(/:/g, "-");
+  const properDateTimeStr = properDateStr + " " + dateTimeSplit[1];
+
+  return new Date(properDateTimeStr);
 };
