@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Form, Badge } from "react-bootstrap";
+import { toCamelCase } from "../../util/string-id-utils";
 
 type Props = {
   name: string;
@@ -29,6 +30,7 @@ export const TagsFormGroup: React.FunctionComponent<Props> = ({
         </Form.Label>
         <Col sm="10">
           <Form.Control
+            name={toCamelCase(name)}
             type="text"
             placeholder={placeholder}
             onChange={(e: any) => setTagsInputValue(e.target.value)}

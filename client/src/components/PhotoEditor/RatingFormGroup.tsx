@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Form, Badge } from "react-bootstrap";
+import { toCamelCase } from "../../util/string-id-utils";
 
 type Props = {
   name: string;
@@ -24,6 +25,7 @@ export const RatingFormGroup: React.FunctionComponent<Props> = ({
         </Form.Label>
         <Col sm="10">
           <Form.Control
+            name={toCamelCase(name)}
             type="text"
             plaintext
             disabled

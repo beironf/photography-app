@@ -14,6 +14,7 @@ import { TagsFormGroup } from "./TagsFormGroup";
 import { RatingFormGroup } from "./RatingFormGroup";
 import { formatDate } from "../../util/date-util";
 import { StorageApi } from "../../api/StorageApi";
+import { toCamelCase } from "../../util/string-id-utils";
 
 const storageApi = new StorageApi();
 
@@ -44,6 +45,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
     event.stopPropagation();
 
     const form = event.currentTarget;
+    // form.elements.name.value
     if (form.checkValidity()) {
       onSubmit();
     }
@@ -87,24 +89,11 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group as={Row}>
           <Form.Label column sm="2">
-            Date
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              plaintext={exif.date !== undefined}
-              disabled={exif.date !== undefined}
-              placeholder={exif.date !== undefined ? formatDate(exif.date) : ""}
-              required
-            />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm="2">
             Camera
           </Form.Label>
           <Col sm="10">
             <Form.Control
+              name="camera"
               as="select"
               required
               disabled={exif.cameraGear.camera != null}
@@ -128,6 +117,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           </Form.Label>
           <Col sm="10">
             <Form.Control
+              name="lens"
               as="select"
               required
               disabled={exif.cameraGear.lens != null}
@@ -151,6 +141,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           </Form.Label>
           <Col sm="10">
             <Form.Control
+              name="exposureTime"
               type="text"
               plaintext={exif.cameraSettings.exposureTime !== ""}
               disabled={exif.cameraSettings.exposureTime !== ""}
@@ -166,6 +157,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           </Form.Label>
           <Col sm="10">
             <Form.Control
+              name="aperture"
               type="text"
               plaintext={!isNaN(exif.cameraSettings.fNumber)}
               disabled={!isNaN(exif.cameraSettings.fNumber)}
@@ -185,6 +177,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           </Form.Label>
           <Col sm="10">
             <Form.Control
+              name="iso"
               type="text"
               plaintext={!isNaN(exif.cameraSettings.iso)}
               disabled={!isNaN(exif.cameraSettings.iso)}
@@ -200,12 +193,17 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
 
         <Form.Group>
           <Form.Label>Title</Form.Label>
-          <Form.Control type="text" placeholder="Title of Photo" required />
+          <Form.Control
+            name="title"
+            type="text"
+            placeholder="Title of Photo"
+            required
+          />
         </Form.Group>
 
         <Form.Group>
           <Form.Label>Category</Form.Label>
-          <Form.Control as="select" required>
+          <Form.Control name="category" as="select" required>
             {Object.values(PhotoCategory).map((category) => {
               return <option key={"category-" + category}>{category}</option>;
             })}
@@ -217,6 +215,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           {Object.values(CameraTechnique).map((technique) => {
             return (
               <Form.Check
+                name={toCamelCase(`cameraTechnique ${technique}`)}
                 key={"camera-technique-" + technique}
                 type="checkbox"
                 label={technique}
@@ -225,9 +224,32 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           })}
         </Form.Group>
 
+        <Form.Group as={Row}>
+          <Form.Label column sm="2">
+            Date
+          </Form.Label>
+          <Col sm="10">
+            <Form.Control
+              name="date"
+              type="text"
+              plaintext={exif.date !== undefined}
+              disabled={exif.date !== undefined}
+              placeholder={
+                exif.date ? formatDate(exif.date) : "YYYY-MM-DD HH:MM:SS"
+              }
+              required
+            />
+          </Col>
+        </Form.Group>
+
         <Form.Group>
           <Form.Label>Location</Form.Label>
-          <Form.Control type="text" placeholder="Name of Location" required />
+          <Form.Control
+            name="location"
+            type="text"
+            placeholder="Name of Location"
+            required
+          />
         </Form.Group>
 
         <Form.Group as={Row}>
@@ -236,6 +258,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           </Form.Label>
           <Col sm="10">
             <Form.Control
+              name="coordinates"
               type="text"
               plaintext
               disabled
@@ -246,23 +269,6 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
                     "  Longitude: " +
                     Math.round(mapLatLng[1] * 1000) / 1000
                   : "Click on the map to choose"
-              }
-              required
-            />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm="2">
-            Date
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              type="text"
-              plaintext={exif.date !== undefined}
-              disabled={exif.date !== undefined}
-              placeholder={
-                exif.date ? formatDate(exif.date) : "YYYY-MM-DD HH:MM:SS"
               }
               required
             />
