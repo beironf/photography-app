@@ -13,12 +13,9 @@ import { Camera, Lens } from "../../model/camera";
 import { TagsFormGroup } from "./TagsFormGroup";
 import { RatingFormGroup } from "./RatingFormGroup";
 import { formatDate } from "../../util/date-util";
+import { StorageApi } from "../../api/StorageApi";
 
-const API_URL = "http://localhost:3001/api";
-
-const imageUrl = (filename: string) => `${API_URL}/images?filename=${filename}`;
-const thumbnailUrl = (filename: string) =>
-  `${API_URL}/thumbnails?filename=${filename}`;
+const storageApi = new StorageApi();
 
 const initialExif = {
   cameraGear: {},
@@ -84,7 +81,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
       <Image
         style={{ height: 200 }}
         id="image"
-        src={imageUrl(imageFilename)}
+        src={storageApi.getImageUrl(imageFilename)}
         onLoad={loadExif}
       />
       <Form noValidate validated={validated} onSubmit={handleSubmit}>

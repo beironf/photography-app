@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FormControl, FormGroup, Form, Button } from "react-bootstrap";
-import axios from "axios";
+import { StorageApi } from "../../api/StorageApi";
+
+const storageApi = new StorageApi();
 
 type props = {
   onImageUploaded: (filename: string) => void;
@@ -16,16 +18,9 @@ export const ImageUploader: React.FunctionComponent<props> = ({
     const formData = new FormData();
     const fileInput = document.querySelector("#file-input") as any;
     if (fileInput && fileInput.files[0]) {
-      formData.append("image", fileInput.files[0]);
-      axios
-        .post("http://localhost:3001/api/images/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response: any) => {
-          onImageUploaded(fileInput.files[0].name);
-        });
+      const file = fileInput.files[0];
+      formData.append("image", file);
+      storageApi.uploadImage(formData, () => onImageUploaded(file.name));
     }
   };
 
