@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Form, Badge } from "react-bootstrap";
-import { toCamelCase } from "../../util/string-id-utils";
+import { toCamelCase } from "util/string-id-utils";
 
 type Props = {
   name: string;

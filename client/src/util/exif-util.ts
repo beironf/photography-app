@@ -1,15 +1,7 @@
 import * as EXIF from "exif-js";
 
-import { Camera, Lens, CameraSettings } from "../../model/camera";
-
-export type PhotoExif = {
-  cameraGear: {
-    camera?: Camera;
-    lens?: Lens;
-  };
-  cameraSettings: CameraSettings;
-  date?: Date;
-};
+import { Camera, Lens } from "model/camera";
+import { PhotoExif } from "model/photo-exif";
 
 export const getExif = (img: any, setExif: (exif: PhotoExif) => any) => {
   EXIF.getData(img, () => {

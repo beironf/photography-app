@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { Photo } from "../../model/photo";
+import { Photo } from "model/photo";
 
 type props = {
   onPhotoSelected: (filename: string) => void;

@@ -1,6 +1,6 @@
-import { Location } from "./location";
-import { CameraGear, CameraSettings } from "./camera";
-import { Metadata } from "./metadata";
+import { Location } from "model/location";
+import { CameraGear, CameraSettings } from "model/camera";
+import { Metadata } from "model/metadata";
 
 export type Judgement = {
   rating: number;

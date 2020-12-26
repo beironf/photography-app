@@ -3,18 +3,21 @@ import { Form, Button, Image, Row, Col } from "react-bootstrap";
 import { Map, Marker, TileLayer } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
 
-import { ImageUploader } from "./ImageUploader";
-import { PhotoSelector } from "./PhotoSelector";
-import { getExif, PhotoExif } from "./getExif";
+import { Photo } from "model/photo";
+import { PhotoExif } from "model/photo-exif";
+import { PhotoCategory, CameraTechnique } from "model/metadata";
+import { Camera, Lens } from "model/camera";
 
-import { Photo } from "../../model/photo";
-import { PhotoCategory, CameraTechnique } from "../../model/metadata";
-import { Camera, Lens } from "../../model/camera";
-import { TagsFormGroup } from "./TagsFormGroup";
-import { RatingFormGroup } from "./RatingFormGroup";
-import { formatDate } from "../../util/date-util";
-import { StorageApi } from "../../api/StorageApi";
-import { toCamelCase } from "../../util/string-id-utils";
+import { ImageUploader } from "components/PhotoEditor/ImageUploader";
+import { PhotoSelector } from "components/PhotoEditor/PhotoSelector";
+import { TagsFormGroup } from "components/PhotoEditor/TagsFormGroup";
+import { RatingFormGroup } from "components/PhotoEditor/RatingFormGroup";
+
+import { formatDate } from "util/date-util";
+import { toCamelCase } from "util/string-id-utils";
+import { getExif } from "util/exif-util";
+
+import { StorageApi } from "api/StorageApi";
 
 const storageApi = new StorageApi();
 

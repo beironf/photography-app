@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import * as serviceWorker from "./serviceWorker";
+import * as serviceWorker from "serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // Fixes for leaflet package
 import "leaflet/dist/leaflet.css";
-import L, { LatLngExpression } from "leaflet";
+import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 const DefaultIcon = L.icon({

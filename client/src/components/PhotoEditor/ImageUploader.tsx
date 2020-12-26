@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FormControl, FormGroup, Form, Button } from "react-bootstrap";
-import { StorageApi } from "../../api/StorageApi";
+import { StorageApi } from "api/StorageApi";
 
 const storageApi = new StorageApi();
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { PhotoForm } from "./components/PhotoEditor/PhotoForm";
+import { PhotoForm } from "views/PhotoForm";
 
 const App: React.FC = () => {
   return <PhotoForm onSubmit={() => 1} />;
