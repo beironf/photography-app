@@ -7,7 +7,7 @@ type Props = {
   placeholder: string;
 };
 
-export const TagsFormGroup: React.FunctionComponent<Props> = ({
+export const TagsForm: React.FunctionComponent<Props> = ({
   name,
   placeholder,
 }) => {
@@ -23,7 +23,7 @@ export const TagsFormGroup: React.FunctionComponent<Props> = ({
   }, [tagsInputValue]);
 
   return (
-    <div>
+    <>
       <Form.Group as={Row}>
         <Form.Label column sm="2">
           {name}
@@ -45,6 +45,6 @@ export const TagsFormGroup: React.FunctionComponent<Props> = ({
           </div>
         </Col>
       </Form.Group>
-    </div>
+    </>
   );
 };

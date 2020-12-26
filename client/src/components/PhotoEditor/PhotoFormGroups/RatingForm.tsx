@@ -7,7 +7,7 @@ type Props = {
   maxValue: number;
 };
 
-export const RatingFormGroup: React.FunctionComponent<Props> = ({
+export const RatingForm: React.FunctionComponent<Props> = ({
   name,
   maxValue,
 }) => {
@@ -18,7 +18,7 @@ export const RatingFormGroup: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <div>
+    <>
       <Form.Group as={Row}>
         <Form.Label column sm="2">
           {name}
@@ -46,6 +46,6 @@ export const RatingFormGroup: React.FunctionComponent<Props> = ({
           </div>
         </Col>
       </Form.Group>
-    </div>
+    </>
   );
 };
