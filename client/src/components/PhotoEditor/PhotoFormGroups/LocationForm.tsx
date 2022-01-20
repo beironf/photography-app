@@ -1,5 +1,5 @@
-import React from "react";
-import { Row, Form, Col } from "react-bootstrap";
+import React from 'react';
+import { Row, Form, Col } from 'react-bootstrap';
 
 type Props = {
   mapLatLng?: number[];
@@ -30,11 +30,11 @@ export const LocationForm: React.FunctionComponent<Props> = ({ mapLatLng }) => {
             disabled
             placeholder={
               mapLatLng
-                ? "Latitude: " +
+                ? 'Latitude: ' +
                   Math.round(mapLatLng[0] * 1000) / 1000 +
-                  "  Longitude: " +
+                  '  Longitude: ' +
                   Math.round(mapLatLng[1] * 1000) / 1000
-                : "Click on the map to choose"
+                : 'Click on the map to choose'
             }
             required
           />

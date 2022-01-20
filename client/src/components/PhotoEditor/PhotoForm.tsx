@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { Form, Button, Image } from "react-bootstrap";
-import { Map, Marker, TileLayer } from "react-leaflet";
-import { LatLngExpression } from "leaflet";
+import React, { useState } from 'react';
+import { Form, Button, Image } from 'react-bootstrap';
+import { Map, Marker, TileLayer } from 'react-leaflet';
+import { LatLngExpression } from 'leaflet';
 
-import { Photo } from "model/photo";
-import { PhotoExif } from "model/photo-exif";
-import { PhotoCategory, CameraTechnique } from "model/metadata";
+import { Photo } from 'model/photo';
+import { PhotoExif } from 'model/photo-exif';
+import { PhotoCategory, CameraTechnique } from 'model/metadata';
 
-import { ImageUploader } from "components/PhotoEditor/ImageUploader";
-import { PhotoSelector } from "components/PhotoEditor/PhotoSelector";
-import { TagsForm } from "components/PhotoEditor/PhotoFormGroups/TagsForm";
-import { RatingForm } from "components/PhotoEditor/PhotoFormGroups/RatingForm";
+import { ImageUploader } from 'components/PhotoEditor/ImageUploader';
+import { PhotoSelector } from 'components/PhotoEditor/PhotoSelector';
+import { TagsForm } from 'components/PhotoEditor/PhotoFormGroups/TagsForm';
+import { RatingForm } from 'components/PhotoEditor/PhotoFormGroups/RatingForm';
 
-import { toCamelCase } from "util/string-id-utils";
-import { getExif } from "util/exif-util";
+import { toCamelCase } from 'util/string-id-utils';
+import { getExif } from 'util/exif-util';
 
-import { StorageApi } from "api/StorageApi";
-import { LocationForm } from "./PhotoFormGroups/LocationForm";
-import { DateForm } from "./PhotoFormGroups/DateForm";
+import { StorageApi } from 'api/StorageApi';
+import { LocationForm } from './PhotoFormGroups/LocationForm';
+import { DateForm } from './PhotoFormGroups/DateForm';
 
 const storageApi = new StorageApi();
 
@@ -27,7 +27,7 @@ const initialExif = {
     focalLenght: NaN,
     fNumber: NaN,
     iso: NaN,
-    exposureTime: "",
+    exposureTime: '',
   },
   date: undefined,
 };
@@ -38,7 +38,7 @@ type Props = {
 
 export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
   const [validated, setValidated] = useState(false);
-  const [imageFilename, setImageFilename] = useState<string>("IMG_6071.jpg");
+  const [imageFilename, setImageFilename] = useState<string>('IMG_6071.jpg');
   const [photo, setPhoto] = useState<Photo>();
   const [exif, setExif] = useState<PhotoExif>(initialExif);
   const [mapLatLng, setMapLatLng] = useState<number[]>();
@@ -104,7 +104,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           <Form.Label>Category</Form.Label>
           <Form.Control name="category" as="select" required>
             {Object.values(PhotoCategory).map((category) => {
-              return <option key={"category-" + category}>{category}</option>;
+              return <option key={'category-' + category}>{category}</option>;
             })}
           </Form.Control>
         </Form.Group>
@@ -115,7 +115,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
             return (
               <Form.Check
                 name={toCamelCase(`cameraTechnique ${technique}`)}
-                key={"camera-technique-" + technique}
+                key={'camera-technique-' + technique}
                 type="checkbox"
                 label={technique}
               />

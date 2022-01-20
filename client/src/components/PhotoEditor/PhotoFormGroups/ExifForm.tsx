@@ -1,7 +1,7 @@
-import { Camera, Lens } from "model/camera";
-import { PhotoExif } from "model/photo-exif";
-import React from "react";
-import { Row, Form, Col } from "react-bootstrap";
+import { Camera, Lens } from 'model/camera';
+import { PhotoExif } from 'model/photo-exif';
+import React from 'react';
+import { Row, Form, Col } from 'react-bootstrap';
 
 type Props = {
   exif: PhotoExif;
@@ -22,13 +22,13 @@ export const ExifForm: React.FunctionComponent<Props> = ({ exif }) => {
             disabled={exif.cameraGear.camera != null}
           >
             {exif.cameraGear.camera != null && (
-              <option key={"camera-" + exif.cameraGear.camera}>
+              <option key={'camera-' + exif.cameraGear.camera}>
                 {exif.cameraGear.camera}
               </option>
             )}
             {exif.cameraGear.camera == null &&
               Object.values(Object.values(Camera)).map((camera) => {
-                return <option key={"camera-" + camera}>{camera}</option>;
+                return <option key={'camera-' + camera}>{camera}</option>;
               })}
           </Form.Control>
         </Col>
@@ -46,13 +46,13 @@ export const ExifForm: React.FunctionComponent<Props> = ({ exif }) => {
             disabled={exif.cameraGear.lens != null}
           >
             {exif.cameraGear.lens != null && (
-              <option key={"lens-" + exif.cameraGear.lens}>
+              <option key={'lens-' + exif.cameraGear.lens}>
                 {exif.cameraGear.lens}
               </option>
             )}
             {exif.cameraGear.lens == null &&
               Object.values(Object.values(Lens)).map((lens) => {
-                return <option key={"lens-" + lens}>{lens}</option>;
+                return <option key={'lens-' + lens}>{lens}</option>;
               })}
           </Form.Control>
         </Col>
@@ -66,8 +66,8 @@ export const ExifForm: React.FunctionComponent<Props> = ({ exif }) => {
           <Form.Control
             name="exposureTime"
             type="text"
-            plaintext={exif.cameraSettings.exposureTime !== ""}
-            disabled={exif.cameraSettings.exposureTime !== ""}
+            plaintext={exif.cameraSettings.exposureTime !== ''}
+            disabled={exif.cameraSettings.exposureTime !== ''}
             placeholder={exif.cameraSettings.exposureTime}
             required
           />
@@ -87,7 +87,7 @@ export const ExifForm: React.FunctionComponent<Props> = ({ exif }) => {
             placeholder={
               !isNaN(exif.cameraSettings.fNumber)
                 ? exif.cameraSettings.fNumber.toString()
-                : ""
+                : ''
             }
             required
           />
@@ -107,7 +107,7 @@ export const ExifForm: React.FunctionComponent<Props> = ({ exif }) => {
             placeholder={
               !isNaN(exif.cameraSettings.iso)
                 ? exif.cameraSettings.iso.toString()
-                : ""
+                : ''
             }
             required
           />

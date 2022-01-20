@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { FormControl, FormGroup, Form, Button } from "react-bootstrap";
-import { StorageApi } from "api/StorageApi";
+import React, { useState } from 'react';
+import { FormControl, FormGroup, Form, Button } from 'react-bootstrap';
+import { StorageApi } from 'api/StorageApi';
 
 const storageApi = new StorageApi();
 
@@ -11,15 +11,15 @@ type props = {
 export const ImageUploader: React.FunctionComponent<props> = ({
   onImageUploaded,
 }) => {
-  const [fileName, setFileName] = useState("");
+  const [fileName, setFileName] = useState('');
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const formData = new FormData();
-    const fileInput = document.querySelector("#file-input") as any;
+    const fileInput = document.querySelector('#file-input') as any;
     if (fileInput && fileInput.files[0]) {
       const file = fileInput.files[0];
-      formData.append("image", file);
+      formData.append('image', file);
       storageApi.uploadImage(formData, () => onImageUploaded(file.name));
     }
   };
@@ -32,11 +32,11 @@ export const ImageUploader: React.FunctionComponent<props> = ({
           type="file"
           accept="image/jpeg"
           onChange={(e: any) => {
-            setFileName(e.target.files[0] ? e.target.files[0].name : "");
+            setFileName(e.target.files[0] ? e.target.files[0].name : '');
           }}
         />
       </FormGroup>
-      {fileName !== "" && (
+      {fileName !== '' && (
         <Button variant="primary" type="submit">
           Upload
         </Button>

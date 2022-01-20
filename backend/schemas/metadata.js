@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const PersonSchema = require('./person');
 
 const categories = [
   'Abstract',
@@ -20,11 +21,6 @@ const cameraTechniques = [
   'Filters',
   'Multiple Focus Points',
 ];
-
-const PersonSchema = new Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-});
 
 const MetadataSchema = new Schema({
   category: { type: String, enum: categories, required: true },

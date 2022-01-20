@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Photo } from "model/photo";
+import React, { useState } from 'react';
+import { Photo } from 'model/photo';
 
 type props = {
   onPhotoSelected: (filename: string) => void;

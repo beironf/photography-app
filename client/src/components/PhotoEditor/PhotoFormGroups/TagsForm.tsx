@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Form, Badge } from "react-bootstrap";
-import { toCamelCase } from "util/string-id-utils";
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Form, Badge } from 'react-bootstrap';
+import { toCamelCase } from 'util/string-id-utils';
 
 type Props = {
   name: string;
@@ -11,14 +11,14 @@ export const TagsForm: React.FunctionComponent<Props> = ({
   name,
   placeholder,
 }) => {
-  const [tagsInputValue, setTagsInputValue] = useState<string>("");
+  const [tagsInputValue, setTagsInputValue] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
-    if (tagsInputValue.trim() === "") {
+    if (tagsInputValue.trim() === '') {
       setTags([]);
     } else {
-      setTags(tagsInputValue.trim().toLowerCase().split(" "));
+      setTags(tagsInputValue.trim().toLowerCase().split(' '));
     }
   }, [tagsInputValue]);
 
@@ -38,7 +38,7 @@ export const TagsForm: React.FunctionComponent<Props> = ({
           <div>
             {tags &&
               tags.map((tag, index) => (
-                <Badge key={"tag-" + index} pill variant="primary">
+                <Badge key={'tag-' + index} pill variant="primary">
                   {tag}
                 </Badge>
               ))}

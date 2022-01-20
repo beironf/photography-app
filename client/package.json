@@ -22,7 +22,6 @@
     "react-leaflet": "^2.5.0",
     "react-mongoose-form-maker": "0.0.2",
     "react-scripts": "3.1.2",
-    "tslint": "^5.20.0",
     "tslint-react": "^4.1.0",
     "typed-countries": "^1.1.1",
     "typescript": "3.6.3"
@@ -31,7 +30,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {
@@ -48,5 +48,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/qs": "^6.9.5",
+    "@typescript-eslint/eslint-plugin": "^4.12.0",
+    "@typescript-eslint/parser": "^4.12.0",
+    "eslint": "^7.17.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "prettier": "^2.2.1",
+    "qs": "^6.9.4"
   }
 }

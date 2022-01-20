@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 export class StorageApi {
-  private API_URL = "http://localhost:3001/api";
+  private API_URL = 'http://localhost:3001/api';
 
   public getImageUrl(filename: string) {
     return `${this.API_URL}/images?filename=${filename}`;
@@ -15,7 +15,7 @@ export class StorageApi {
     axios
       .post(`${this.API_URL}/images/upload`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       })
       .then((_: any) => {

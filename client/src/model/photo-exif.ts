@@ -1,4 +1,4 @@
-import { Camera, CameraSettings, Lens } from "model/camera";
+import { Camera, CameraSettings, Lens } from 'model/camera';
 
 export type PhotoExif = {
   cameraGear: {

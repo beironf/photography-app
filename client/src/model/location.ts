@@ -1,4 +1,4 @@
-import { Region } from "typed-countries";
+import { Region } from 'typed-countries';
 
 export type Coordinates = {
   longitude: number; // [-180, 180]

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Row, Col, Form, Badge } from "react-bootstrap";
-import { toCamelCase } from "util/string-id-utils";
+import React, { useState } from 'react';
+import { Row, Col, Form, Badge } from 'react-bootstrap';
+import { toCamelCase } from 'util/string-id-utils';
 
 type Props = {
   name: string;
@@ -36,9 +36,9 @@ export const RatingForm: React.FunctionComponent<Props> = ({
             {symbols.map((isHighlighted, i) => (
               <Badge
                 onClick={() => setRating(i + 1)}
-                key={"tag-" + i}
+                key={'tag-' + i}
                 pill
-                variant={isHighlighted ? "primary" : "secondary"}
+                variant={isHighlighted ? 'primary' : 'secondary'}
               >
                 {i + 1}
               </Badge>
