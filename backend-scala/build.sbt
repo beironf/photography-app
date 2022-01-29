@@ -40,7 +40,6 @@ lazy val photo = project
     name := "photo",
     settings
   )
-  .dependsOn(common, core)
 
 lazy val photoApi = project
   .in(file("photo/api"))
@@ -48,7 +47,7 @@ lazy val photoApi = project
     name := "photo-api",
     settings
   )
-  .dependsOn(common, core)
+  .dependsOn(common)
 
 lazy val photoEntities = project
   .in(file("photo/entities"))
