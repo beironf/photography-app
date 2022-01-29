@@ -2,17 +2,16 @@ import sbt.librarymanagement.ConflictWarning
 
 enablePlugins(JavaAppPackaging)
 
-name := "backend"
-version := "1.0"
-scalaVersion := "3.1.0"
-
 conflictWarning := ConflictWarning.disable
 
 // ---------- Domains ----------------
 
 lazy val backend = project
   .in(file("."))
-  .settings(settings)
+  .settings(
+    name := "backend",
+    settings
+  )
   .disablePlugins(AssemblyPlugin)
   .aggregate(
     core,
@@ -50,6 +49,13 @@ lazy val photoApi = project
     settings
   )
   .dependsOn(common, core)
+
+lazy val photoEntities = project
+  .in(file("photo/entities"))
+  .settings(
+    name := "photo-entities",
+    settings
+  )
 
 // ---------- Dependencies -----------
 
@@ -91,6 +97,8 @@ lazy val commonDependencies = Seq(
 lazy val settings = commonSettings
 
 lazy val commonSettings = Seq(
+  version := "1.0",
+  scalaVersion := "3.1.0",
   scalacOptions ++= compilerOptions,
   resolvers ++= Seq(
     "Local Maven Repository" at "file://" + Path.userHome.absolutePath + "/.m2/repository",
