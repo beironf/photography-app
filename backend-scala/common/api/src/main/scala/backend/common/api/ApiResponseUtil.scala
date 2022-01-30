@@ -3,12 +3,7 @@ package backend.common.api
 import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.server.StandardRoute
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
-import com.annotell.common.baseapi.model.ResponseMessage
-import com.annotell.common.baseapi.model.ResponseJsonProtocol.responseMessageFormat
-import com.annotell.common.utils.ValidationModel.ValidationError
 import spray.json._
-
-import scala.reflect.runtime.universe._
 
 object ApiResponseUtil {
 
@@ -22,5 +17,9 @@ object ApiResponseUtil {
 
   def completeEnveloped[T: JsonFormat](statusCode: StatusCode, serializableClasses: Seq[T]): StandardRoute =
     complete(statusCode -> Map("data" -> serializableClasses.toJson))
+
+  case class ResponseMessage(status: Long, message: String)
+
+  implicit def responseMessageFormat: RootJsonFormat[ResponseMessage] = jsonFormat2(ResponseMessage.apply)
 
 }
