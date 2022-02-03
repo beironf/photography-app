@@ -5,10 +5,9 @@ import akka.http.scaladsl.server.Directives.{handleExceptions, handleRejections}
 import akka.http.scaladsl.server._
 import backend.core.application.DefaultService
 import backend.common.api.ApiExceptions._
-import backend.common.api.ApiResponseUtil.completeWithErrorCode
 import backend.core.utils.ThrowableUtil
 
-object ApiHandlers extends DefaultService {
+object ApiHandlers extends DefaultService with ApiResponseUtil {
 
   private def completeWithBadRequest(msg: String): StandardRoute = {
     logger.info(s"BadRequest exception: $msg")
@@ -46,10 +45,10 @@ object ApiHandlers extends DefaultService {
       .handle { case AuthorizationFailedRejection =>
         completeWithForbidden("Not Authorized")
       }
-      .handleAll[AuthenticationFailedRejection] { rejections =>
+      .handleAll[AuthenticationFailedRejection] { _ =>
         completeWithErrorCode(Unauthorized, s"Not authenticated.")
       }
-      .handle { case MalformedRequestContentRejection(msg, e) =>
+      .handle { case MalformedRequestContentRejection(_, e) =>
         completeWithBadRequest(s"Unable to serialize to JSON: ${e.getMessage}.")
       }
       .handle { case MalformedQueryParamRejection(paramName, msg, _) =>
