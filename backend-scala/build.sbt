@@ -31,11 +31,13 @@ lazy val backend = createProject("backend", inFile = Some("."))
 
 lazy val core = createProject("core",
   dependencies = Seq(
-    dependencies.scalaLogging
+    dependencies.scalaLogging,
+    dependencies.slf4j
   ),
   scala2Dependencies = Seq(
     scala2Dependencies.akkaActor,
-    scala2Dependencies.akkaStream
+    scala2Dependencies.akkaStream,
+    scala2Dependencies.akkaSlf4j
   ))
 
 lazy val common = createProject("common")
@@ -67,13 +69,15 @@ lazy val photoEntities = createProject("photo-entities", inFile = Some("photo/en
 // ---------- Dependencies -----------
 
 lazy val dependencies = new {
-  private val scalaTestV       = "3.2.10"
-  private val scalaLoggingV    = "3.9.4"
-  private val scalazV          = "7.4.0-M10"
+  private val scalaTestV    = "3.2.10"
+  private val scalaLoggingV = "3.9.4"
+  private val scalazV       = "7.4.0-M10"
+  private val slf4jV        = "1.7.36"
 
   val scalaz       = "org.scalaz"                 %% "scalaz-core"   % scalazV
   val scalaTest    = "org.scalatest"              %% "scalatest"     % scalaTestV
   val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingV
+  val slf4j        = "org.slf4j"                  % "slf4j-simple"   % slf4jV
 }
 
 lazy val scala2Dependencies = new {
@@ -87,6 +91,7 @@ lazy val scala2Dependencies = new {
   val akkaHttpJson    = "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpV
   val akkaActor       = "com.typesafe.akka" %% "akka-actor"           % akkaV
   val akkaStream      = "com.typesafe.akka" %% "akka-stream"          % akkaV
+  val akkaSlf4j       = "com.typesafe.akka" %% "akka-slf4j"           % akkaV
   val akkaTestkit     = "com.typesafe.akka" %% "akka-testkit"         % akkaV
 }
 

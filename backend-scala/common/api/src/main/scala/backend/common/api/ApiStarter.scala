@@ -22,11 +22,11 @@ object ApiStarter extends RouteConcatenation with DefaultService {
 
     logger.info(s"$name starting on $host:$port")
 
-    val total = ApiHandlers.handleErrors {
-      route
-    }
-
-    val binding = Http().newServerAt(host, port).bind(total)
+    val binding = Http().newServerAt(host, port).bind(
+      ApiHandlers.handleErrors {
+        route
+      }
+    )
 
     sys.addShutdownHook {
       logger.info("Received shutdown signal, stopping http server")
