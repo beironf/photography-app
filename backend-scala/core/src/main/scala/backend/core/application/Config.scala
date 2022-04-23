@@ -23,11 +23,11 @@ object Config extends StrictLogging {
     }
   }
 
-  def load(name: String) = {
+  def load(name: String): TypesafeConfig = {
     val configFile = s"$name.conf"
     ConfigFactory.load(configFile)
   }
 
-  lazy val developmentConfig = ConfigFactory.load("application.conf")
-  lazy val productionConfig = ConfigFactory.load("production.conf")
+  lazy val developmentConfig: TypesafeConfig = ConfigFactory.load("application.conf")
+  lazy val productionConfig: TypesafeConfig = ConfigFactory.load("production.conf")
 }
