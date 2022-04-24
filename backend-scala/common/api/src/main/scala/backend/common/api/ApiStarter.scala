@@ -17,12 +17,12 @@ object ApiStarter extends RouteConcatenation with DefaultService {
   def startApi(name: String, route: Route, shutdown: Option[() => Future[_]]): Future[Http.ServerBinding] = {
     import SystemActorSystem.Implicits._
 
-    val host = "0.0.0.0"
+    val domain: String = config.getString("domain")
     val port: Int = config.getInt(name + ".port")
 
-    logger.info(s"$name starting on $host:$port")
+    logger.info(s"$name starting on $domain:$port")
 
-    val binding = Http().newServerAt(host, port).bind(
+    val binding = Http().newServerAt(domain, port).bind(
       ApiHandlers.handleErrors {
         route
       }

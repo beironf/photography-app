@@ -18,7 +18,6 @@ trait ApiApp extends DefaultService {
       case Success(binding) =>
         logger.info(s"Bound to ${binding.localAddress}")
         // DatabaseConnector.startAll() // TODO: Add database?
-
       case Failure(exception) =>
         logger.error(s"Failed to bind $name, got exception", exception)
     }
