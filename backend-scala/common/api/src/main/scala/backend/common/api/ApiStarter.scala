@@ -1,37 +1,36 @@
 package backend.common.api
 
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.{Route, RouteConcatenation}
-import backend.core.application.{DefaultService, SystemActorSystem}
+import backend.core.application.DefaultService
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
 object ApiStarter extends RouteConcatenation with DefaultService {
 
-  def logConfig(): Unit = {
+  implicit val actorSystem: ActorSystem = ActorSystem("API Actor System", config)
+
+  private def logConfig(name: String): Unit = {
     val environment = config.getString("environment.name")
-    logger.info(s"-------------- STARTING API IN MODE=$environment --------------")
+    logger.info(s"-------------- STARTING $name IN MODE=$environment --------------")
   }
 
   def startApi(name: String, route: Route, shutdown: Option[() => Future[_]]): Future[Http.ServerBinding] = {
-    import SystemActorSystem.Implicits._
 
     val domain: String = config.getString("domain")
     val port: Int = config.getInt(name + ".port")
 
+    logConfig(name)
     logger.info(s"$name starting on $domain:$port")
 
-    val binding = Http().newServerAt(domain, port).bind(
-      ApiHandlers.handleErrors {
-        route
-      }
-    )
+    val bindingFuture = Http().newServerAt(domain, port).bind(route)
 
     sys.addShutdownHook {
       logger.info("Received shutdown signal, stopping http server")
       val onceAllConnectionsTerminated: Future[Http.HttpTerminated] =
-        Await.result(binding, 30.seconds).terminate(hardDeadline = 1.minute)
+        Await.result(bindingFuture, 30.seconds).terminate(hardDeadline = 1.minute)
       Await.ready(onceAllConnectionsTerminated, 10.seconds)
 
       logger.info("Server terminated, running any defined shutdown function")
@@ -42,6 +41,6 @@ object ApiStarter extends RouteConcatenation with DefaultService {
       actorSystem.terminate()
     }
 
-    binding
+    bindingFuture
   }
 }

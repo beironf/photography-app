@@ -19,7 +19,7 @@ class PhotoApiSite (implicit executionContext: ExecutionContext) {
 
   val route: Route = {
     healthCheckRoute ~
-    pathPrefix("v1") { // TODO: Add authentication?
+    pathPrefix("v1") {
       photoRoute.route
     }
   }
