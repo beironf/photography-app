@@ -1,7 +1,6 @@
 package backend.core.application
 
 import com.typesafe.config.{ConfigFactory, Config => TypesafeConfig}
-import com.typesafe.scalalogging.StrictLogging
 
 /**
  * Using typesafe config under the hood.
@@ -11,7 +10,7 @@ import com.typesafe.scalalogging.StrictLogging
  */
 
 // the config is essentially singleton, and only needs to be read once.
-object Config extends StrictLogging {
+object Config {
   val DEVELOPMENT = "development"
   val PRODUCTION = "production"
 

@@ -1,4 +1,4 @@
-package backend.common.utils
+package backend.common.model
 
 object CommonExceptions {
   final case class BadRequestException(msg: String) extends Exception(msg) // 400

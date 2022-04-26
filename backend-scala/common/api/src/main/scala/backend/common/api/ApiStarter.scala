@@ -10,7 +10,7 @@ import scala.concurrent.{Await, Future}
 
 object ApiStarter extends RouteConcatenation with DefaultService {
 
-  implicit val actorSystem: ActorSystem = ActorSystem("API Actor System", config)
+  implicit val actorSystem: ActorSystem = ActorSystem("Sys", config)
 
   private def logConfig(name: String): Unit = {
     val environment = config.getString("environment.name")

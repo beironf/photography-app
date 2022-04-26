@@ -3,7 +3,7 @@ package backend.common.api.utils
 import backend.common.api.model.ApiHttpErrors._
 import backend.common.api.model.ApiHttpResponse._
 import backend.common.api.model.Enveloped
-import backend.common.utils.CommonExceptions._
+import backend.common.model.CommonExceptions._
 import backend.core.utils.ThrowableUtil
 import backend.core.application.DefaultService
 

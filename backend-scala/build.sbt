@@ -29,15 +29,12 @@ lazy val backend = createProject("backend", inFile = Some("."))()
 lazy val core = createProject("core")(Seq(
   dependencies.scalaLogging,
   dependencies.slf4j,
-  dependencies.akkaSlf4j
+  dependencies.config
 ))
 
 lazy val common = createProject("common")()
 
-lazy val commonJson = createProject("common-json", inFile = Some("common/json"))(Seq(
-  dependencies.scalaz,
-  dependencies.tapirJsonSpray
-))
+lazy val commonModel = createProject("common-model", inFile = Some("common/model"))()
 
 lazy val commonApi = createProject("common-api", inFile = Some("common/api"))(Seq(
   dependencies.tapirAkkaHttpServer,
@@ -45,9 +42,8 @@ lazy val commonApi = createProject("common-api", inFile = Some("common/api"))(Se
   dependencies.tapirJsonSpray,
   dependencies.tapirOpenApiDocs,
   dependencies.tapirOpenApiCirceYaml
-)).dependsOn(common)
+)).dependsOn(commonModel)
   .dependsOn(core)
-  .dependsOn(commonJson)
 
 lazy val photo = createProject("photo")()
 
@@ -60,33 +56,21 @@ lazy val photoEntities = createProject("photo-entities", inFile = Some("photo/en
 // ---------- Dependencies -----------
 
 lazy val dependencies = new {
-  private val akkaHttpV      = "10.2.7"
-  private val swaggerAkkaHttpVersion = "2.7.0"
-  private val akkaV          = "2.6.18"
   private val tapirVersion   = "1.0.0-M7"
-  private val sprayJsonV     = "1.3.6"
-  private val scalaTestV     = "3.2.10"
   private val scalaLoggingV  = "3.9.4"
-  private val scalazV        = "7.3.6"
   private val slf4jV         = "1.7.36"
+  private val configV        = "1.4.2"
+  private val scalaTestV     = "3.2.11"
 
-  //val sprayJson    = "io.spray"                   %% "spray-json"           % sprayJsonV
-  //val akkaHttp     = "com.typesafe.akka"          %% "akka-http"            % akkaHttpV
-  //val akkaHttpJson = "com.typesafe.akka"          %% "akka-http-spray-json" % akkaHttpV
-  //val akkaActor    = "com.typesafe.akka"          %% "akka-actor"           % akkaV
-  //val akkaStream   = "com.typesafe.akka"          %% "akka-stream"          % akkaV
-  val akkaSlf4j    = "com.typesafe.akka"          %% "akka-slf4j"           % akkaV
-  val akkaTestkit  = "com.typesafe.akka"          %% "akka-testkit"         % akkaV
-  val scalaz       = "org.scalaz"                 %% "scalaz-core"          % scalazV
-  val scalaTest    = "org.scalatest"              %% "scalatest"            % scalaTestV
   val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging"        % scalaLoggingV
   val slf4j        = "org.slf4j"                  % "slf4j-simple"          % slf4jV
+  val config    = "com.typesafe" % "config" % configV
   val tapirCore = "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion
   val tapirAkkaHttpServer = "com.softwaremill.sttp.tapir" %% "tapir-akka-http-server" % tapirVersion
   val tapirJsonSpray = "com.softwaremill.sttp.tapir" %% "tapir-json-spray" % tapirVersion
   val tapirOpenApiDocs = "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"   % tapirVersion
   val tapirOpenApiCirceYaml = "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirVersion
-  //val swaggerAkkaHttp = "com.github.swagger-akka-http" %% "swagger-akka-http" % swaggerAkkaHttpVersion
+  val scalaTest    = "org.scalatest"              %% "scalatest"            % scalaTestV
 }
 
 
