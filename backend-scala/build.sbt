@@ -1,11 +1,8 @@
-import sbt.librarymanagement.ConflictWarning
-
-enablePlugins(JavaAppPackaging)
-
-ThisBuild / version := "1.0"
-ThisBuild / scalaVersion := "2.12.8"
-
-conflictWarning := ConflictWarning.disable
+lazy val commonSettings = Seq(
+  organization := "com.beironf",
+  scalaVersion := "2.13.8",
+  version := "1.0"
+)
 
 
 // ---------- Project Creator --------
@@ -23,7 +20,6 @@ def createProject(id: String, inFile: Option[String] = None)
 // ---------- Domains ----------------
 
 lazy val backend = createProject("backend", inFile = Some("."))()
-  .disablePlugins(AssemblyPlugin)
   .aggregate(photoApi)
 
 lazy val core = createProject("core")(Seq(
@@ -72,27 +68,3 @@ lazy val dependencies = new {
   val tapirOpenApiCirceYaml = "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirVersion
   val scalaTest    = "org.scalatest"              %% "scalatest"            % scalaTestV
 }
-
-
-// ---------- Settings ---------------
-
-lazy val commonSettings = Seq(
-  scalacOptions ++= compilerOptions,
-  resolvers ++= Seq(
-    "Local Maven Repository" at "file://" + Path.userHome.absolutePath + "/.m2/repository",
-    Resolver.sonatypeRepo("releases"),
-    Resolver.sonatypeRepo("snapshots")
-  )
-)
-
-lazy val compilerOptions = Seq(
-  "-unchecked",
-  "-feature",
-  "-language:existentials",
-  "-language:higherKinds",
-  "-language:implicitConversions",
-  "-language:postfixOps",
-  "-deprecation",
-  "-encoding",
-  "utf8"
-)
