@@ -14,7 +14,7 @@ trait ApiApp extends DefaultService {
     ApiStarter.startApi(name, route, shutdown).onComplete {
       case Success(binding) =>
         logger.info(s"Bound to ${binding.localAddress}")
-        // DatabaseConnector.startAll()   TODO: Add database?
+        // TODO: Add database?
       case Failure(exception) =>
         logger.error(s"Failed to bind $name, got exception", exception)
     }
