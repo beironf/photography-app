@@ -1,5 +1,6 @@
 package backend.photo.api
 
+import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import backend.common.api.CommonApiRoute
 import backend.photo.api.ApiSpecs._

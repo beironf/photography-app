@@ -16,6 +16,7 @@ object ApiSpecs extends EndpointsSpec {
 
   val getPhotoEndpoint: EnvelopedHttpErrorEndpoint[String, Int] = // TODO: Add Photo output
     photos
+      .name("getPhoto")
       .get
       .in(path[String]("photoId"))
       .errorOut(commonErrorsOut)
