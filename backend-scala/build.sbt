@@ -48,6 +48,12 @@ lazy val photoApi = createProject("photo-api", inFile = Some("photo/api"))()
 
 lazy val photoEntities = createProject("photo-entities", inFile = Some("photo/entities"))()
 
+lazy val photoInteractors = createProject("photo-interactors", inFile = Some("photo/interactors"))()
+
+lazy val photoPorts = createProject("photo-ports", inFile = Some("photo/ports"))()
+
+lazy val photoAdapters = createProject("photo-adapters", inFile = Some("photo/adapters"))()
+
 
 // ---------- Dependencies -----------
 
