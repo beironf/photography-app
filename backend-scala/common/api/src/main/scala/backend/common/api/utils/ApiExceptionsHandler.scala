@@ -9,7 +9,7 @@ import backend.core.application.DefaultService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-object ApiExceptionsHandler extends DefaultService {
+trait ApiExceptionsHandler extends DefaultService {
 
   implicit class ImplicitConverter[R](routeResponse: Future[R]) {
     def toHttpResponse(implicit executionContext: ExecutionContext): Future[HttpResponse[R]] =
