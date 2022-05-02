@@ -32,45 +32,56 @@ lazy val common = createProject("common")()
 
 lazy val commonModel = createProject("common-model", inFile = Some("common/model"))()
 
+lazy val commonJson = createProject("common-json", inFile = Some("common/json"))(Seq(
+  dependencies.tapirJsonSpray
+))
+
 lazy val commonApi = createProject("common-api", inFile = Some("common/api"))(Seq(
   dependencies.tapirAkkaHttpServer,
   dependencies.tapirCore,
-  dependencies.tapirJsonSpray,
   dependencies.tapirOpenApiDocs,
-  dependencies.tapirOpenApiCirceYaml
+  dependencies.tapirOpenApiCirceYaml,
+  dependencies.tapirEnumeratum
 )).dependsOn(commonModel)
+  .dependsOn(commonJson)
   .dependsOn(core)
 
 lazy val photo = createProject("photo")()
 
 lazy val photoApi = createProject("photo-api", inFile = Some("photo/api"))()
   .dependsOn(commonApi)
+  .dependsOn(photoInteractors)
+  .dependsOn(photoAdapters)
 
 lazy val photoEntities = createProject("photo-entities", inFile = Some("photo/entities"))()
 
-lazy val photoInteractors = createProject("photo-interactors", inFile = Some("photo/interactors"))()
-
 lazy val photoPorts = createProject("photo-ports", inFile = Some("photo/ports"))()
+  .dependsOn(photoEntities)
 
 lazy val photoAdapters = createProject("photo-adapters", inFile = Some("photo/adapters"))()
+  .dependsOn(photoPorts)
+
+lazy val photoInteractors = createProject("photo-interactors", inFile = Some("photo/interactors"))()
+  .dependsOn(photoPorts)
 
 
 // ---------- Dependencies -----------
 
 lazy val dependencies = new {
-  private val tapirVersion   = "1.0.0-M7"
-  private val scalaLoggingV  = "3.9.4"
-  private val slf4jV         = "1.7.36"
-  private val configV        = "1.4.2"
-  private val scalaTestV     = "3.2.11"
+  private val tapirV        = "1.0.0-M7"
+  private val scalaLoggingV = "3.9.4"
+  private val slf4jV        = "1.7.36"
+  private val configV       = "1.4.2"
+  private val scalaTestV    = "3.2.11"
 
-  val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging"        % scalaLoggingV
-  val slf4j        = "org.slf4j"                  % "slf4j-simple"          % slf4jV
-  val config    = "com.typesafe" % "config" % configV
-  val tapirCore = "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion
-  val tapirAkkaHttpServer = "com.softwaremill.sttp.tapir" %% "tapir-akka-http-server" % tapirVersion
-  val tapirJsonSpray = "com.softwaremill.sttp.tapir" %% "tapir-json-spray" % tapirVersion
-  val tapirOpenApiDocs = "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"   % tapirVersion
-  val tapirOpenApiCirceYaml = "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirVersion
-  val scalaTest    = "org.scalatest"              %% "scalatest"            % scalaTestV
+  val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
+  val slf4j                 = "org.slf4j"                   %  "slf4j-simple"             % slf4jV
+  val config                = "com.typesafe"                %  "config"                   % configV
+  val tapirCore             = "com.softwaremill.sttp.tapir" %% "tapir-core"               % tapirV
+  val tapirAkkaHttpServer   = "com.softwaremill.sttp.tapir" %% "tapir-akka-http-server"   % tapirV
+  val tapirJsonSpray        = "com.softwaremill.sttp.tapir" %% "tapir-json-spray"         % tapirV
+  val tapirOpenApiDocs      = "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % tapirV
+  val tapirOpenApiCirceYaml = "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirV
+  val tapirEnumeratum       = "com.softwaremill.sttp.tapir" %% "tapir-enumeratum"         % tapirV
+  val scalaTest             = "org.scalatest"               %% "scalatest"                % scalaTestV
 }
