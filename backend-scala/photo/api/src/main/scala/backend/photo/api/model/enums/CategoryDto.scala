@@ -1,13 +1,10 @@
-package backend.photo.api.model
+package backend.photo.api.model.enums
 
-import backend.photo.entities.meta.Category
-import enumeratum.{Enum, EnumEntry}
+import backend.common.api.model.{TapirEnum, TapirEnumEntry}
 
-sealed abstract class CategoryDto(val name: String) extends EnumEntry
+sealed abstract class CategoryDto(override val name: String) extends TapirEnumEntry
 
-object CategoryDto extends Enum[CategoryDto] {
-
-  def values: IndexedSeq[CategoryDto] = findValues
+object CategoryDto extends TapirEnum[CategoryDto] {
   case object Abstract extends CategoryDto("Abstract")
   case object Animal extends CategoryDto("Animal")
   case object CityAndArchitecture extends CategoryDto("City & Architecture")
@@ -16,6 +13,6 @@ object CategoryDto extends Enum[CategoryDto] {
   case object Night extends CategoryDto("Night")
   case object People extends CategoryDto("People")
 
-  def apply(name: String): CategoryDto = CategoryDto.withName(name)
-
+  def values: IndexedSeq[CategoryDto] = findValues
+  def apply: String => CategoryDto = withName
 }

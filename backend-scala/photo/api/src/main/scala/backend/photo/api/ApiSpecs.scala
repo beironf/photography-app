@@ -4,8 +4,8 @@ import backend.common.api.model.ApiHttpErrorEndpoint._
 import backend.common.api.model.EndpointsSpec
 import backend.common.api.utils.ApiHttpErrorsHandler.commonErrorsOut
 import backend.photo.api.model._
-import backend.photo.api.model.request._
-import backend.photo.api.model.response._
+import backend.photo.api.model.dtos.PhotoDto
+import backend.photo.api.model.enums.CategoryDto
 import sttp.model.StatusCode
 import sttp.tapir._
 import sttp.tapir.codec.enumeratum.TapirCodecEnumeratum
@@ -39,11 +39,11 @@ object ApiSpecs extends EndpointsSpec
       .errorOut(commonErrorsOut)
       .out(toEnvelopedJson[Seq[PhotoDto]])
 
-  val addPhotoEndpoint: HttpErrorEndpoint[AddPhoto, Unit] =
+  val addPhotoEndpoint: HttpErrorEndpoint[PhotoDto, Unit] =
     photos
       .name("addPhoto")
       .post
-      .in(jsonBody[AddPhoto])
+      .in(jsonBody[PhotoDto])
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
 

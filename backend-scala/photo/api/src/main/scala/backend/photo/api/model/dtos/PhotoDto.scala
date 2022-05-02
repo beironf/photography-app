@@ -1,8 +1,7 @@
-package backend.photo.api.model.response
+package backend.photo.api.model.dtos
 
-import backend.photo.entities.gear.Gear
-import backend.photo.entities.meta.{Judgement, Location, Metadata}
-import backend.photo.entities.settings.CameraSettings
+import backend.photo.entities.meta._
+import backend.photo.entities.settings._
 
 import java.time.LocalDate
 
@@ -13,7 +12,7 @@ case class PhotoDto(imageId: String,
                     group: Option[String],
                     location: Location,
                     taken: LocalDate,
-                    gear: Gear,
+                    gear: GearDto,
                     cameraSettings: CameraSettings,
-                    metadata: Metadata,
+                    metadata: MetadataDto,
                     judgement: Judgement)
