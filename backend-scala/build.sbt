@@ -28,6 +28,9 @@ lazy val core = createProject("core")(Seq(
   dependencies.config
 ))
 
+
+// ---- Common
+
 lazy val common = createProject("common")()
 
 lazy val commonModel = createProject("common-model", inFile = Some("common/model"))()
@@ -45,6 +48,9 @@ lazy val commonApi = createProject("common-api", inFile = Some("common/api"))(Se
 )).dependsOn(commonModel)
   .dependsOn(commonJson)
   .dependsOn(core)
+
+
+// ---- Photo
 
 lazy val photo = createProject("photo")()
 
@@ -65,9 +71,33 @@ lazy val photoInteractors = createProject("photo-interactors", inFile = Some("ph
   .dependsOn(photoPorts)
 
 
+// ---- Image
+
+lazy val image = createProject("image")()
+
+lazy val imageApi = createProject("image-api", inFile = Some("image/api"))()
+  .dependsOn(commonApi)
+  .dependsOn(imageInteractors)
+  .dependsOn(imageAdapters)
+
+lazy val imageEntities = createProject("image-entities", inFile = Some("image/entities"))(Seq(
+  dependencies.akkaStream
+))
+
+lazy val imagePorts = createProject("image-ports", inFile = Some("image/ports"))()
+  .dependsOn(imageEntities)
+
+lazy val imageAdapters = createProject("image-adapters", inFile = Some("image/adapters"))()
+  .dependsOn(imagePorts)
+
+lazy val imageInteractors = createProject("image-interactors", inFile = Some("image/interactors"))()
+  .dependsOn(imagePorts)
+
+
 // ---------- Dependencies -----------
 
 lazy val dependencies = new {
+  private val akkaV         = "2.6.19"
   private val tapirV        = "1.0.0-M7"
   private val scalaLoggingV = "3.9.4"
   private val slf4jV        = "1.7.36"
@@ -75,6 +105,7 @@ lazy val dependencies = new {
   private val scalaTestV    = "3.2.11"
 
   val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
+  val akkaStream            = "com.typesafe.akka"           %% "akka-stream"              % akkaV
   val slf4j                 = "org.slf4j"                   %  "slf4j-simple"             % slf4jV
   val config                = "com.typesafe"                %  "config"                   % configV
   val tapirCore             = "com.softwaremill.sttp.tapir" %% "tapir-core"               % tapirV
