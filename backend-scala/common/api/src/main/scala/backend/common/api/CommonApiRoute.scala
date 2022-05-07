@@ -1,7 +1,7 @@
 package backend.common.api
 
 import akka.http.scaladsl.server.Route
-import backend.common.api.model.ApiHttpErrorEndpoint.HttpErrorEndpoint
+import backend.common.api.model.ApiHttpErrorEndpoint.{AkkaStreamsEndpoint, HttpErrorEndpoint}
 import backend.common.api.model.ApiHttpResponse.HttpResponse
 import backend.core.application.DefaultService
 import sttp.tapir.server.akkahttp.AkkaHttpServerInterpreter
@@ -15,5 +15,9 @@ trait CommonApiRoute extends DefaultService {
 
   def tapirRoute[I, O](specification: HttpErrorEndpoint[I, O],
                        implementation: I => Future[HttpResponse[O]]): Route =
+    interpreter.toRoute(specification.serverLogic(implementation))
+
+  def streamingTapirRoute[I, O](specification: AkkaStreamsEndpoint[I, O],
+                                implementation: I => Future[HttpResponse[O]]): Route =
     interpreter.toRoute(specification.serverLogic(implementation))
 }
