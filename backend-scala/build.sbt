@@ -89,6 +89,7 @@ lazy val imagePorts = createProject("image-ports", inFile = Some("image/ports"))
 
 lazy val imageAdapters = createProject("image-adapters", inFile = Some("image/adapters"))()
   .dependsOn(imagePorts)
+  .dependsOn(core)
 
 lazy val imageInteractors = createProject("image-interactors", inFile = Some("image/interactors"))()
   .dependsOn(imagePorts)
