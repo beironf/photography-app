@@ -25,7 +25,8 @@ lazy val backend = createProject("backend", inFile = Some("."))()
 lazy val core = createProject("core")(Seq(
   dependencies.scalaLogging,
   dependencies.slf4j,
-  dependencies.config
+  dependencies.config,
+  dependencies.catsCore
 ))
 
 
@@ -104,9 +105,11 @@ lazy val dependencies = new {
   private val slf4jV        = "1.7.36"
   private val configV       = "1.4.2"
   private val scalaTestV    = "3.2.11"
+  private val catsV         = "2.6.1"
 
   val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
   val akkaStream            = "com.typesafe.akka"           %% "akka-stream"              % akkaV
+  val catsCore              = "org.typelevel"               %% "cats-core"                % catsV
   val slf4j                 = "org.slf4j"                   %  "slf4j-simple"             % slf4jV
   val config                = "com.typesafe"                %  "config"                   % configV
   val tapirCore             = "com.softwaremill.sttp.tapir" %% "tapir-core"               % tapirV
