@@ -11,7 +11,7 @@ import sttp.tapir.openapi.OpenAPI
 import sttp.tapir.openapi.circe._
 import sttp.tapir.openapi.circe.yaml.RichOpenAPI
 
-object ApiDocsSupport {
+trait ApiDocsSupport {
 
   def documentationRoute(openApi: OpenAPI): Route = {
     pathEndOrSingleSlash {

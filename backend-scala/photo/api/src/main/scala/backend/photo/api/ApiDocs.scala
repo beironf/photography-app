@@ -5,10 +5,10 @@ import backend.common.api.ApiDocsSupport
 import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
 import sttp.tapir.openapi.circe.yaml._
 
-object ApiDocs {
+object ApiDocs extends ApiDocsSupport {
   private val endpoints = ApiSpecs.endpoints
   private val openapi = OpenAPIDocsInterpreter().toOpenAPI(endpoints, "Photo API", "v1")
-  val documentationRoute: Route = ApiDocsSupport.documentationRoute(openapi)
+  val route: Route = documentationRoute(openapi)
 
   /*def main(args: Array[String]): Unit = {
     import java.io._

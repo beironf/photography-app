@@ -15,7 +15,7 @@ object ImageApi extends App with ApiApp {
 
   private val route = {
     healthCheckRoute ~
-      ApiDocs.documentationRoute ~
+      ApiDocs.route ~
       apiRoutes.route
   }
 

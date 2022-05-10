@@ -7,11 +7,11 @@ import scala.concurrent.ExecutionContext.Implicits
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
-trait ApiApp extends DefaultService {
+trait ApiApp extends ApiStarter with DefaultService {
   protected implicit lazy val executionContext: ExecutionContext = Implicits.global
 
   def start(name: String, route: Route, shutdown: Option[() => Future[_]] = None): Unit = {
-    ApiStarter.startApi(name, route, shutdown).onComplete {
+    startApi(name, route, shutdown).onComplete {
       case Success(binding) =>
         logger.info(s"Bound to ${binding.localAddress}")
         // TODO: Add database?

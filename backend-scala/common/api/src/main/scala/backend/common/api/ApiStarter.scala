@@ -8,7 +8,7 @@ import backend.core.application.DefaultService
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
-object ApiStarter extends RouteConcatenation with DefaultService {
+trait ApiStarter extends RouteConcatenation with DefaultService {
 
   implicit val actorSystem: ActorSystem = ActorSystem("Sys", config)
 
