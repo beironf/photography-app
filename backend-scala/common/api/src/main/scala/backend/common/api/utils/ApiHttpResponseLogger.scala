@@ -12,7 +12,10 @@ trait ApiHttpResponseLogger extends DefaultService {
 
   implicit class HttpResponseLogger[R](response: Future[HttpResponse[R]]) {
     def logErrors()(implicit executionContext: ExecutionContext): Future[Unit] = response
-      .map { case Left(e) => logHttpError(e) }
+      .map {
+        case Left(e) => logHttpError(e)
+        case Right(_) => (): Unit
+      }
       .recover { e => logException(e) }
   }
 
