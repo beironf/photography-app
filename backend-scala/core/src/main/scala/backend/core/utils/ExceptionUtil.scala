@@ -2,10 +2,10 @@ package backend.core.utils
 
 import java.io.{PrintWriter, StringWriter}
 
-object ThrowableUtil {
-  def format(throwable: Throwable): String = {
+object ExceptionUtil {
+  def format(exception: Exception): String = {
     val sw = new StringWriter()
-    throwable.printStackTrace(new PrintWriter(sw))
+    exception.printStackTrace(new PrintWriter(sw))
     sw.toString
   }
 }

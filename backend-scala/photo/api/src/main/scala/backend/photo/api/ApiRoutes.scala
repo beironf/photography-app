@@ -16,22 +16,22 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
   private val validationService = new ApiValidationService(photoRepository)
   private val apiService = new ApiService(photoService, validationService)
 
-  private val getPhoto = tapirRoute(
+  private val getPhoto = endpoint(
     specification = getPhotoEndpoint,
     implementation = apiService.getPhoto
   )
 
-  private val listPhotos = tapirRoute(
+  private val listPhotos = endpoint(
     specification = listPhotosEndpoint,
     implementation = (apiService.listPhotos _).tupled
   )
 
-  private val addPhotos = tapirRoute(
+  private val addPhotos = endpoint(
     specification = addPhotoEndpoint,
     implementation = apiService.addPhoto
   )
 
-  private val removePhoto = tapirRoute(
+  private val removePhoto = endpoint(
     specification = removePhotoEndpoint,
     implementation = apiService.removePhoto
   )

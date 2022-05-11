@@ -15,17 +15,17 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
   private val imageService = new ImageService(imageRepository)
   private val apiService = new ApiService(imageService)
 
-  private val getImage = streamingTapirRoute(
+  private val getImage = streamingEndpoint(
     specification = getImageEndpoint,
     implementation = apiService.getImage
   )
 
-  private val uploadImage = tapirRoute(
+  private val uploadImage = endpoint(
     specification = uploadImageEndpoint,
     implementation = apiService.uploadImage
   )
 
-  private val removeImage = tapirRoute(
+  private val removeImage = endpoint(
     specification = removeImageEndpoint,
     implementation = apiService.removeImage
   )

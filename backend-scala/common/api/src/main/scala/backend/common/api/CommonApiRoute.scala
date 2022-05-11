@@ -14,21 +14,21 @@ trait CommonApiRoute extends ApiHttpResponseLogger with ApiResponseConverter {
 
   val interpreter: AkkaHttpServerInterpreter = AkkaHttpServerInterpreter()
 
-  def tapirRoute[I, O](specification: HttpErrorEndpoint[I, O],
-                       implementation: I => Future[HttpResponse[O]])
-                      (implicit executionContext: ExecutionContext): Route =
+  def endpoint[I, O](specification: HttpErrorEndpoint[I, O],
+                     implementation: I => Future[HttpResponse[O]])
+                    (implicit executionContext: ExecutionContext): Route =
     interpreter.toRoute(specification.serverLogic(
       implementation(_)
-        .recover { e => Left(e.toHttpError) }
+        .recover { case e: Exception => Left(e.toHttpError()) }
         .tap(_.logErrors())
     ))
 
-  def streamingTapirRoute[I, O](specification: AkkaStreamsEndpoint[I, O],
-                                implementation: I => Future[HttpResponse[O]])
-                               (implicit executionContext: ExecutionContext): Route =
+  def streamingEndpoint[I, O](specification: AkkaStreamsEndpoint[I, O],
+                              implementation: I => Future[HttpResponse[O]])
+                             (implicit executionContext: ExecutionContext): Route =
     interpreter.toRoute(specification.serverLogic(
       implementation(_)
-        .recover { e => Left(e.toHttpError) }
+        .recover { case e: Exception => Left(e.toHttpError()) }
         .tap(_.logErrors())
     ))
 }
