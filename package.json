@@ -2,6 +2,6 @@
   "name": "photography-app",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
+    "start": "concurrently \"cd backend && sbt photo-api/run\" \"cd backend && sbt image-api/run\" \"cd client && npm start\""
   }
 }
