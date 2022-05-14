@@ -17,11 +17,9 @@ import { RatingForm } from 'components/PhotoEditor/PhotoFormGroups/RatingForm';
 import { toCamelCase } from 'util/string-id-utils';
 import { getExif } from 'util/exif-util';
 
-import { StorageApi } from 'api/StorageApi';
+import { ImageApi } from 'api/ImageApi';
 import { LocationForm } from './PhotoFormGroups/LocationForm';
 import { DateForm } from './PhotoFormGroups/DateForm';
-
-const storageApi = new StorageApi();
 
 const initialExif = {
   cameraGear: {},
@@ -104,7 +102,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
       <Image
         style={{ height: 200 }}
         id="image"
-        src={storageApi.getImageUrl(imageFilename)}
+        src={ImageApi.ImageRoute.getImageUrl(imageFilename)}
         onLoad={loadExif}
       />
       <Form noValidate validated={validated} onSubmit={handleSubmit}>

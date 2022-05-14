@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import {
   FormControl, FormGroup, Form, Button,
 } from 'react-bootstrap';
-import { StorageApi } from 'api/StorageApi';
-
-const storageApi = new StorageApi();
+import { ImageApi } from 'api/ImageApi';
 
 type props = {
   onImageUploaded: (_: string) => void;
@@ -22,7 +20,7 @@ export const ImageUploader: React.FunctionComponent<props> = ({
     if (fileInput && fileInput.files[0]) {
       const file = fileInput.files[0];
       formData.append('image', file);
-      storageApi.uploadImage(formData, () => onImageUploaded(file.name));
+      ImageApi.ImageRoute.uploadImage(formData, () => onImageUploaded(file.name));
     }
   };
 
