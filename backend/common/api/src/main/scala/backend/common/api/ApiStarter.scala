@@ -4,6 +4,8 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.{Route, RouteConcatenation}
 import backend.core.application.DefaultService
+import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
+import ch.megard.akka.http.cors.scaladsl.settings.CorsSettings
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
@@ -25,7 +27,11 @@ trait ApiStarter extends RouteConcatenation with DefaultService {
     logConfig(name)
     logger.info(s"$name starting on $domain:$port")
 
-    val bindingFuture = Http().newServerAt(domain, port).bind(route)
+    val corsSettings = CorsSettings.defaultSettings
+
+    val bindingFuture = Http().newServerAt(domain, port).bind {
+      cors(corsSettings) { route }
+    }
 
     sys.addShutdownHook {
       logger.info("Received shutdown signal, stopping http server")

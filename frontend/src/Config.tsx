@@ -4,6 +4,6 @@ type ToolsConfig = {
 };
 
 export const Config: ToolsConfig = {
-  photoApi: '',
-  imageApi: '',
+  photoApi: 'http://localhost:3001',
+  imageApi: 'http://localhost:3002',
 };

@@ -6,7 +6,7 @@ export namespace ImageRoute {
   const api = new BaseApi(`${Config.imageApi}/v1/images/`);
 
   export function getImageUrl(filename: string): string {
-    return `${Config.imageApi}/v1/images?filename=${filename}`;
+    return `${Config.imageApi}/v1/images/${filename}`;
   }
 
   export function uploadImage(formData: FormData, onImageUploaded: () => void): void {

@@ -45,7 +45,8 @@ lazy val commonApi = createProject("common-api", inFile = Some("common/api"))(Se
   dependencies.tapirCore,
   dependencies.tapirOpenApiDocs,
   dependencies.tapirOpenApiCirceYaml,
-  dependencies.tapirEnumeratum
+  dependencies.tapirEnumeratum,
+  dependencies.akkaHttpCors
 )).dependsOn(commonModel)
   .dependsOn(commonJson)
   .dependsOn(core)
@@ -100,6 +101,7 @@ lazy val imageInteractors = createProject("image-interactors", inFile = Some("im
 
 lazy val dependencies = new {
   private val akkaV         = "2.6.19"
+  private val akkaHttpCorsV = "1.1.3"
   private val tapirV        = "1.0.0-M7"
   private val scalaLoggingV = "3.9.4"
   private val slf4jV        = "1.7.36"
@@ -109,6 +111,7 @@ lazy val dependencies = new {
 
   val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
   val akkaStream            = "com.typesafe.akka"           %% "akka-stream"              % akkaV
+  val akkaHttpCors          = "ch.megard"                   %% "akka-http-cors"           % akkaHttpCorsV
   val catsCore              = "org.typelevel"               %% "cats-core"                % catsV
   val slf4j                 = "org.slf4j"                   %  "slf4j-simple"             % slf4jV
   val config                = "com.typesafe"                %  "config"                   % configV

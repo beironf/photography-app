@@ -1,5 +1,6 @@
 package backend.image.adapters
 
+import akka.stream.scaladsl.FileIO
 import backend.core.application.DefaultService
 import backend.image.adapters.ImageType.ImageType
 import backend.image.entities.ImageIO
@@ -24,19 +25,24 @@ class ImageRepositoryImpl()
   dirExists(ImageType.FullSize)
   dirExists(ImageType.Thumbnail)
 
-  def getImageStream(imageId: String): Future[Option[ImageStream]] = ???
+  def getImageStream(imageId: String): Future[Option[ImageStream]] =
+    getFileStream(fullPath(imageId, ImageType.FullSize))
 
   def uploadImage(file: File): Future[Unit] =
     copy(file, fullPath(file.getName, ImageType.FullSize))
 
   def removeImage(imageId: String): Future[Unit] = ???
 
-  def getThumbnailStream(imageId: String): Future[Option[ImageStream]] = ???
+  def getThumbnailStream(imageId: String): Future[Option[ImageStream]] =
+    getFileStream(fullPath(imageId, ImageType.Thumbnail))
 
   def uploadThumbnail(file: File): Future[Unit] =
     copy(file, fullPath(file.getName, ImageType.Thumbnail))
 
   def removeThumbnail(imageId: String): Future[Unit] = ???
+
+  private def getFileStream(filePath: Path): Future[Option[ImageStream]] =
+    Future(Option.when(filePath.toFile.exists)(FileIO.fromPath(filePath)))
 
   private def copy(file: File, destination: Path): Future[Unit] =
     Future.successful {

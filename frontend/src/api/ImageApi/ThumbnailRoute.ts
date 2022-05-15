@@ -7,6 +7,6 @@ export namespace ThumbnailRoute {
   const api = new BaseApi(`${Config.imageApi}/v1/thumbnails/`);
 
   export function getThumbnailUrl(filename: string): string {
-    return `${Config.imageApi}/v1/thumbnails?filename=${filename}`;
+    return `${Config.imageApi}/v1/thumbnails/${filename}`;
   }
 }
