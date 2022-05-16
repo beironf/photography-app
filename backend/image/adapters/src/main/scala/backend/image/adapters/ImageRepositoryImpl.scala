@@ -31,7 +31,9 @@ class ImageRepositoryImpl()
   def uploadImage(file: File): Future[Unit] =
     copy(file, fullPath(file.getName, ImageType.FullSize))
 
-  def removeImage(imageId: String): Future[Unit] = ???
+  def removeImage(imageId: String): Future[Unit] =
+    deleteFile(fullPath(imageId, ImageType.FullSize))
+      .map(_ => (): Unit)
 
   def getThumbnailStream(imageId: String): Future[Option[ImageStream]] =
     getFileStream(fullPath(imageId, ImageType.Thumbnail))
@@ -39,19 +41,31 @@ class ImageRepositoryImpl()
   def uploadThumbnail(file: File): Future[Unit] =
     copy(file, fullPath(file.getName, ImageType.Thumbnail))
 
-  def removeThumbnail(imageId: String): Future[Unit] = ???
+  def removeThumbnail(imageId: String): Future[Unit] =
+    deleteFile(fullPath(imageId, ImageType.Thumbnail))
+      .map(_ => (): Unit)
 
   private def getFileStream(filePath: Path): Future[Option[ImageStream]] =
     Future(Option.when(filePath.toFile.exists)(FileIO.fromPath(filePath)))
 
   private def copy(file: File, destination: Path): Future[Unit] =
-    Future.successful {
+    Future {
       Files.createDirectories(destination.getParent)
       Files.copy(file.toPath, destination, StandardCopyOption.REPLACE_EXISTING)
       (): Unit
     }.recover {
       case e: IOException =>
         throw new RuntimeException(s"Could not upload file=${file.getPath}", e)
+    }
+
+  private def deleteFile(filePath: Path): Future[Boolean] =
+    Future {
+      if (Files.isRegularFile(filePath)) {
+        Files.delete(filePath)
+        true
+      } else {
+        false
+      }
     }
 
   private def dirExists(`type`: ImageType): Unit =
