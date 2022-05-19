@@ -20,8 +20,8 @@ class ImageService(repository: ImageRepository) extends ImageIO {
   def getThumbnailStream(imageId: String): Future[Option[ImageStream]] =
     repository.getThumbnailStream(imageId)
 
-  def uploadThumbnail(thumbnailFile: File): Future[Unit] =
-    repository.uploadThumbnail(thumbnailFile)
+  def uploadThumbnail(fileName: String, bytes: Array[Byte]): Future[Unit] =
+    repository.uploadThumbnail(fileName, bytes)
 
   def removeThumbnail(imageId: String): Future[Unit] =
     repository.removeThumbnail(imageId)

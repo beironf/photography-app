@@ -15,7 +15,7 @@ trait ImageRepository extends ImageIO {
 
   def getThumbnailStream(imageId: String): Future[Option[ImageStream]]
 
-  def uploadThumbnail(file: File): Future[Unit]
+  def uploadThumbnail(fileName: String, bytes: Array[Byte]): Future[Unit]
 
   def removeThumbnail(imageId: String): Future[Unit]
 

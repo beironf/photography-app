@@ -38,8 +38,8 @@ class ImageRepositoryImpl()
   def getThumbnailStream(imageId: String): Future[Option[ImageStream]] =
     getFileStream(fullPath(imageId, ImageType.Thumbnail))
 
-  def uploadThumbnail(file: File): Future[Unit] =
-    copy(file, fullPath(file.getName, ImageType.Thumbnail))
+  def uploadThumbnail(fileName: String, bytes: Array[Byte]): Future[Unit] =
+    createFile(fullPath(fileName, ImageType.Thumbnail), bytes)
 
   def removeThumbnail(imageId: String): Future[Unit] =
     deleteFile(fullPath(imageId, ImageType.Thumbnail))
@@ -47,6 +47,12 @@ class ImageRepositoryImpl()
 
   private def getFileStream(filePath: Path): Future[Option[ImageStream]] =
     Future(Option.when(filePath.toFile.exists)(FileIO.fromPath(filePath)))
+
+  private def createFile(path: Path, bytes: Array[Byte]): Future[Unit] =
+    Future {
+      Files.write(path, bytes)
+      (): Unit
+    }
 
   private def copy(file: File, destination: Path): Future[Unit] =
     Future {
