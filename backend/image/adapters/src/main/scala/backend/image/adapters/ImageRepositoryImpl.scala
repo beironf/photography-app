@@ -2,8 +2,8 @@ package backend.image.adapters
 
 import akka.stream.scaladsl.FileIO
 import backend.core.application.DefaultService
-import backend.image.adapters.ImageType.ImageType
-import backend.image.entities.ImageIO
+import backend.image.entities.ImageType.ImageType
+import backend.image.entities._
 import backend.image.ports.ImageRepository
 
 import java.io.IOException

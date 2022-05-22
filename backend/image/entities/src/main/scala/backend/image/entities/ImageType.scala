@@ -1,4 +1,4 @@
-package backend.image.adapters
+package backend.image.entities
 
 object ImageType extends Enumeration {
   type ImageType = Value
