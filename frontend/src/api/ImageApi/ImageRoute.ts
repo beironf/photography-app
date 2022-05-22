@@ -11,7 +11,7 @@ export namespace ImageRoute {
 
   export function uploadImage(formData: FormData, onImageUploaded: () => void): void {
     api
-      .post('upload', formData, {
+      .post('', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
