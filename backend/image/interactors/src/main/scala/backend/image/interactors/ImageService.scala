@@ -3,7 +3,6 @@ package backend.image.interactors
 import backend.image.entities.ImageIO
 import backend.image.ports.ImageRepository
 
-import java.io.File
 import scala.concurrent.Future
 
 class ImageService(repository: ImageRepository) extends ImageIO {
@@ -11,8 +10,8 @@ class ImageService(repository: ImageRepository) extends ImageIO {
   def getImageStream(imageId: String): Future[Option[ImageStream]] =
     repository.getImageStream(imageId)
 
-  def uploadImageStream(imageFile: File): Future[Unit] =
-    repository.uploadImage(imageFile)
+  def uploadImage(fileName: String, bytes: Array[Byte]): Future[Unit] =
+    repository.uploadImage(fileName, bytes)
 
   def removeImage(imageId: String): Future[Unit] =
     repository.removeImage(imageId)

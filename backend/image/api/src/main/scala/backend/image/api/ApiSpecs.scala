@@ -4,10 +4,13 @@ import backend.common.api.model.ApiHttpErrorEndpoint._
 import backend.common.api.model.EndpointsSpec
 import backend.common.api.utils.ApiHttpErrorsHandler.commonErrorsOut
 import sttp.capabilities.akka.AkkaStreams
-import sttp.model.StatusCode
+import sttp.model.{Part, StatusCode}
+import sttp.tapir.generic.auto._
 import sttp.tapir._
 
 object ApiSpecs extends EndpointsSpec {
+
+  case class ImageFileUpload(image: Part[TapirFile]) extends Serializable
 
   private val images = endpoint
     .in("v1")
@@ -25,11 +28,11 @@ object ApiSpecs extends EndpointsSpec {
         CodecFormat.OctetStream()
       ))
 
-  val uploadImageEndpoint: HttpErrorEndpoint[TapirFile, Unit] =
+  val uploadImageEndpoint: HttpErrorEndpoint[ImageFileUpload, Unit] =
     images
       .name("uploadImage")
       .post
-      .in(fileBody)
+      .in(multipartBody[ImageFileUpload](MultipartCodec.multipartCaseClassCodec[ImageFileUpload]))
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
 

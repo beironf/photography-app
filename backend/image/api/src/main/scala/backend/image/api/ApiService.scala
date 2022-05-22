@@ -3,11 +3,12 @@ package backend.image.api
 import backend.common.api.model.ApiHttpErrors._
 import backend.common.api.model.ApiHttpResponse._
 import backend.common.api.utils.ApiServiceSupport
+import backend.image.api.ApiSpecs.ImageFileUpload
 import backend.image.entities.ImageIO
 import backend.image.interactors.ImageService
 import sttp.capabilities.akka.AkkaStreams
-import sttp.tapir.TapirFile
 
+import java.nio.file.Files
 import scala.concurrent.{ExecutionContext, Future}
 
 class ApiService(service: ImageService)
@@ -21,15 +22,17 @@ class ApiService(service: ImageService)
       case None => Left(NotFound(s"[imageId: $imageId] Not found"))
     }
 
-  def uploadImage(file: TapirFile): Future[HttpResponse[Unit]] = {
-    if (file.getName.contains(".jpg")) {
-      val thumbnail = ImageResizer.resizeImage(file, MAX_THUMBNAIL_SIZE, MAX_THUMBNAIL_SIZE)
-      (for {
-        _ <- service.uploadImageStream(file)
-        _ <- service.uploadThumbnail(file.getName, thumbnail)
-      } yield (): Unit)
-        .toHttpResponse
-    } else Future.successful(Left(BadRequest("The only image format supported is .jpg")))
+  def uploadImage(form: ImageFileUpload): Future[HttpResponse[Unit]] = {
+    form.image.fileName.map { fileName =>
+      if (fileName.contains(".jpg")) {
+        val thumbnail = ImageResizer.resizeImage(form.image.body, MAX_THUMBNAIL_SIZE)
+        (for {
+          _ <- service.uploadImage(fileName, Files.readAllBytes(form.image.body.toPath))
+          _ <- service.uploadThumbnail(fileName, thumbnail)
+        } yield (): Unit)
+          .toHttpResponse
+      } else Future.successful(Left(BadRequest("The only image format supported is .jpg")))
+    }.getOrElse(Future.successful(Left(BadRequest("File name not found"))))
   }
 
   def removeImage(imageId: String): Future[HttpResponse[Unit]] =

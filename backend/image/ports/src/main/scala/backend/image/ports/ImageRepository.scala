@@ -2,14 +2,13 @@ package backend.image.ports
 
 import backend.image.entities.ImageIO
 
-import java.io.File
 import scala.concurrent.Future
 
 trait ImageRepository extends ImageIO {
 
   def getImageStream(imageId: String): Future[Option[ImageStream]]
 
-  def uploadImage(file: File): Future[Unit]
+  def uploadImage(fileName: String, bytes: Array[Byte]): Future[Unit]
 
   def removeImage(imageId: String): Future[Unit]
 

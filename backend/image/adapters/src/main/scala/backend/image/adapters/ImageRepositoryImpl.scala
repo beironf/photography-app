@@ -6,8 +6,8 @@ import backend.image.adapters.ImageType.ImageType
 import backend.image.entities.ImageIO
 import backend.image.ports.ImageRepository
 
-import java.io.{File, IOException}
-import java.nio.file.{Files, Path, Paths, StandardCopyOption}
+import java.io.IOException
+import java.nio.file.{Files, Path, Paths}
 import scala.concurrent.{ExecutionContext, Future}
 
 object ImageRepositoryImpl extends DefaultService {
@@ -28,8 +28,8 @@ class ImageRepositoryImpl()
   def getImageStream(imageId: String): Future[Option[ImageStream]] =
     getFileStream(fullPath(imageId, ImageType.FullSize))
 
-  def uploadImage(file: File): Future[Unit] =
-    copy(file, fullPath(file.getName, ImageType.FullSize))
+  def uploadImage(fileName: String, bytes: Array[Byte]): Future[Unit] =
+    createFile(fullPath(fileName, ImageType.FullSize), bytes)
 
   def removeImage(imageId: String): Future[Unit] =
     deleteFile(fullPath(imageId, ImageType.FullSize))
@@ -50,18 +50,12 @@ class ImageRepositoryImpl()
 
   private def createFile(path: Path, bytes: Array[Byte]): Future[Unit] =
     Future {
+      Files.createDirectories(path.getParent)
       Files.write(path, bytes)
-      (): Unit
-    }
-
-  private def copy(file: File, destination: Path): Future[Unit] =
-    Future {
-      Files.createDirectories(destination.getParent)
-      Files.copy(file.toPath, destination, StandardCopyOption.REPLACE_EXISTING)
       (): Unit
     }.recover {
       case e: IOException =>
-        throw new RuntimeException(s"Could not upload file=${file.getPath}", e)
+        throw new RuntimeException(s"Could not create file=$path", e)
     }
 
   private def deleteFile(filePath: Path): Future[Boolean] =

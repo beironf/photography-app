@@ -17,11 +17,11 @@ object ImageResizer extends DefaultService {
 
   def writerFor(file: File): ImageWriter = writerFor(file.getName)
 
-  def resizeImage(file: File, maxWidth: Int, maxHeight: Int): Array[Byte] = {
-    logger.info(s"Resizing file=${file.getName}")
+  def resizeImage(file: File, max: Int): Array[Byte] = {
+    logger.info(s"Resizing file")
     ImmutableImage.loader()
       .fromFile(file)
-      .fit(maxWidth, maxHeight)
+      .max(max, max)
       .bytes(writerFor(file.getName))
   }
 
