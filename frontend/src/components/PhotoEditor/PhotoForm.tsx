@@ -57,7 +57,7 @@ type Props = {
 
 export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
   const [validated, setValidated] = useState(false);
-  const [imageFilename, setImageFilename] = useState<string>('IMG_6071.jpg');
+  const [imageFilename, setImageFilename] = useState<string>();
   // eslint-disable-next-line no-unused-vars
   const [photo, setPhoto] = useState<Photo>();
   const [exif, setExif] = useState<PhotoExif>(initialExif);
