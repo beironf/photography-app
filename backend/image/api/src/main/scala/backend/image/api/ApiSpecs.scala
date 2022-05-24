@@ -3,12 +3,13 @@ package backend.image.api
 import backend.common.api.model.ApiHttpErrorEndpoint._
 import backend.common.api.model.EndpointsSpec
 import backend.common.api.utils.ApiHttpErrorsHandler.commonErrorsOut
+import backend.image.api.model.{ImageExifDto, JsonProtocol}
 import sttp.capabilities.akka.AkkaStreams
 import sttp.model.{Part, StatusCode}
 import sttp.tapir.generic.auto._
 import sttp.tapir._
 
-object ApiSpecs extends EndpointsSpec {
+object ApiSpecs extends EndpointsSpec with JsonProtocol {
 
   case class ImageFileUpload(image: Part[TapirFile]) extends Serializable
 
@@ -44,10 +45,20 @@ object ApiSpecs extends EndpointsSpec {
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
 
+  val getExifEndpoint: EnvelopedHttpErrorEndpoint[String, ImageExifDto] =
+    images
+      .name("getExif")
+      .get
+      .in(path[String]("imageId"))
+      .in("exif")
+      .errorOut(commonErrorsOut)
+      .out(toEnvelopedJson[ImageExifDto])
+
   // Add the endpoint here in order to include it in the documentation
   val endpoints: List[AnyEndpoint] = List(
     getImageEndpoint,
     uploadImageEndpoint,
-    removeImageEndpoint
+    removeImageEndpoint,
+    getExifEndpoint
   )
 }
