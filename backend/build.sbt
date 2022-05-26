@@ -22,12 +22,19 @@ def createProject(id: String, inFile: Option[String] = None)
 lazy val backend = createProject("backend", inFile = Some("."))()
   .aggregate(photoApi)
 
+
+// ---- Core
+
 lazy val core = createProject("core")(Seq(
   dependencies.scalaLogging,
   dependencies.slf4j,
   dependencies.config,
   dependencies.catsCore
 ))
+
+lazy val coreSqlStorage = createProject("core-sql-storage", inFile = Some("core/sql-storage"))(Seq(
+  dependencies.slick
+)).dependsOn(core)
 
 
 // ---- Common
@@ -92,7 +99,7 @@ lazy val imagePorts = createProject("image-ports", inFile = Some("image/ports"))
 
 lazy val imageAdapters = createProject("image-adapters", inFile = Some("image/adapters"))()
   .dependsOn(imagePorts)
-  .dependsOn(core)
+  .dependsOn(coreSqlStorage)
 
 lazy val imageInteractors = createProject("image-interactors", inFile = Some("image/interactors"))()
   .dependsOn(imagePorts)
@@ -110,6 +117,7 @@ lazy val dependencies = new {
   private val scalaTestV    = "3.2.11"
   private val catsV         = "2.6.1"
   private val scrimageV     = "4.0.31"
+  private val slickV        = "3.4.0-M1"
 
   val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
   val akkaStream            = "com.typesafe.akka"           %% "akka-stream"              % akkaV
@@ -124,5 +132,6 @@ lazy val dependencies = new {
   val tapirOpenApiCirceYaml = "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirV
   val tapirEnumeratum       = "com.softwaremill.sttp.tapir" %% "tapir-enumeratum"         % tapirV
   val scrimage              = "com.sksamuel.scrimage"       %  "scrimage-core"            % scrimageV
+  val slick                 = "com.typesafe.slick"          %% "slick"                    % slickV
   val scalaTest             = "org.scalatest"               %% "scalatest"                % scalaTestV
 }
