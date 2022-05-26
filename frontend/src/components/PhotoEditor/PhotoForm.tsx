@@ -6,7 +6,7 @@ import {
 import { LatLng, LatLngExpression, LeafletMouseEvent } from 'leaflet';
 
 import { Photo } from 'model/photo';
-import { PhotoExif } from 'model/photo-exif';
+import { Exif } from 'model/exif';
 import { PhotoCategory, CameraTechnique } from 'model/metadata';
 
 import { ImageUploader } from 'components/PhotoEditor/ImageUploader';
@@ -20,17 +20,7 @@ import { getExif } from 'util/exif-util';
 import { ImageApi } from 'api/ImageApi';
 import { LocationForm } from './PhotoFormGroups/LocationForm';
 import { DateForm } from './PhotoFormGroups/DateForm';
-
-const initialExif = {
-  cameraGear: {},
-  cameraSettings: {
-    focalLenght: NaN,
-    fNumber: NaN,
-    iso: NaN,
-    exposureTime: '',
-  },
-  date: undefined,
-};
+import { ExifForm } from './PhotoFormGroups/ExifForm';
 
 type LocationProps = {
   location?: LatLngExpression;
@@ -60,7 +50,7 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
   const [imageFilename, setImageFilename] = useState<string>();
   // eslint-disable-next-line no-unused-vars
   const [photo, setPhoto] = useState<Photo>();
-  const [exif, setExif] = useState<PhotoExif>(initialExif);
+  const [exif, setExif] = useState<Exif>({} as Exif);
   const [mapLatLng, setMapLatLng] = useState<number[]>();
 
   const handleSubmit = (event: any): void => {
@@ -84,8 +74,8 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
     setImageFilename(filename);
   };
 
-  const loadExif = (event: any): void => {
-    getExif(event.currentTarget, setExif);
+  const loadExif = (): void => {
+    getExif(imageFilename, setExif);
   };
 
   if (imageFilename === undefined) {
@@ -105,6 +95,8 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
         src={ImageApi.ImageRoute.getImageUrl(imageFilename)}
         onLoad={loadExif}
       />
+      <ExifForm exif={exif} />
+      <DateForm date={exif.date} />
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>Title</Form.Label>
@@ -136,7 +128,6 @@ export const PhotoForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
           ))}
         </Form.Group>
 
-        <DateForm exif={exif} />
         <LocationForm mapLatLng={mapLatLng} />
         <TagsForm name="Tags" placeholder="tags separated by space" />
         <RatingForm name="Rating" maxValue={5} />

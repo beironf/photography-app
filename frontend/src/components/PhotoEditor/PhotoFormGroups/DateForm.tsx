@@ -1,13 +1,12 @@
-import { PhotoExif } from 'model/photo-exif';
 import React from 'react';
 import { Row, Form, Col } from 'react-bootstrap';
 import { formatDate } from 'util/date-util';
 
 type Props = {
-  exif: PhotoExif;
+  date?: Date;
 };
 
-export const DateForm: React.FunctionComponent<Props> = ({ exif }) => (
+export const DateForm: React.FunctionComponent<Props> = ({ date }) => (
   <Form.Group as={Row}>
     <Form.Label column sm="2">
       Date
@@ -16,10 +15,10 @@ export const DateForm: React.FunctionComponent<Props> = ({ exif }) => (
       <Form.Control
         name="date"
         type="text"
-        plaintext={exif.date !== undefined}
-        disabled={exif.date !== undefined}
+        plaintext={date !== undefined}
+        disabled={date !== undefined}
         placeholder={
-          exif.date ? formatDate(exif.date) : 'YYYY-MM-DD HH:MM:SS'
+          date ? formatDate(date) : 'yyyy-MM-dd HH:mm:ss'
         }
         required
       />
