@@ -2,7 +2,7 @@ package backend.image.adapters.exifdb
 
 import backend.core.sqlstorage.DatabaseConnector
 
-import java.time.Instant
+import java.sql.Timestamp
 
 trait ImagesExifTable extends DatabaseConnector {
 
@@ -17,8 +17,8 @@ trait ImagesExifTable extends DatabaseConnector {
     def focalLength: Rep[Option[Int]] = column[Option[Int]]("focal_length")
     def fNumber: Rep[Option[Float]] = column[Option[Float]]("f_number")
     def iso: Rep[Option[Int]] = column[Option[Int]]("iso")
-    def exposureTime: Rep[Option[String]] = column[Option[String]]("exposureTime")
-    def date: Rep[Option[Instant]] = column[Option[Instant]]("date")
+    def exposureTime: Rep[Option[String]] = column[Option[String]]("exposure_time")
+    def date: Rep[Option[Timestamp]] = column[Option[Timestamp]]("date")
 
     def * = (imageId, cameraMake, cameraModel, lens, focalLength, fNumber, iso,
       exposureTime, date) <> (ImageExifDb.tupled, ImageExifDb.unapply)

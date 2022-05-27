@@ -2,7 +2,7 @@ package backend.image.adapters.exifdb
 
 import backend.image.entities.ImageExif
 
-import java.time.Instant
+import java.sql.Timestamp
 
 case class ImageExifDb(imageId: String,
                        cameraMake: Option[String],
@@ -12,6 +12,7 @@ case class ImageExifDb(imageId: String,
                        fNumber: Option[Float],
                        iso: Option[Int],
                        exposureTime: Option[String],
-                       date: Option[Instant]) {
-  def toDomain: ImageExif = ImageExif(cameraMake, cameraModel, lens, focalLength, fNumber, iso, exposureTime, date)
+                       date: Option[Timestamp]) {
+  def toDomain: ImageExif =
+    ImageExif(cameraMake, cameraModel, lens, focalLength, fNumber, iso, exposureTime, date.map(_.toInstant))
 }
