@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  db:
+    image: mysql:8.0
+    container_name: photography-db
+    platform: linux/x86_64
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_DATABASE: photography_db
+    ports:
+      - "3310:3306"
+    volumes:
+      - $PHOTO_APP_DIR/db/mysql_data:/var/lib/mysql
