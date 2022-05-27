@@ -33,7 +33,9 @@ lazy val core = createProject("core")(Seq(
 ))
 
 lazy val coreSqlStorage = createProject("core-sql-storage", inFile = Some("core/sql-storage"))(Seq(
-  dependencies.slick
+  dependencies.slick,
+  dependencies.slickHikariCP,
+  dependencies.mysql
 )).dependsOn(core)
 
 
@@ -75,6 +77,7 @@ lazy val photoPorts = createProject("photo-ports", inFile = Some("photo/ports"))
 
 lazy val photoAdapters = createProject("photo-adapters", inFile = Some("photo/adapters"))()
   .dependsOn(photoPorts)
+  .dependsOn(coreSqlStorage)
 
 lazy val photoInteractors = createProject("photo-interactors", inFile = Some("photo/interactors"))()
   .dependsOn(photoPorts)
@@ -112,12 +115,13 @@ lazy val dependencies = new {
   private val akkaHttpCorsV = "1.1.3"
   private val tapirV        = "1.0.0-M7"
   private val scalaLoggingV = "3.9.4"
-  private val slf4jV        = "1.7.36"
+  private val slf4jV        = "1.8.0-beta4"
   private val configV       = "1.4.2"
   private val scalaTestV    = "3.2.11"
   private val catsV         = "2.6.1"
   private val scrimageV     = "4.0.31"
   private val slickV        = "3.4.0-M1"
+  private val mysqlV        = "8.0.29"
 
   val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
   val akkaStream            = "com.typesafe.akka"           %% "akka-stream"              % akkaV
@@ -133,5 +137,7 @@ lazy val dependencies = new {
   val tapirEnumeratum       = "com.softwaremill.sttp.tapir" %% "tapir-enumeratum"         % tapirV
   val scrimage              = "com.sksamuel.scrimage"       %  "scrimage-core"            % scrimageV
   val slick                 = "com.typesafe.slick"          %% "slick"                    % slickV
+  val slickHikariCP         = "com.typesafe.slick"          %% "slick-hikaricp"           % slickV
+  val mysql                 = "mysql"                       %  "mysql-connector-java"     % mysqlV
   val scalaTest             = "org.scalatest"               %% "scalatest"                % scalaTestV
 }

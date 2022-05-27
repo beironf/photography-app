@@ -8,7 +8,7 @@ trait ImagesExifTable extends DatabaseConnector {
 
   import dbConfig.profile.api._
 
-  private class ImagesExif(tag: Tag) extends Table[ImageExifDb](tag, "images_exif") {
+  class ImagesExif(tag: Tag) extends Table[ImageExifDb](tag, "images_exif") {
 
     def imageId: Rep[String] = column[String]("image_id", O.PrimaryKey)
     def cameraMake: Rep[Option[String]] = column[Option[String]]("camera_make")
