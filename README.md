@@ -37,15 +37,14 @@ An API for uploading and fetching images. EXIF data will be stored before the im
 ## MySQL Database with Docker
 Common webhotels usually have support for MySQL so I went for this even though it probably would have made more sense to run this app using for example MongoDB (or similar NoSQL).
 
-### Initiate/Start
+#### Initiate/Start:
 The DB is specified in the `docker-compose.yaml` file (services: `db`) where we create a MySQL-container (`photography-db`) with the database `photography_db` inside.
-
 ```
 docker-compose up db -d
 ```
 
-### Connect
-The DB is hosted inside a Docker container and exposed on the port 3310. For some reason the `--protocol=tcp` was needed when using "localhost" (127.0.0.1 works without whis flag).
+#### Connect
+The DB is hosted inside a Docker container and exposed on the port `3310`. For some reason the `--protocol=tcp` was needed when using "localhost" (`127.0.0.1` works without whis flag).
 ```
 mysql -u root -h localhost -P 3310 -D photography_db --protocol=tcp
 ```
