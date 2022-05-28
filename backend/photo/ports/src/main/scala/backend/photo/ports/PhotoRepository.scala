@@ -1,7 +1,6 @@
 package backend.photo.ports
 
 import backend.photo.entities._
-import backend.photo.entities.meta._
 
 import scala.concurrent.Future
 
@@ -13,7 +12,7 @@ trait PhotoRepository {
 
   def removePhoto(imageId: String): Future[Unit]
 
-  def listPhotos(category: Option[Category.Value] = None,
+  def listPhotos(group: Option[String] = None,
                  rating: Option[Int] = None): Future[Seq[Photo]]
 
 }

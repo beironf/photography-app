@@ -35,6 +35,7 @@ lazy val core = createProject("core")(Seq(
 lazy val coreSqlStorage = createProject("core-sql-storage", inFile = Some("core/sql-storage"))(Seq(
   dependencies.slick,
   dependencies.slickHikariCP,
+  dependencies.slickCats,
   dependencies.mysql
 )).dependsOn(core)
 
@@ -77,6 +78,7 @@ lazy val photoPorts = createProject("photo-ports", inFile = Some("photo/ports"))
 
 lazy val photoAdapters = createProject("photo-adapters", inFile = Some("photo/adapters"))()
   .dependsOn(photoPorts)
+  .dependsOn(commonJson)
   .dependsOn(coreSqlStorage)
 
 lazy val photoInteractors = createProject("photo-interactors", inFile = Some("photo/interactors"))()
@@ -120,7 +122,8 @@ lazy val dependencies = new {
   private val scalaTestV    = "3.2.11"
   private val catsV         = "2.6.1"
   private val scrimageV     = "4.0.31"
-  private val slickV        = "3.4.0-M1"
+  private val slickV        = "3.3.3"
+  private val slickCatsV    = "0.10.4"
   private val mysqlV        = "8.0.29"
 
   val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
@@ -138,6 +141,7 @@ lazy val dependencies = new {
   val scrimage              = "com.sksamuel.scrimage"       %  "scrimage-core"            % scrimageV
   val slick                 = "com.typesafe.slick"          %% "slick"                    % slickV
   val slickHikariCP         = "com.typesafe.slick"          %% "slick-hikaricp"           % slickV
+  val slickCats             = "com.rms.miu"                 %% "slick-cats"               % slickCatsV
   val mysql                 = "mysql"                       %  "mysql-connector-java"     % mysqlV
   val scalaTest             = "org.scalatest"               %% "scalatest"                % scalaTestV
 }

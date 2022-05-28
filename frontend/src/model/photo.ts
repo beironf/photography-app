@@ -13,7 +13,7 @@ export type Photo = {
   title: string;
   description?: string;
   group?: string;
-  taken: any; // Timestamp
+  taken: Date;
   location: Location;
   gear: CameraGear;
   cameraSettings: CameraSettings;

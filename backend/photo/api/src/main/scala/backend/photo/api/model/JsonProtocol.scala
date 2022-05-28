@@ -10,9 +10,8 @@ import spray.json._
 trait JsonProtocol extends JsonSupport {
   implicit val judgementFormat: RootJsonFormat[Judgement] = jsonFormat2(Judgement)
   implicit val cameraTechniqueDtoFormat: RootJsonFormat[CameraTechniqueDto] = jsonFormatIdentityString[CameraTechniqueDto](CameraTechniqueDto.apply, _.name)
-  implicit val personFormat: RootJsonFormat[Person] = jsonFormat2(Person)
   implicit val categoryDtoFormat: RootJsonFormat[CategoryDto] = jsonFormatIdentityString[CategoryDto](CategoryDto.apply, _.name)
-  implicit val metadataDtoFormat: RootJsonFormat[MetadataDto] = jsonFormat4(MetadataDto)
+  implicit val metadataDtoFormat: RootJsonFormat[MetadataDto] = jsonFormat3(MetadataDto)
   implicit val cameraSettingsFormat: RootJsonFormat[CameraSettings] = jsonFormat4(CameraSettings)
   implicit val lensDtoFormat: RootJsonFormat[LensDto] = jsonFormatIdentityString[LensDto](LensDto.apply, _.name)
   implicit val cameraDtoFormat: RootJsonFormat[CameraDto] = jsonFormatIdentityString[CameraDto](CameraDto.apply, _.name)

@@ -5,7 +5,6 @@ import backend.common.api.model.ApiHttpResponse._
 import backend.common.api.utils.ApiServiceSupport
 import backend.photo.api.model.ImplicitDtoConversion
 import backend.photo.api.model.dtos.PhotoDto
-import backend.photo.api.model.enums.CategoryDto
 import backend.photo.interactors.PhotoService
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -19,9 +18,9 @@ class ApiService(service: PhotoService, validator: ApiValidationService)
       .map(_.map(_.toDto))
       .toEnveloped
 
-  def listPhotos(category: Option[CategoryDto] = None,
+  def listPhotos(group: Option[String] = None,
                  rating: Option[Int] = None): Future[EnvelopedHttpResponse[Seq[PhotoDto]]] =
-    service.listPhotos(category.map(_.toDomain), rating)
+    service.listPhotos(group, rating)
       .map(_.map(_.toDto))
       .toEnvelopedHttpResponse
 

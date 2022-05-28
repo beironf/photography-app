@@ -25,7 +25,6 @@ export enum CameraTechnique {
 
 export type Metadata = {
   category: PhotoCategory;
-  peoples?: Person[];
   cameraTechnique?: CameraTechnique;
   tags?: string[];
 };

@@ -1,7 +1,6 @@
 package backend.photo.interactors
 
 import backend.photo.entities.Photo
-import backend.photo.entities.meta._
 import backend.photo.ports.PhotoRepository
 
 import scala.concurrent.Future
@@ -17,8 +16,8 @@ class PhotoService(repository: PhotoRepository) {
   def removePhoto(imageId: String): Future[Unit] =
     repository.removePhoto(imageId)
 
-  def listPhotos(category: Option[Category.Value] = None,
+  def listPhotos(group: Option[String] = None,
                  rating: Option[Int] = None): Future[Seq[Photo]] =
-    repository.listPhotos(category, rating)
+    repository.listPhotos(group, rating)
 
 }

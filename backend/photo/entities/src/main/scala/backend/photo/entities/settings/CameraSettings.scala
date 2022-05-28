@@ -1,6 +1,6 @@
 package backend.photo.entities.settings
 
-case class CameraSettings(focalLength: Int,
-                          fNumber: Float,
-                          iso: Int,
+case class CameraSettings(focalLength: String,
+                          fNumber: String,
+                          iso: String,
                           exposureTime: String)
