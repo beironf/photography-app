@@ -18,6 +18,13 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
     .in("images")
     .tag("images")
 
+  val getImageIdsEndpoint: EnvelopedHttpErrorEndpoint[Unit, Seq[String]] =
+    images
+      .name("getImageIds")
+      .get
+      .errorOut(commonErrorsOut)
+      .out(toEnvelopedJson[Seq[String]])
+
   val getImageEndpoint: AkkaStreamsEndpoint[String, AkkaStreams.BinaryStream] =
     images
       .name("getImage")
@@ -56,6 +63,7 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
 
   // Add the endpoint here in order to include it in the documentation
   val endpoints: List[AnyEndpoint] = List(
+    getImageIdsEndpoint,
     getImageEndpoint,
     uploadImageEndpoint,
     removeImageEndpoint,

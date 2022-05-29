@@ -10,6 +10,10 @@ export namespace ImageRoute {
     return `${Config.imageApi}/v1/images/${filename}`;
   }
 
+  export function getImageIds(): Promise<string[]> {
+    return api.getData('');
+  }
+
   export function getExif(filename: string): Promise<ExifDto> {
     return api.getData(`${filename}/exif`);
   }

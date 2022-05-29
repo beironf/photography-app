@@ -25,6 +25,14 @@ class ImageRepositoryImpl()
   dirExists(ImageType.FullSize)
   dirExists(ImageType.Thumbnail)
 
+  def getImageNames: Future[Seq[String]] = Future(
+    IMAGE_PATH.toFile.listFiles
+      .filter(f => f.isFile)
+      .map(_.getName)
+      .filter(_.endsWith(".jpg"))
+      .toSeq
+  )
+
   def getImageStream(imageId: String): Future[Option[ImageStream]] =
     getFileStream(fullPath(imageId, ImageType.FullSize))
 

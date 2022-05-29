@@ -18,14 +18,18 @@ class ApiService(service: ImageService,
   with ImageIO
   with ImplicitDtoConversion {
 
-  private val MAX_IMAGE_SIZE = 3000
-  private val MAX_THUMBNAIL_SIZE = 900
+  private val MAX_IMAGE_SIZE = 4000
+  private val MAX_THUMBNAIL_SIZE = 1200
 
   def getImage(imageId: String): Future[HttpResponse[AkkaStreams.BinaryStream]] =
     service.getImageStream(imageId).map {
       case Some(stream) => Right(stream)
       case None => Left(NotFound(s"[imageId: $imageId] Not found"))
     }
+
+  def getImageIds: Future[EnvelopedHttpResponse[Seq[String]]] =
+    service.getImageNames
+      .toEnvelopedHttpResponse
 
   def getImageExif(imageId: String): Future[EnvelopedHttpResponse[ImageExifDto]] =
     exifService.getExif(imageId).map {

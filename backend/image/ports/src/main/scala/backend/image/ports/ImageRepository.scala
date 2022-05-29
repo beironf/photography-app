@@ -6,6 +6,8 @@ import scala.concurrent.Future
 
 trait ImageRepository extends ImageIO {
 
+  def getImageNames: Future[Seq[String]]
+
   def getImageStream(imageId: String): Future[Option[ImageStream]]
 
   def uploadImage(fileName: String, bytes: Array[Byte]): Future[Unit]

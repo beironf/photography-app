@@ -7,6 +7,9 @@ import scala.concurrent.Future
 
 class ImageService(repository: ImageRepository) extends ImageIO {
 
+  def getImageNames: Future[Seq[String]] =
+    repository.getImageNames
+
   def getImageStream(imageId: String): Future[Option[ImageStream]] =
     repository.getImageStream(imageId)
 

@@ -17,6 +17,11 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
   private val imageExifService = new ImageExifService(imageExifRepository)
   private val apiService = new ApiService(imageService, imageExifService)
 
+  private val getImageIds = endpoint(
+    specification = getImageIdsEndpoint,
+    implementation = (_: Unit) => apiService.getImageIds
+  )
+
   private val getImage = streamingEndpoint(
     specification = getImageEndpoint,
     implementation = apiService.getImage
@@ -37,9 +42,11 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
     implementation = apiService.getImageExif
   )
 
-  val route: Route =
-    getImage ~
+  val route: Route = {
+    getImageIds ~
+      getImage ~
       uploadImage ~
       removeImage ~
       getExif
+  }
 }
