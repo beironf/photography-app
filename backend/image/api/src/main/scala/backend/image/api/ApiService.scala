@@ -24,7 +24,13 @@ class ApiService(service: ImageService,
   def getImage(imageId: String): Future[HttpResponse[AkkaStreams.BinaryStream]] =
     service.getImageStream(imageId).map {
       case Some(stream) => Right(stream)
-      case None => Left(NotFound(s"[imageId: $imageId] Not found"))
+      case None => Left(NotFound(s"[imageId: $imageId] Image not found"))
+    }
+
+  def getThumbnail(imageId: String): Future[HttpResponse[AkkaStreams.BinaryStream]] =
+    service.getThumbnailStream(imageId).map {
+      case Some(stream) => Right(stream)
+      case None => Left(NotFound(s"[imageId: $imageId] Thumbnail not found"))
     }
 
   def getImageIds: Future[EnvelopedHttpResponse[Seq[String]]] =
@@ -55,7 +61,11 @@ class ApiService(service: ImageService,
     }.getOrElse(Future.successful(Left(BadRequest("File name not found"))))
   }
 
-  def removeImage(imageId: String): Future[HttpResponse[Unit]] =
-    service.removeImage(imageId).toHttpResponse
+  def removeImage(imageId: String): Future[HttpResponse[Unit]] = {
+    (for {
+      _ <- service.removeThumbnail(imageId)
+      _ <- service.removeImage(imageId)
+    } yield (): Unit).toHttpResponse
+  }
 
 }

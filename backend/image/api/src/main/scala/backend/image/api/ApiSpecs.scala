@@ -18,6 +18,11 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
     .in("images")
     .tag("images")
 
+  private val thumbnails = endpoint
+    .in("v1")
+    .in("thumbnails")
+    .tag("thumbnails")
+
   val getImageIdsEndpoint: EnvelopedHttpErrorEndpoint[Unit, Seq[String]] =
     images
       .name("getImageIds")
@@ -52,6 +57,17 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
 
+  val getThumbnailEndpoint: AkkaStreamsEndpoint[String, AkkaStreams.BinaryStream] =
+    thumbnails
+      .name("getThumbnail")
+      .get
+      .in(path[String]("imageId"))
+      .errorOut(commonErrorsOut)
+      .out(streamBody(AkkaStreams)(
+        Schema(Schema.schemaForFile.schemaType),
+        CodecFormat.OctetStream()
+      ))
+
   val getExifEndpoint: EnvelopedHttpErrorEndpoint[String, ImageExifDto] =
     images
       .name("getExif")
@@ -67,6 +83,7 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
     getImageEndpoint,
     uploadImageEndpoint,
     removeImageEndpoint,
+    getThumbnailEndpoint,
     getExifEndpoint
   )
 }

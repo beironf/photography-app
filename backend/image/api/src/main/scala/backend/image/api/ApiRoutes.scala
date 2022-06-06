@@ -27,6 +27,11 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
     implementation = apiService.getImage
   )
 
+  private val getThumbnail = streamingEndpoint(
+    specification = getThumbnailEndpoint,
+    implementation = apiService.getThumbnail
+  )
+
   private val uploadImage = endpoint(
     specification = uploadImageEndpoint,
     implementation = apiService.uploadImage
@@ -47,6 +52,7 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
       getImage ~
       uploadImage ~
       removeImage ~
+      getThumbnail ~
       getExif
   }
 }
