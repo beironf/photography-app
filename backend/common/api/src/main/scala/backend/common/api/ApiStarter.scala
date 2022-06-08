@@ -2,6 +2,7 @@ package backend.common.api
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.server.{Route, RouteConcatenation}
 import backend.core.application.DefaultService
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
@@ -27,7 +28,9 @@ trait ApiStarter extends RouteConcatenation with DefaultService {
     logConfig(name)
     logger.info(s"$name starting on $domain:$port")
 
-    val corsSettings = CorsSettings.defaultSettings
+    val corsSettings = CorsSettings.defaultSettings.withAllowedMethods(Seq(
+      GET, POST, PATCH, PUT, DELETE, HEAD, OPTIONS
+    ))
 
     val bindingFuture = Http().newServerAt(domain, port).bind {
       cors(corsSettings) { route }
