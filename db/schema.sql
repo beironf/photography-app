@@ -7,7 +7,9 @@ CREATE TABLE images_exif (
     f_number        FLOAT,
     iso             INTEGER,
     exposure_time   VARCHAR(10),
-    date            TIMESTAMP
+    date            TIMESTAMP,
+    width           INTEGER NOT NULL,
+    height          INTEGER NOT NULL
 );
 
 CREATE TABLE locations (

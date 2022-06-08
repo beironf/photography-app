@@ -9,4 +9,6 @@ case class ImageExifDto(cameraMake: Option[String],
                         fNumber: Option[Float],
                         iso: Option[Int],
                         exposureTime: Option[String],
-                        date: Option[Instant])
+                        date: Option[Instant],
+                        width: Int,
+                        height: Int)

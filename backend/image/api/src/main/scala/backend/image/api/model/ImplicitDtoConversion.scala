@@ -13,7 +13,9 @@ trait ImplicitDtoConversion {
       exif.fNumber,
       exif.iso,
       exif.exposureTime,
-      exif.date
+      exif.date,
+      exif.width,
+      exif.height
     )
   }
 

@@ -12,7 +12,9 @@ case class ImageExifDb(imageId: String,
                        fNumber: Option[Float],
                        iso: Option[Int],
                        exposureTime: Option[String],
-                       date: Option[Timestamp]) {
+                       date: Option[Timestamp],
+                       width: Int,
+                       height: Int) {
   def toDomain: ImageExif =
-    ImageExif(cameraMake, cameraModel, lens, focalLength, fNumber, iso, exposureTime, date.map(_.toInstant))
+    ImageExif(cameraMake, cameraModel, lens, focalLength, fNumber, iso, exposureTime, date.map(_.toInstant), width, height)
 }

@@ -19,9 +19,11 @@ trait ImagesExifTable extends DatabaseConnector {
     def iso: Rep[Option[Int]] = column[Option[Int]]("iso")
     def exposureTime: Rep[Option[String]] = column[Option[String]]("exposure_time")
     def date: Rep[Option[Timestamp]] = column[Option[Timestamp]]("date")
+    def width: Rep[Int] = column[Int]("width")
+    def height: Rep[Int] = column[Int]("height")
 
     def * = (imageId, cameraMake, cameraModel, lens, focalLength, fNumber, iso,
-      exposureTime, date) <> (ImageExifDb.tupled, ImageExifDb.unapply)
+      exposureTime, date, width, height) <> (ImageExifDb.tupled, ImageExifDb.unapply)
   }
 
   val imagesExif = TableQuery[ImagesExif]

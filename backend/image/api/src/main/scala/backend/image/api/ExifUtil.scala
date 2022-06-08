@@ -1,6 +1,7 @@
 package backend.image.api
 
 import backend.image.entities.ImageExif
+import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.metadata.ImageMetadata
 
 import java.io.File
@@ -42,7 +43,11 @@ object ExifUtil {
     val exposureTime = getValue(EXPOSURE_TIME, useRawValue = true)
     val date = getValue(DATE, s => Instant.from(formatter.parse(s)))
 
-    ImageExif(cameraMake, cameraModel, lens, focalLength, fNumber, iso, exposureTime, date)
+    val image = ImmutableImage.loader().fromFile(file)
+    val width = image.width
+    val height = image.height
+
+    ImageExif(cameraMake, cameraModel, lens, focalLength, fNumber, iso, exposureTime, date, width, height)
   }
 
 }

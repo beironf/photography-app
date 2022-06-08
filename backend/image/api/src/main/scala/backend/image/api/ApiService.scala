@@ -5,9 +5,8 @@ import backend.common.api.model.ApiHttpResponse._
 import backend.common.api.utils.ApiServiceSupport
 import backend.image.api.ApiSpecs.ImageFileUpload
 import backend.image.api.model.{ImageExifDto, ImplicitDtoConversion}
-import backend.image.entities.{ImageExif, ImageIO}
+import backend.image.entities.ImageIO
 import backend.image.interactors.{ImageExifService, ImageService}
-import com.sksamuel.scrimage.metadata.ImageMetadata
 import sttp.capabilities.akka.AkkaStreams
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,6 +44,7 @@ class ApiService(service: ImageService,
 
   def uploadImage(form: ImageFileUpload): Future[HttpResponse[Unit]] = {
     form.image.fileName.map { fileName =>
+      // TODO: add already exists check
       if (fileName.contains(".jpg")) {
         val exif = ExifUtil.getExif(form.image.body)
 
@@ -64,6 +64,7 @@ class ApiService(service: ImageService,
   def removeImage(imageId: String): Future[HttpResponse[Unit]] = {
     (for {
       _ <- service.removeThumbnail(imageId)
+      _ <- exifService.removeExif(imageId)
       _ <- service.removeImage(imageId)
     } yield (): Unit).toHttpResponse
   }
