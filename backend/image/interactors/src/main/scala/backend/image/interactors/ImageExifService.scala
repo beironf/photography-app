@@ -10,6 +10,9 @@ class ImageExifService(repository: ImageExifRepository) {
   def getExif(imageId: String): Future[Option[ImageExif]] =
     repository.getExif(imageId)
 
+  def listExif(imageIds: Option[Seq[String]] = None): Future[Seq[(String, ImageExif)]] =
+    repository.listExif(imageIds)
+
   def addExif(imageId: String, exif: ImageExif): Future[Unit] =
     repository.addExif(imageId, exif)
 

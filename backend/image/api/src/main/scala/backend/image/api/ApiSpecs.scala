@@ -3,7 +3,7 @@ package backend.image.api
 import backend.common.api.model.ApiHttpErrorEndpoint._
 import backend.common.api.model.EndpointsSpec
 import backend.common.api.utils.ApiHttpErrorsHandler.commonErrorsOut
-import backend.image.api.model.{ImageExifDto, JsonProtocol}
+import backend.image.api.model.{ImageDto, ImageExifDto, JsonProtocol}
 import sttp.capabilities.akka.AkkaStreams
 import sttp.model.{Part, StatusCode}
 import sttp.tapir.generic.auto._
@@ -23,12 +23,12 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
     .in("thumbnails")
     .tag("thumbnails")
 
-  val getImageIdsEndpoint: EnvelopedHttpErrorEndpoint[Unit, Seq[String]] =
+  val listImagesEndpoint: EnvelopedHttpErrorEndpoint[Unit, Seq[ImageDto]] =
     images
-      .name("getImageIds")
+      .name("listImages")
       .get
       .errorOut(commonErrorsOut)
-      .out(toEnvelopedJson[Seq[String]])
+      .out(toEnvelopedJson[Seq[ImageDto]])
 
   val getImageEndpoint: AkkaStreamsEndpoint[String, AkkaStreams.BinaryStream] =
     images
@@ -79,7 +79,7 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
 
   // Add the endpoint here in order to include it in the documentation
   val endpoints: List[AnyEndpoint] = List(
-    getImageIdsEndpoint,
+    listImagesEndpoint,
     getImageEndpoint,
     uploadImageEndpoint,
     removeImageEndpoint,

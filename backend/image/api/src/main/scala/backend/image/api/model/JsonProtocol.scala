@@ -5,4 +5,5 @@ import spray.json._
 
 trait JsonProtocol extends JsonSupport {
   implicit val exifFormat: RootJsonFormat[ImageExifDto] = jsonFormat10(ImageExifDto)
+  implicit val imageFormat: RootJsonFormat[ImageDto] = jsonFormat3(ImageDto)
 }

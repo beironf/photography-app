@@ -4,15 +4,17 @@ import backend.common.api.model.ApiHttpErrors._
 import backend.common.api.model.ApiHttpResponse._
 import backend.common.api.utils.ApiServiceSupport
 import backend.image.api.ApiSpecs.ImageFileUpload
-import backend.image.api.model.{ImageExifDto, ImplicitDtoConversion}
+import backend.image.api.model.{ImageDto, ImageExifDto, ImplicitDtoConversion}
 import backend.image.entities.ImageIO
 import backend.image.interactors.{ImageExifService, ImageService}
 import sttp.capabilities.akka.AkkaStreams
 
+import java.io.File
 import scala.concurrent.{ExecutionContext, Future}
 
 class ApiService(service: ImageService,
-                 exifService: ImageExifService)
+                 exifService: ImageExifService,
+                 validator: ApiServiceValidator)
                 (implicit executionContext: ExecutionContext) extends ApiServiceSupport
   with ImageIO
   with ImplicitDtoConversion {
@@ -32,8 +34,13 @@ class ApiService(service: ImageService,
       case None => Left(NotFound(s"[imageId: $imageId] Thumbnail not found"))
     }
 
-  def getImageIds: Future[EnvelopedHttpResponse[Seq[String]]] =
-    service.getImageNames
+  def listImages: Future[EnvelopedHttpResponse[Seq[ImageDto]]] =
+    (for {
+      ids <- service.listImageIds
+      exifList <- exifService.listExif(Some(ids))
+      widthById = exifList.map { case (imageId, exif) => imageId -> exif.width }.toMap
+      heightById = exifList.map { case (imageId, exif) => imageId -> exif.height }.toMap
+    } yield ids.map(id => ImageDto(id, widthById.getOrElse(id, 1), heightById.getOrElse(id, 1))))
       .toEnvelopedHttpResponse
 
   def getImageExif(imageId: String): Future[EnvelopedHttpResponse[ImageExifDto]] =
@@ -42,31 +49,32 @@ class ApiService(service: ImageService,
       case None => Left(NotFound(s"[imageId: $imageId] Metadata not found"))
     }.toEnveloped
 
-  def uploadImage(form: ImageFileUpload): Future[HttpResponse[Unit]] = {
-    form.image.fileName.map { fileName =>
-      // TODO: add already exists check
-      if (fileName.contains(".jpg")) {
-        val exif = ExifUtil.getExif(form.image.body)
+  def uploadImage(form: ImageFileUpload): Future[HttpResponse[Unit]] =
+    (for {
+      fileName <- validator.fileHasFileName(form.image).toEitherT
+      _ <- validator.fileIsJPG(fileName).toEitherT
+      _ <- validator.imageDoesNotExist(fileName).toEitherT
+      exif = ExifUtil.getExif(form.image.body)
+      _ <- exifService.addExif(fileName, exif).toEitherT[HttpError]
+      _ <- resizeAndUploadImage(fileName, form.image.body).toEitherT[HttpError]
+      _ <- resizeAndUploadImage(fileName, form.image.body, MAX_THUMBNAIL_SIZE, service.uploadThumbnail).toEitherT[HttpError]
+    } yield (): Unit).value
 
-        val resizedImage = ImageResizer.resizeImage(form.image.body, MAX_IMAGE_SIZE)
-        val thumbnail = ImageResizer.resizeImage(form.image.body, MAX_THUMBNAIL_SIZE)
-
-        (for {
-          _ <- exifService.addExif(fileName, exif)
-          _ <- service.uploadImage(fileName, resizedImage)
-          _ <- service.uploadThumbnail(fileName, thumbnail)
-        } yield (): Unit)
-          .toHttpResponse
-      } else Future.successful(Left(BadRequest("The only image format supported is .jpg")))
-    }.getOrElse(Future.successful(Left(BadRequest("File name not found"))))
+  private def resizeAndUploadImage(fileName: String,
+                                   file: File,
+                                   maxSize: Int = MAX_IMAGE_SIZE,
+                                   upload: (String, Array[Byte]) => Future[Unit] = service.uploadImage): Future[Unit] = {
+    val resizedImage = ImageResizer.resizeImage(file, maxSize)
+    upload(fileName, resizedImage)
   }
 
   def removeImage(imageId: String): Future[HttpResponse[Unit]] = {
     (for {
-      _ <- service.removeThumbnail(imageId)
-      _ <- exifService.removeExif(imageId)
-      _ <- service.removeImage(imageId)
-    } yield (): Unit).toHttpResponse
+      _ <- validator.imageExists(imageId).toEitherT
+      _ <- service.removeThumbnail(imageId).toEitherT[HttpError]
+      _ <- exifService.removeExif(imageId).toEitherT[HttpError]
+      _ <- service.removeImage(imageId).toEitherT[HttpError]
+    } yield (): Unit).value
   }
 
 }
