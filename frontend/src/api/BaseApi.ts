@@ -36,6 +36,15 @@ export class BaseApi {
     });
   }
 
+  public delete(path: string, params?: any, data?: any, headers?: any): Promise<AxiosResponse> {
+    return axios.delete(this.urlFor(path), {
+      params,
+      paramsSerializer,
+      data,
+      headers,
+    });
+  }
+
   public getData<T>(
     path: string,
     params?: any,

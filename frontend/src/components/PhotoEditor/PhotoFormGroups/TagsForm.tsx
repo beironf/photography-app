@@ -1,50 +1,42 @@
+import { Chip, Grid } from '@mui/material';
+import { InputTextField } from 'components/InputTextField';
 import React, { useState, useEffect } from 'react';
-import {
-  Row, Col, Form, Badge,
-} from 'react-bootstrap';
-import { toCamelCase } from 'util/string-id-utils';
 
 type Props = {
-  name: string;
-  placeholder: string;
+  tags: string[];
+  setTags: (_: string[]) => void;
 };
 
 export const TagsForm: React.FunctionComponent<Props> = ({
-  name,
-  placeholder,
+  tags,
+  setTags,
 }) => {
   const [tagsInputValue, setTagsInputValue] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
     if (tagsInputValue.trim() === '') {
-      setTags([]);
+      setTags(undefined);
     } else {
-      setTags(tagsInputValue.trim().toLowerCase().split(' '));
+      const ts = tagsInputValue.trim().toLowerCase().split(' ');
+      const uniqueTags = [...Array.from(new Set(ts))];
+      setTags(uniqueTags);
     }
-  }, [tagsInputValue]);
+  }, [tagsInputValue, setTags]);
 
   return (
-    <Form.Group as={Row}>
-      <Form.Label column sm="2">
-        {name}
-      </Form.Label>
-      <Col sm="10">
-        <Form.Control
-          name={toCamelCase(name)}
-          type="text"
-          placeholder={placeholder}
-          onChange={(e: any) => setTagsInputValue(e.target.value)}
-        />
-        <div>
-          {tags
-              && tags.map((tag) => (
-                <Badge key={`tag-${tag}`} pill bg="primary">
-                  {tag}
-                </Badge>
-              ))}
-        </div>
-      </Col>
-    </Form.Group>
+    <Grid item>
+      <InputTextField
+        id="tags"
+        label="Tags"
+        value={tagsInputValue}
+        onChange={(s) => setTagsInputValue(s)}
+        minWidth={400}
+      />
+      <div>
+        {tags && tags.map((tag) => (
+          <Chip key={`tag-${tag}`} label={tag} color="secondary" size="small" />
+        ))}
+      </div>
+    </Grid>
   );
 };

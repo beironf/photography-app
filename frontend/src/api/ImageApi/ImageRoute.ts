@@ -1,6 +1,7 @@
 import { BaseApi } from 'api/BaseApi';
 import { Config } from 'Config';
-import { ExifDto } from 'api/ImageApi/model';
+import { ExifDto, ImageDto } from 'api/ImageApi/model';
+import { AxiosResponse } from 'axios';
 
 // tslint:disable-next-line:no-namespace
 export namespace ImageRoute {
@@ -10,7 +11,7 @@ export namespace ImageRoute {
     return `${Config.imageApi}/v1/images/${filename}`;
   }
 
-  export function getImageIds(): Promise<string[]> {
+  export function listImages(): Promise<ImageDto[]> {
     return api.getData('');
   }
 
@@ -28,5 +29,9 @@ export namespace ImageRoute {
       .then((_: any) => {
         onImageUploaded();
       });
+  }
+
+  export function removeImage(imageId: string): Promise<AxiosResponse<any, any>> {
+    return api.delete(`${imageId}`);
   }
 }

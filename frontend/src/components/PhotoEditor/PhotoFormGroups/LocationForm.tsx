@@ -1,43 +1,48 @@
+import { Grid } from '@mui/material';
+import { InputTextField } from 'components/InputTextField';
 import React from 'react';
-import { Row, Form, Col } from 'react-bootstrap';
 
 type Props = {
-  mapLatLng?: number[];
+  location?: string;
+  coordinates?: number[]; // [lat, long]
+  setLocation: (_: string) => void;
 };
 
-export const LocationForm: React.FunctionComponent<Props> = ({ mapLatLng }) => (
+const round = (x: number, decimals: number): number => (
+  Math.round(x * 10 ** decimals) / 10 ** decimals
+);
+
+const formatCoordinates = (coord: number[]): string => (
+  `Latitude: ${round(coord[0], 3)}, Longitude: ${round(coord[1], 3)}`
+);
+
+export const LocationForm: React.FunctionComponent<Props> = ({
+  location, coordinates, setLocation,
+}) => (
   <>
-    <Form.Group>
-      <Form.Label>Location</Form.Label>
-      <Form.Control
-        name="location"
-        type="text"
-        placeholder="Name of Location"
+    <Grid item>
+      <InputTextField
+        id="location"
+        label="Location"
+        onChange={(s) => setLocation(s)}
+        value={location}
+        helperText="Name of Location"
         required
       />
-    </Form.Group>
+    </Grid>
 
-    <Form.Group as={Row}>
-      <Form.Label column sm="2">
-        Coordinates
-      </Form.Label>
-      <Col sm="10">
-        <Form.Control
-          name="coordinates"
-          type="text"
-          plaintext
-          disabled
-          placeholder={
-              mapLatLng
-                ? `Latitude: ${
-                  Math.round(mapLatLng[0] * 1000) / 1000
-                }  Longitude: ${
-                  Math.round(mapLatLng[1] * 1000) / 1000}`
-                : 'Click on the map to choose'
-            }
-          required
-        />
-      </Col>
-    </Form.Group>
+    <Grid item>
+      <InputTextField
+        id="coordinates"
+        label="Coordinates"
+        onChange={() => 1}
+        value={coordinates !== undefined ? formatCoordinates(coordinates) : undefined}
+        helperText={coordinates === undefined ? 'Click on the map to set coordinates' : undefined}
+        required
+        disabled
+        variant="standard"
+        minWidth={300}
+      />
+    </Grid>
   </>
 );

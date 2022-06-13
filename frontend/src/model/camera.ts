@@ -51,8 +51,8 @@ export type CameraGear = {
 };
 
 export type CameraSettings = {
-  focalLenght: number;
-  fNumber: number;
-  iso: number;
-  exposureTime: string; // ex: 1/50
+  focalLenght: string; // ex: '24mm'
+  aperture: string; // ex: 'f/5.6'
+  iso: string; // ex: 'ISO 100'
+  exposureTime: string; // ex: '1/50s'
 };

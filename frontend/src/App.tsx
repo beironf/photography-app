@@ -1,6 +1,6 @@
 import React from 'react';
-import { PhotoForm } from 'components/PhotoEditor/PhotoForm';
+import { ManagePhotos } from 'views/ManagePhotos';
 
-const App: React.FC = () => <PhotoForm onSubmit={() => 1} />;
+const App: React.FC = () => <ManagePhotos />;
 
 export default App;
