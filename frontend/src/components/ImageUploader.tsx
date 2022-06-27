@@ -13,7 +13,6 @@ type props = {
 export const ImageUploader: React.FunctionComponent<props> = ({
   onImageUploaded,
 }) => {
-  // eslint-disable-next-line no-unused-vars
   const [fileName, setFileName] = useState('');
 
   useEffect(() => {

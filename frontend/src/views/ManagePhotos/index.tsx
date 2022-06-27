@@ -9,6 +9,7 @@ import { ImageRemover } from 'components/ImageRemover';
 import { usePromise } from 'hooks';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ImageGallery } from 'components/ImageGallery';
+import { theme } from 'style/theme';
 import { ImageRenderer } from './ImageRenderer';
 
 export const ManagePhotos: React.FunctionComponent = () => {
@@ -43,15 +44,14 @@ export const ManagePhotos: React.FunctionComponent = () => {
 
   // Styling constants
   const drawerWidth = '40%';
-  const backgroundColor = '#101010';
   const selectionColor = 'white';
   const opacityWhenNotSelected = 0.4;
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor }}>
+    <Box sx={{ display: 'flex', backgroundColor: theme.primaryDark }}>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 2 }}
+        sx={{ flexGrow: 1, p: '2px' }}
       >
         {loading && <CircularProgress />}
         {error && <NonIdealState title="No images found" />}
@@ -85,20 +85,26 @@ export const ManagePhotos: React.FunctionComponent = () => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            p: 2,
           },
-          p: 2,
         }}
         variant="permanent"
         anchor="right"
       >
-        <ImageUploader onImageUploaded={(imageId) => setImageUploaded(imageId)} />
-        {selectedImageId !== undefined && <PhotoEditor imageId={selectedImageId} />}
-        <Divider sx={{ marginTop: 3 }} />
-        {selectedImageId !== undefined && (
-          <ImageRemover
-            imageId={selectedImageId}
-            onImageRemoved={(imageId) => setImageRemoved(imageId)}
+        {selectedImageId === undefined && (
+          <ImageUploader
+            onImageUploaded={(imageId) => setImageUploaded(imageId)}
           />
+        )}
+        {selectedImageId !== undefined && <PhotoEditor imageId={selectedImageId} />}
+        {selectedImageId !== undefined && (
+          <>
+            <Divider sx={{ marginTop: 3 }} />
+            <ImageRemover
+              imageId={selectedImageId}
+              onImageRemoved={(imageId) => setImageRemoved(imageId)}
+            />
+          </>
         )}
       </Drawer>
     </Box>

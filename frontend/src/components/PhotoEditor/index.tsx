@@ -66,6 +66,30 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId }) => {
     getExif(imageId, setExif);
   }, [imageId, setExif]);
 
+  useEffect(() => {
+    if (exif.camera === undefined) {
+      setCamera(undefined);
+    }
+    if (exif.lens === undefined) {
+      setLens(undefined);
+    }
+    if (exif.focalLength === undefined) {
+      setFocalLength(undefined);
+    }
+    if (exif.fNumber === undefined) {
+      setAperture(undefined);
+    }
+    if (exif.exposureTime === undefined) {
+      setExposureTime(undefined);
+    }
+    if (exif.iso === undefined) {
+      setIso(undefined);
+    }
+    if (exif.date === undefined) {
+      setDate(undefined);
+    }
+  }, [exif, setCamera, setLens, setFocalLength, setAperture, setExposureTime, setIso, setDate]);
+
   return (
     <div>
       <Grid container spacing={2}>

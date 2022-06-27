@@ -7,7 +7,7 @@ services:
     container_name: photography-db
     platform: linux/x86_64
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
       MYSQL_DATABASE: photography_db
     ports:
       - "3310:3306"

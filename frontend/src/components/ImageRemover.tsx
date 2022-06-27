@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Button } from '@mui/material';
+import {
+  Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+} from '@mui/material';
 import { ImageApi } from 'api/ImageApi';
 
 type props = {
@@ -9,6 +11,8 @@ type props = {
 };
 
 export const ImageRemover: React.FunctionComponent<props> = ({ imageId, onImageRemoved }) => {
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const removeImage = (): void => {
     ImageApi.ImageRoute.removeImage(imageId)
       .then((_: any) => {
@@ -17,13 +21,37 @@ export const ImageRemover: React.FunctionComponent<props> = ({ imageId, onImageR
   };
 
   return (
-    <Button
-      startIcon={<DeleteIcon />}
-      variant="contained"
-      component="span"
-      onClick={removeImage}
-    >
-      Remove
-    </Button>
+    <>
+      {!showConfirm && (
+        <Button
+          startIcon={<DeleteIcon />}
+          variant="contained"
+          component="span"
+          color="error"
+          onClick={() => setShowConfirm(true)}
+        >
+          Remove
+        </Button>
+      )}
+      {showConfirm && (
+        <Dialog
+          open={showConfirm}
+          onClose={() => setShowConfirm(false)}
+        >
+          <DialogTitle>
+            Remove Image?
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              {`Image with file name ${imageId} will be removed.`}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShowConfirm(false)}>Cancel</Button>
+            <Button onClick={removeImage} autoFocus>Remove</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </>
   );
 };
