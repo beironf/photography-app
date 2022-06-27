@@ -48,7 +48,7 @@ object ApiSpecs extends EndpointsSpec
 
   val removePhotoEndpoint: HttpErrorEndpoint[String, Unit] =
     photos
-      .name("addPhoto")
+      .name("removePhoto")
       .delete
       .in(path[String]("imageId"))
       .errorOut(commonErrorsOut)

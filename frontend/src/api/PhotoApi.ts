@@ -1,18 +1,23 @@
 import { BaseApi } from 'api/BaseApi';
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Config } from 'Config';
+import { Photo } from 'model/photo';
 
-export class PhotoApi {
-  private api = new BaseApi(`${Config.photoApi}/v1/photos/`);
+export namespace PhotoApi {
+  const api = new BaseApi(`${Config.photoApi}/v1/photos/`);
 
-  public createOrganization(name: string, domain: string): Promise<AxiosResponse> {
-    return this.api.post('create', {
-      name,
-      domain,
-    });
+  export function getPhoto(id: string): Promise<Photo> {
+    return api.getData(`${id}`);
   }
 
-  public listOrganizations(): Promise<AxiosRequestConfig> {
-    return this.api.get('list');
+  export function listPhotos(): Promise<Photo[]> {
+    return api.getData('');
+  }
+
+  export function addPhoto(photo: Photo): void {
+    api.post('', photo);
+  }
+
+  export function removePhoto(id: string): void {
+    api.post(`${id}`);
   }
 }

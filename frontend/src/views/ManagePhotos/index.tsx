@@ -10,6 +10,7 @@ import { usePromise } from 'hooks';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ImageGallery } from 'components/ImageGallery';
 import { theme } from 'style/theme';
+import { PhotoApi } from 'api/PhotoApi';
 import { ImageRenderer } from './ImageRenderer';
 
 export const ManagePhotos: React.FunctionComponent = () => {
@@ -19,9 +20,25 @@ export const ManagePhotos: React.FunctionComponent = () => {
 
   const listImages = useCallback(() => ImageApi.ImageRoute.listImages(), []);
   const {
-    trigger: reloadImages, data: images, error, loading,
+    trigger: reloadImages, data: images, error: listImagesError, loading: listImagesLoading,
   } = usePromise(listImages);
 
+  const listPhotos = useCallback(() => PhotoApi.listPhotos(), []);
+  const {
+    trigger: reloadPhotos, data: photos, error: listPhotosError, loading: listPhotosLoading,
+  } = usePromise(listPhotos);
+
+  // Fetch images on startup
+  useEffect(() => {
+    reloadImages();
+  }, [reloadImages]);
+
+  // Reload photos on `images` change
+  useEffect(() => {
+    reloadPhotos();
+  }, [images, reloadPhotos]);
+
+  // Reload images on image added
   useEffect(() => {
     if (imageUploaded !== undefined) {
       reloadImages();
@@ -30,6 +47,7 @@ export const ManagePhotos: React.FunctionComponent = () => {
     }
   }, [reloadImages, imageUploaded]);
 
+  // Reload images on image removed
   useEffect(() => {
     if (imageRemoved !== undefined) {
       reloadImages();
@@ -37,10 +55,6 @@ export const ManagePhotos: React.FunctionComponent = () => {
       setSelectedImageId(undefined);
     }
   }, [reloadImages, imageRemoved]);
-
-  useEffect(() => {
-    reloadImages();
-  }, [reloadImages]);
 
   // Styling constants
   const drawerWidth = '40%';
@@ -53,24 +67,25 @@ export const ManagePhotos: React.FunctionComponent = () => {
         component="main"
         sx={{ flexGrow: 1, p: '2px' }}
       >
-        {loading && <CircularProgress />}
-        {error && <NonIdealState title="No images found" />}
+        {listImagesLoading && <CircularProgress />}
+        {listImagesError && <NonIdealState title="No images found" />}
         {images !== undefined && (
           <ImageGallery
             images={images}
             renderImage={
-              ({ photo }) => (
+              ({ photo: image }) => (
                 <ImageRenderer
-                  key={photo.key}
+                  key={image.key}
                   selectedImageId={selectedImageId}
-                  photo={photo}
+                  unfinished={(photos ?? []).findIndex((_) => _.imageId === image.key) === -1}
+                  image={image}
                   margin={2}
                   selectionColor={selectionColor}
                   opacityWhenNotSelected={opacityWhenNotSelected}
                   onImageClick={
-                    () => (selectedImageId === photo.key
+                    () => (selectedImageId === image.key
                       ? setSelectedImageId(undefined)
-                      : setSelectedImageId(photo.key))
+                      : setSelectedImageId(image.key))
                   }
                 />
               )
@@ -96,8 +111,11 @@ export const ManagePhotos: React.FunctionComponent = () => {
             onImageUploaded={(imageId) => setImageUploaded(imageId)}
           />
         )}
-        {selectedImageId !== undefined && <PhotoEditor imageId={selectedImageId} />}
-        {selectedImageId !== undefined && (
+        {listPhotosLoading && <CircularProgress />}
+        {listPhotosError && <NonIdealState title="There was a problem when fetching photos" />}
+        {selectedImageId !== undefined && !listPhotosLoading && !listPhotosError
+          && <PhotoEditor imageId={selectedImageId} />}
+        {selectedImageId !== undefined && !listPhotosLoading && !listPhotosError && (
           <>
             <Divider sx={{ marginTop: 3 }} />
             <ImageRemover

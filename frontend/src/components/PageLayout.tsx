@@ -29,7 +29,7 @@ export const PageLayout: React.FunctionComponent<props> = ({ body, footer }) => 
         minHeight: '100vh',
       }}
     >
-      <body
+      <div
         style={{
           width: '100%',
           flexGrow: 1,
@@ -39,7 +39,7 @@ export const PageLayout: React.FunctionComponent<props> = ({ body, footer }) => 
         }}
       >
         {body}
-      </body>
+      </div>
       {footer !== undefined && (
         <footer
           style={{
