@@ -56,7 +56,7 @@ trait ImplicitDtoConversion extends ImplicitEnumConversion {
   implicit class MetadataToDto(metadata: Metadata) {
     def toDto: MetadataDto = MetadataDto(
       metadata.category.toDto,
-      metadata.cameraTechnique.toDto,
+      metadata.cameraTechniques.map(_.toDto),
       metadata.tags
     )
   }
@@ -64,7 +64,7 @@ trait ImplicitDtoConversion extends ImplicitEnumConversion {
   implicit class MetadataDtoToDomain(metadataDto: MetadataDto) {
     def toDomain: Metadata = Metadata(
       metadataDto.category.toDomain,
-      metadataDto.cameraTechnique.toDomain,
+      metadataDto.cameraTechniques.map(_.toDomain),
       metadataDto.tags
     )
   }

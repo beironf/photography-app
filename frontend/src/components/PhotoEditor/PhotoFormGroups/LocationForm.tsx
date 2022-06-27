@@ -4,8 +4,10 @@ import React from 'react';
 
 type Props = {
   location?: string;
+  country?: string;
   coordinates?: number[]; // [lat, long]
   setLocation: (_: string) => void;
+  setCountry: (_: string) => void;
 };
 
 const round = (x: number, decimals: number): number => (
@@ -17,7 +19,7 @@ const formatCoordinates = (coord: number[]): string => (
 );
 
 export const LocationForm: React.FunctionComponent<Props> = ({
-  location, coordinates, setLocation,
+  location, country, coordinates, setLocation, setCountry,
 }) => (
   <>
     <Grid item>
@@ -27,6 +29,17 @@ export const LocationForm: React.FunctionComponent<Props> = ({
         onChange={(s) => setLocation(s)}
         value={location}
         helperText="Name of Location"
+        required
+      />
+    </Grid>
+
+    <Grid item>
+      <InputTextField
+        id="country"
+        label="Country"
+        onChange={(s) => setCountry(s)}
+        value={country}
+        helperText="Country"
         required
       />
     </Grid>

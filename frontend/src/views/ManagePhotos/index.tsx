@@ -56,6 +56,9 @@ export const ManagePhotos: React.FunctionComponent = () => {
     }
   }, [reloadImages, imageRemoved]);
 
+  const selectedPhoto = (photos ?? [])
+    .find((_) => _.imageId === selectedImageId);
+
   // Styling constants
   const drawerWidth = '40%';
   const selectionColor = 'white';
@@ -114,7 +117,7 @@ export const ManagePhotos: React.FunctionComponent = () => {
         {listPhotosLoading && <CircularProgress />}
         {listPhotosError && <NonIdealState title="There was a problem when fetching photos" />}
         {selectedImageId !== undefined && !listPhotosLoading && !listPhotosError
-          && <PhotoEditor imageId={selectedImageId} />}
+          && <PhotoEditor imageId={selectedImageId} photo={selectedPhoto} />}
         {selectedImageId !== undefined && !listPhotosLoading && !listPhotosError && (
           <>
             <Divider sx={{ marginTop: 3 }} />

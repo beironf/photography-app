@@ -4,5 +4,5 @@ import backend.photo.api.model.enums._
 import backend.photo.entities.meta._
 
 case class MetadataDto(category: CategoryDto,
-                       cameraTechnique: CameraTechniqueDto,
+                       cameraTechniques: Set[CameraTechniqueDto],
                        tags: Set[String])

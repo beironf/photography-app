@@ -18,6 +18,7 @@ import { Camera, Lens } from 'model/camera';
 import { SelectField } from 'components/SelectField';
 import { MultiSelectField } from 'components/MultiSelectField';
 import { InputTextField } from 'components/InputTextField';
+import { Photo } from 'model/photo';
 import { LocationForm } from './PhotoFormGroups/LocationForm';
 import { ExifForm } from './PhotoFormGroups/ExifForm';
 
@@ -42,25 +43,31 @@ const LocationMarker: React.FunctionComponent<LocationProps> = ({ location, setL
 
 type Props = {
   imageId: string;
+  photo?: Photo;
 };
 
-export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId }) => {
+export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, photo }) => {
   const [exif, setExif] = useState<Exif>({} as Exif);
 
-  const [camera, setCamera] = useState<Camera>();
-  const [lens, setLens] = useState<Lens>();
-  const [focalLength, setFocalLength] = useState<string>();
-  const [aperture, setAperture] = useState<string>();
-  const [exposureTime, setExposureTime] = useState<string>();
-  const [iso, setIso] = useState<string>();
-  const [date, setDate] = useState<Date>();
-  const [title, setTitle] = useState<string>();
-  const [category, setCategory] = useState<PhotoCategory>();
-  const [cameraTechniques, setCameraTechniques] = useState<CameraTechnique[]>([]);
-  const [rating, setRating] = useState<number>();
-  const [tags, setTags] = useState<string[]>();
-  const [location, setLocation] = useState<string>();
-  const [coordinates, setCoordinates] = useState<number[]>(); // [lat, long]
+  const [camera, setCamera] = useState<Camera>(photo?.gear.camera);
+  const [lens, setLens] = useState<Lens>(photo?.gear.lens);
+  const [focalLength, setFocalLength] = useState<string>(photo?.cameraSettings.focalLenght);
+  const [aperture, setAperture] = useState<string>(photo?.cameraSettings.aperture);
+  const [exposureTime, setExposureTime] = useState<string>(photo?.cameraSettings.exposureTime);
+  const [iso, setIso] = useState<string>(photo?.cameraSettings.iso);
+  const [date, setDate] = useState<Date>(photo?.taken);
+  const [title, setTitle] = useState<string>(photo?.title);
+  const [category, setCategory] = useState<PhotoCategory>(photo?.metadata.category);
+  const [cameraTechniques, setCameraTechniques] = useState<CameraTechnique[]>(
+    photo?.metadata.cameraTechniques ?? [],
+  );
+  const [rating, setRating] = useState<number>(photo?.judgement.rating);
+  const [tags, setTags] = useState<string[]>(photo?.metadata.tags ?? []);
+  const [location, setLocation] = useState<string>(photo?.location.name);
+  const [country, setCountry] = useState<string>(photo?.location.country);
+  const [coordinates, setCoordinates] = useState<number[]>(photo?.location !== undefined
+    ? [photo!.location.coordinates.latitude, photo!.location.coordinates.longitude]
+    : undefined); // [lat, long]
 
   useEffect(() => {
     getExif(imageId, setExif);
@@ -162,8 +169,10 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId }) => {
 
         <LocationForm
           location={location}
+          country={country}
           coordinates={coordinates}
           setLocation={(s) => setLocation(s)}
+          setCountry={(s) => setCountry(s)}
         />
       </Grid>
 

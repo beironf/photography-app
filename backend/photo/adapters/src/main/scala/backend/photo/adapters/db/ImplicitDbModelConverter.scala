@@ -13,8 +13,8 @@ trait ImplicitDbModelConverter {
   }
 
   implicit class LocationDbFromDomain(location: Location) {
-    def toDbFormat: LocationDb = LocationDb(-1, location.name, location.region, location.country,
-      location.coordinates.longitude, location.coordinates.latitude)
+    def toDbFormat: LocationDb = LocationDb(-1, location.name, location.country, location.coordinates.longitude,
+      location.coordinates.latitude)
   }
 
   implicit class JudgementDbFromDomain(judgement: Judgement) {

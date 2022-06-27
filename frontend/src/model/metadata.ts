@@ -65,6 +65,6 @@ export const toCameraTechnique = (s?: string): CameraTechnique | undefined => {
 
 export type Metadata = {
   category: PhotoCategory;
-  cameraTechnique?: CameraTechnique;
+  cameraTechniques?: CameraTechnique[];
   tags?: string[];
 };
