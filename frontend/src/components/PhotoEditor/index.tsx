@@ -1,54 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Divider, Grid } from '@mui/material';
-import {
-  useMapEvent, Marker, TileLayer, MapContainer,
-} from 'react-leaflet';
-import { LatLng, LatLngExpression, LeafletMouseEvent } from 'leaflet';
 import { Exif } from 'model/exif';
 import {
-  PhotoCategory, CameraTechnique, toCategory, toCameraTechnique,
+  PhotoCategory, CameraTechnique,
 } from 'model/metadata';
 
-import { TagsForm } from 'components/PhotoEditor/PhotoFormGroups/TagsForm';
-import { RatingForm } from 'components/PhotoEditor/PhotoFormGroups/RatingForm';
+import { TagsForm } from 'components/PhotoEditor/PhotoForms/TagsForm';
+import { RatingForm } from 'components/PhotoEditor/PhotoForms/RatingForm';
 
 import { getExif } from 'util/exif-util';
 
 import { Camera, Lens } from 'model/camera';
-import { SelectField } from 'components/SelectField';
-import { MultiSelectField } from 'components/MultiSelectField';
-import { InputTextField } from 'components/InputTextField';
 import { Photo } from 'model/photo';
-import { LocationForm } from './PhotoFormGroups/LocationForm';
-import { ExifForm } from './PhotoFormGroups/ExifForm';
-
-type LocationProps = {
-  location?: LatLngExpression;
-  setLocation: (_: LatLng) => void;
-}
-
-const LocationMarker: React.FunctionComponent<LocationProps> = ({ location, setLocation }) => {
-  const map = useMapEvent(
-    'click',
-    (e: LeafletMouseEvent) => {
-      setLocation(e.latlng);
-      map.flyTo(e.latlng, map.getZoom());
-    },
-  );
-
-  return location === undefined ? null : (
-    <Marker position={location} />
-  );
-};
+import { LocationForm } from './PhotoForms/LocationForm';
+import { ExifForm } from './PhotoForms/ExifForm';
+import { BasePhotoForm } from './PhotoForms/BasePhotoForm';
+import { MapInput } from './Map/MapInput';
 
 type Props = {
   imageId: string;
   photo?: Photo;
+  onPhotoUpdated: (_: Photo) => void;
 };
 
-export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, photo }) => {
-  const [exif, setExif] = useState<Exif>({} as Exif);
-
+// eslint-disable-next-line no-unused-vars
+export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, photo, onPhotoUpdated }) => {
   const [camera, setCamera] = useState<Camera>(photo?.gear.camera);
   const [lens, setLens] = useState<Lens>(photo?.gear.lens);
   const [focalLength, setFocalLength] = useState<string>(photo?.cameraSettings.focalLenght);
@@ -69,6 +45,9 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, photo }) 
     ? [photo!.location.coordinates.latitude, photo!.location.coordinates.longitude]
     : undefined); // [lat, long]
 
+  const [exif, setExif] = useState<Exif>({} as Exif);
+
+  // Fetch exif on image change
   useEffect(() => {
     getExif(imageId, setExif);
   }, [imageId, setExif]);
@@ -118,42 +97,14 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, photo }) 
           <Divider variant="middle" />
         </Grid>
 
-        <Grid item>
-          <InputTextField
-            id="title"
-            label="Title"
-            value={title}
-            onChange={(s) => setTitle(s)}
-            required
-          />
-        </Grid>
-
-        <Grid item>
-          <SelectField
-            id="category"
-            label="Category"
-            options={
-              Object.values(PhotoCategory)
-                .map((c) => ({ value: c, label: c }))
-            }
-            value={category}
-            onChange={(s) => setCategory(toCategory(s as string))}
-            required
-          />
-        </Grid>
-
-        <Grid item>
-          <MultiSelectField
-            id="camera-techniques"
-            label="Camera Techniques"
-            options={
-              Object.values(CameraTechnique)
-                .map((cT) => ({ value: cT, label: cT }))
-            }
-            values={cameraTechniques.map((cT) => cT.toString())}
-            onChange={(ss) => setCameraTechniques(ss.map((s) => toCameraTechnique(s)))}
-          />
-        </Grid>
+        <BasePhotoForm
+          title={title}
+          category={category}
+          cameraTechniques={cameraTechniques}
+          setTitle={(t) => setTitle(t)}
+          setCategory={(c) => setCategory(c)}
+          setCameraTechniques={(cTs) => setCameraTechniques(cTs)}
+        />
 
         <TagsForm tags={tags} setTags={(ss) => setTags(ss)} />
 
@@ -175,21 +126,7 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, photo }) 
           setCountry={(s) => setCountry(s)}
         />
       </Grid>
-
-      <MapContainer
-        style={{ height: 500 }}
-        center={[50, 10]}
-        zoom={3}
-      >
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-        />
-        <LocationMarker
-          location={coordinates ? coordinates as LatLngExpression : undefined}
-          setLocation={(latLng) => setCoordinates([latLng.lat, latLng.lng])}
-        />
-      </MapContainer>
+      <MapInput coordinates={coordinates} setCoordinates={(c) => setCoordinates(c)} />
     </div>
   );
 };
