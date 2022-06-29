@@ -1,4 +1,4 @@
-import { Photo, UpdatePhoto } from 'model/photo';
+import { UpdatePhoto } from 'model/photo';
 import { PhotoEditorState } from 'model/photo-editor';
 
 export const stateIsComplete = (state: PhotoEditorState): boolean => state.camera !== undefined
@@ -10,6 +10,7 @@ export const stateIsComplete = (state: PhotoEditorState): boolean => state.camer
   && state.date !== undefined
   && state.title !== undefined && state.title !== ''
   && state.category !== undefined
+  && state.tags.find((_) => _.trim() === '') === undefined
   && state.rating !== undefined
   && state.location !== undefined && state.location !== ''
   && state.country !== undefined && state.country !== ''
@@ -41,23 +42,3 @@ export const convertStateToPhotoContent = (state: PhotoEditorState): UpdatePhoto
   },
   judgement: { rating: state.rating, inShowroom: false },
 });
-
-export const photoNeedsUpdate = (
-  photo: Photo,
-  newContent: UpdatePhoto,
-): boolean => photo.gear.camera !== newContent.gear.camera
-  || photo.gear.lens !== newContent.gear.lens
-  || photo.cameraSettings.focalLength !== newContent.cameraSettings.focalLength
-  || photo.cameraSettings.aperture !== newContent.cameraSettings.aperture
-  || photo.cameraSettings.exposureTime !== newContent.cameraSettings.exposureTime
-  || photo.cameraSettings.iso !== newContent.cameraSettings.iso
-  || photo.taken.getMilliseconds() !== newContent.taken.getMilliseconds()
-  || photo.title !== newContent.title
-  || photo.metadata.category !== newContent.metadata.category
-  || photo.metadata.cameraTechniques !== newContent.metadata.cameraTechniques
-  || photo.metadata.tags !== newContent.metadata.tags
-  || photo.judgement.rating !== newContent.judgement.rating
-  || photo.location.name !== newContent.location.name
-  || photo.location.country !== newContent.location.country
-  || photo.location.coordinates.latitude !== newContent.location.coordinates.latitude
-  || photo.location.coordinates.longitude !== newContent.location.coordinates.longitude;

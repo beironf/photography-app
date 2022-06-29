@@ -13,7 +13,7 @@ export const MapInput: React.FunctionComponent<Props> = ({
   coordinates, setCoordinates, height,
 }) => (
   <MapContainer
-    style={{ height: height ?? 500 }}
+    style={{ height: height ?? 350 }}
     center={[50, 10]}
     zoom={3}
   >

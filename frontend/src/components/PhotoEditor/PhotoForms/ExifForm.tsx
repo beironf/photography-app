@@ -144,6 +144,7 @@ export const ExifForm: React.FunctionComponent<Props> = ({
             disabled={exif.date !== undefined}
             renderInput={(params) => (
               <TextField
+                size="small"
                 disabled
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...params}

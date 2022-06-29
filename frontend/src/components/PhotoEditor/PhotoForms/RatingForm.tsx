@@ -25,7 +25,6 @@ export const RatingForm: React.FunctionComponent<Props> = ({
         onChange={() => 1}
         required
         disabled
-        variant="standard"
         minWidth={150}
       />
       <div>

@@ -121,7 +121,7 @@ export const ManagePhotos: React.FunctionComponent = () => {
         )}
         {selectedImageId !== undefined && !listPhotosError && (
           <>
-            <Divider sx={{ marginTop: 3 }} />
+            <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
             <ImageRemover
               imageId={selectedImageId}
               onImageRemoved={(imageId) => setImageRemoved(imageId)}

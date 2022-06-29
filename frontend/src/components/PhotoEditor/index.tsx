@@ -7,10 +7,10 @@ import { usePromise } from 'hooks';
 import { CircularProgress, Divider, Grid } from '@mui/material';
 
 import { getExif } from 'util/exif-util';
-import {
-  convertStateToPhotoContent, photoNeedsUpdate, stateIsComplete,
-} from 'util/photo-editor-utils';
+import { convertStateToPhotoContent, stateIsComplete } from 'util/photo-editor-utils';
 import { PhotoApi } from 'api/PhotoApi';
+
+import { throttle } from 'lodash';
 
 import { Exif } from 'model/exif';
 import { PhotoEditorState } from 'model/photo-editor';
@@ -21,6 +21,7 @@ import { LocationForm } from 'components/PhotoEditor/PhotoForms/LocationForm';
 import { ExifForm } from 'components/PhotoEditor/PhotoForms/ExifForm';
 import { BasePhotoForm } from 'components/PhotoEditor/PhotoForms/BasePhotoForm';
 import { MapInput } from 'components/PhotoEditor/Map/MapInput';
+import { Photo, UpdatePhoto } from 'model/photo';
 
 const PHOTOGRAPHER = 'Fredrik Beiron';
 
@@ -35,6 +36,16 @@ type Props = {
   imageId: string;
   onNewPhoto: () => void;
 };
+
+const throttledUpdatePhoto = throttle(
+  (imageId: string, update: UpdatePhoto) => PhotoApi.updatePhoto(imageId, update),
+  2000,
+);
+
+const throttledAddPhoto = throttle(
+  (photo: Photo, callback: () => void) => PhotoApi.addPhoto(photo, callback),
+  5000,
+);
 
 export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhoto }) => {
   const [state, setState] = useState<PhotoEditorState>(initialState);
@@ -79,19 +90,19 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
     }
   }, [photo]);
 
-  // Update photo on change and valid state
+  // Update photo on change if complete state
   useEffect(() => {
     if (stateIsComplete(state)) {
       const photoContent = convertStateToPhotoContent(state);
 
       if (photo === undefined && !addingPhoto) {
         setAddingPhoto(true);
-        PhotoApi.addPhoto({ imageId, ...photoContent }, () => {
+        throttledAddPhoto({ imageId, ...photoContent }, () => {
           onNewPhoto();
           getPhoto();
         });
-      } else if (photo !== undefined && photoNeedsUpdate(photo, photoContent)) {
-        PhotoApi.updatePhoto(imageId, photoContent);
+      } else if (photo !== undefined) {
+        throttledUpdatePhoto(imageId, photoContent);
       }
     }
   }, [state]);
@@ -101,6 +112,21 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
       {getPhotoLoading && <CircularProgress />}
       {!getPhotoLoading && (
         <Grid container spacing={2}>
+          <BasePhotoForm
+            title={state.title}
+            category={state.category}
+            cameraTechniques={state.cameraTechniques}
+            setTitle={(title) => setState((prev) => ({ ...prev, title }))}
+            setCategory={(category) => setState((prev) => ({ ...prev, category }))}
+            setCameraTechniques={(cameraTechniques) => setState(
+              (prev) => ({ ...prev, cameraTechniques }),
+            )}
+          />
+
+          <Grid item xs={12}>
+            <Divider variant="middle" />
+          </Grid>
+
           <ExifForm
             exif={exif}
             value={{
@@ -125,22 +151,7 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
             <Divider variant="middle" />
           </Grid>
 
-          <BasePhotoForm
-            title={state.title}
-            category={state.category}
-            cameraTechniques={state.cameraTechniques}
-            setTitle={(title) => setState((prev) => ({ ...prev, title }))}
-            setCategory={(category) => setState((prev) => ({ ...prev, category }))}
-            setCameraTechniques={(cameraTechniques) => setState(
-              (prev) => ({ ...prev, cameraTechniques }),
-            )}
-          />
-
           <TagsForm tags={state.tags} setTags={(tags) => setState((prev) => ({ ...prev, tags }))} />
-
-          <Grid item xs={12}>
-            <Divider variant="middle" />
-          </Grid>
 
           <RatingForm
             rating={state.rating}
