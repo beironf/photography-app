@@ -4,7 +4,7 @@ import backend.photo.entities.gear.Gear
 import backend.photo.entities.meta.{Judgement, Location, Metadata}
 import backend.photo.entities.settings.CameraSettings
 
-import java.time.LocalDate
+import java.time.Instant
 
 case class Photo(imageId: String,
                  title: String,
@@ -12,7 +12,7 @@ case class Photo(imageId: String,
                  photographer: String,
                  group: Option[String],
                  location: Location,
-                 taken: LocalDate,
+                 taken: Instant,
                  gear: Gear,
                  cameraSettings: CameraSettings,
                  metadata: Metadata,

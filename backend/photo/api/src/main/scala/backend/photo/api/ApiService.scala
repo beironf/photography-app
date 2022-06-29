@@ -4,7 +4,7 @@ import backend.common.api.model.ApiHttpErrors.HttpError
 import backend.common.api.model.ApiHttpResponse._
 import backend.common.api.utils.ApiServiceSupport
 import backend.photo.api.model.ImplicitDtoConversion
-import backend.photo.api.model.dtos.PhotoDto
+import backend.photo.api.model.dtos.{PhotoDto, UpdatePhotoDto}
 import backend.photo.interactors.PhotoService
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -27,6 +27,11 @@ class ApiService(service: PhotoService, validator: ApiValidationService)
   def addPhoto(photoDto: PhotoDto): Future[HttpResponse[Unit]] = (for {
     _ <- validator.photoDoesNotExist(photoDto.imageId).toEitherT
     _ <- service.addPhoto(photoDto.toDomain).toEitherT[HttpError]
+  } yield (): Unit).value
+
+  def updatePhoto(imageId: String, updateDto: UpdatePhotoDto): Future[HttpResponse[Unit]] = (for {
+    _ <- validator.photoExists(imageId).toEitherT
+    _ <- service.updatePhoto(imageId, updateDto.toDomain).toEitherT[HttpError]
   } yield (): Unit).value
 
   def removePhoto(imageId: String): Future[HttpResponse[Unit]] = (for {

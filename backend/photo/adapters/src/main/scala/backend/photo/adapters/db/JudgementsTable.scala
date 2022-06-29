@@ -9,9 +9,9 @@ trait JudgementsTable extends DatabaseConnector {
 
     def id: Rep[Long] = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def rating: Rep[Int] = column[Int]("rating")
-    def isShowroom: Rep[Boolean] = column[Boolean]("is_showroom")
+    def inShowroom: Rep[Boolean] = column[Boolean]("in_showroom")
 
-    def * = (id, rating, isShowroom) <> (JudgementDb.tupled, JudgementDb.unapply)
+    def * = (id, rating, inShowroom) <> (JudgementDb.tupled, JudgementDb.unapply)
   }
 
   val judgements = TableQuery[Judgements]

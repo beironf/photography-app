@@ -19,4 +19,5 @@ trait JsonProtocol extends JsonSupport {
   implicit val coordinatesFormat: RootJsonFormat[Coordinates] = jsonFormat2(Coordinates)
   implicit val locationFormat: RootJsonFormat[Location] = jsonFormat3(Location)
   implicit val photoDtoFormat: RootJsonFormat[PhotoDto] = jsonFormat11(PhotoDto)
+  implicit val updatePhotoDtoFormat: RootJsonFormat[UpdatePhotoDto] = jsonFormat10(UpdatePhotoDto)
 }

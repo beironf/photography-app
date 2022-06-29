@@ -10,6 +10,8 @@ trait PhotoRepository {
 
   def addPhoto(photo: Photo): Future[Unit]
 
+  def updatePhoto(imageId: String, update: UpdatePhoto): Future[Unit]
+
   def removePhoto(imageId: String): Future[Unit]
 
   def listPhotos(group: Option[String] = None,

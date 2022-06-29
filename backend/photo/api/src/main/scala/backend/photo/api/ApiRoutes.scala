@@ -3,7 +3,7 @@ package backend.photo.api
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import backend.common.api.CommonApiRoute
-import backend.photo.adapters.PhotoRepositoryImpl
+import backend.photo.adapters.{InMemoryPhotoRepository, PhotoRepositoryImpl}
 import backend.photo.api.ApiSpecs._
 import backend.photo.interactors.PhotoService
 
@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext
 
 class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApiRoute {
 
-  private val photoRepository = PhotoRepositoryImpl()
+  private val photoRepository = new InMemoryPhotoRepository()
   private val photoService = new PhotoService(photoRepository)
   private val validationService = new ApiValidationService(photoRepository)
   private val apiService = new ApiService(photoService, validationService)
@@ -26,9 +26,14 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
     implementation = (apiService.listPhotos _).tupled
   )
 
-  private val addPhotos = endpoint(
+  private val addPhoto = endpoint(
     specification = addPhotoEndpoint,
     implementation = apiService.addPhoto
+  )
+
+  private val updatePhoto = endpoint(
+    specification = updatePhotoEndpoint,
+    implementation = (apiService.updatePhoto _).tupled
   )
 
   private val removePhoto = endpoint(
@@ -39,6 +44,7 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
   val route: Route =
     getPhoto ~
       listPhotos ~
-      addPhotos ~
+      addPhoto ~
+      updatePhoto ~
       removePhoto
 }

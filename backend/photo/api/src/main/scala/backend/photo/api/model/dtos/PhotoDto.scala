@@ -3,7 +3,7 @@ package backend.photo.api.model.dtos
 import backend.photo.entities.meta._
 import backend.photo.entities.settings._
 
-import java.time.LocalDate
+import java.time.Instant
 
 case class PhotoDto(imageId: String,
                     title: String,
@@ -11,7 +11,7 @@ case class PhotoDto(imageId: String,
                     photographer: String,
                     group: Option[String],
                     location: Location,
-                    taken: LocalDate,
+                    taken: Instant,
                     gear: GearDto,
                     cameraSettings: CameraSettings,
                     metadata: MetadataDto,

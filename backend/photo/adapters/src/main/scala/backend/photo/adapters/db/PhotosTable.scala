@@ -6,7 +6,7 @@ import backend.photo.entities.settings.CameraSettings
 import slick.jdbc.JdbcType
 import spray.json._
 
-import java.sql.Date
+import java.sql.Timestamp
 
 trait PhotosTable extends DatabaseConnector with JsonProtocol {
 
@@ -24,7 +24,7 @@ trait PhotosTable extends DatabaseConnector with JsonProtocol {
     def photographer: Rep[String] = column[String]("photographer")
     def group: Rep[Option[String]] = column[Option[String]]("group")
     def locationId: Rep[Long] = column[Long]("locations_id")
-    def taken: Rep[Date] = column[Date]("taken")
+    def taken: Rep[Timestamp] = column[Timestamp]("taken")
     def camera: Rep[String] = column[String]("camera")
     def lens: Rep[String] = column[String]("lens")
     def cameraSettings: Rep[CameraSettings] = column[CameraSettings]("camera_settings")

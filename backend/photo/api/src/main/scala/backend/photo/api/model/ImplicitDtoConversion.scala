@@ -1,7 +1,7 @@
 package backend.photo.api.model
 
 import backend.photo.api.model.dtos._
-import backend.photo.entities.Photo
+import backend.photo.entities.{Photo, UpdatePhoto}
 import backend.photo.entities.gear.Gear
 import backend.photo.entities.meta.Metadata
 
@@ -36,6 +36,21 @@ trait ImplicitDtoConversion extends ImplicitEnumConversion {
       photoDto.cameraSettings,
       photoDto.metadata.toDomain,
       photoDto.judgement
+    )
+  }
+
+  implicit class UpdatePhotoDtoToDomain(updateDto: UpdatePhotoDto) {
+    def toDomain: UpdatePhoto = UpdatePhoto(
+      updateDto.title,
+      updateDto.description,
+      updateDto.photographer,
+      updateDto.group,
+      updateDto.location,
+      updateDto.taken,
+      updateDto.gear.toDomain,
+      updateDto.cameraSettings,
+      updateDto.metadata.toDomain,
+      updateDto.judgement
     )
   }
 
