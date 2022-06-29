@@ -1,132 +1,173 @@
-import React, { useEffect, useState } from 'react';
-import { Divider, Grid } from '@mui/material';
-import { Exif } from 'model/exif';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import React, { useCallback, useEffect, useState } from 'react';
+import { usePromise } from 'hooks';
+
+import { CircularProgress, Divider, Grid } from '@mui/material';
+
+import { getExif } from 'util/exif-util';
 import {
-  PhotoCategory, CameraTechnique,
-} from 'model/metadata';
+  convertStateToPhotoContent, photoNeedsUpdate, stateIsComplete,
+} from 'util/photo-editor-utils';
+import { PhotoApi } from 'api/PhotoApi';
+
+import { Exif } from 'model/exif';
+import { PhotoEditorState } from 'model/photo-editor';
 
 import { TagsForm } from 'components/PhotoEditor/PhotoForms/TagsForm';
 import { RatingForm } from 'components/PhotoEditor/PhotoForms/RatingForm';
+import { LocationForm } from 'components/PhotoEditor/PhotoForms/LocationForm';
+import { ExifForm } from 'components/PhotoEditor/PhotoForms/ExifForm';
+import { BasePhotoForm } from 'components/PhotoEditor/PhotoForms/BasePhotoForm';
+import { MapInput } from 'components/PhotoEditor/Map/MapInput';
 
-import { getExif } from 'util/exif-util';
+const PHOTOGRAPHER = 'Fredrik Beiron';
 
-import { Camera, Lens } from 'model/camera';
-import { Photo } from 'model/photo';
-import { LocationForm } from './PhotoForms/LocationForm';
-import { ExifForm } from './PhotoForms/ExifForm';
-import { BasePhotoForm } from './PhotoForms/BasePhotoForm';
-import { MapInput } from './Map/MapInput';
+const initialState: PhotoEditorState = {
+  photographer: PHOTOGRAPHER,
+  cameraTechniques: [],
+  tags: [],
+};
+const initialExif: Exif = {};
 
 type Props = {
   imageId: string;
-  photo?: Photo;
-  onPhotoUpdated: (_: Photo) => void;
+  onNewPhoto: () => void;
 };
 
-// eslint-disable-next-line no-unused-vars
-export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, photo, onPhotoUpdated }) => {
-  const [camera, setCamera] = useState<Camera>(photo?.gear.camera);
-  const [lens, setLens] = useState<Lens>(photo?.gear.lens);
-  const [focalLength, setFocalLength] = useState<string>(photo?.cameraSettings.focalLenght);
-  const [aperture, setAperture] = useState<string>(photo?.cameraSettings.aperture);
-  const [exposureTime, setExposureTime] = useState<string>(photo?.cameraSettings.exposureTime);
-  const [iso, setIso] = useState<string>(photo?.cameraSettings.iso);
-  const [date, setDate] = useState<Date>(photo?.taken);
-  const [title, setTitle] = useState<string>(photo?.title);
-  const [category, setCategory] = useState<PhotoCategory>(photo?.metadata.category);
-  const [cameraTechniques, setCameraTechniques] = useState<CameraTechnique[]>(
-    photo?.metadata.cameraTechniques ?? [],
-  );
-  const [rating, setRating] = useState<number>(photo?.judgement.rating);
-  const [tags, setTags] = useState<string[]>(photo?.metadata.tags ?? []);
-  const [location, setLocation] = useState<string>(photo?.location.name);
-  const [country, setCountry] = useState<string>(photo?.location.country);
-  const [coordinates, setCoordinates] = useState<number[]>(photo?.location !== undefined
-    ? [photo!.location.coordinates.latitude, photo!.location.coordinates.longitude]
-    : undefined); // [lat, long]
+export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhoto }) => {
+  const [state, setState] = useState<PhotoEditorState>(initialState);
+  const [exif, setExif] = useState<Exif>(initialExif);
+  const [addingPhoto, setAddingPhoto] = useState(false);
 
-  const [exif, setExif] = useState<Exif>({} as Exif);
+  const getPhotoCallback = useCallback(() => PhotoApi.getPhoto(imageId), [imageId]);
+  const {
+    trigger: getPhoto, data: photo, loading: getPhotoLoading,
+  } = usePromise(getPhotoCallback);
 
-  // Fetch exif on image change
+  // Fetch exif and photo info on image change
   useEffect(() => {
+    setExif(initialExif);
+    setState(initialState);
     getExif(imageId, setExif);
-  }, [imageId, setExif]);
+    getPhoto();
+  }, [imageId]);
 
+  // On photo change - override values if photo exists
   useEffect(() => {
-    if (exif.camera === undefined) {
-      setCamera(undefined);
+    if (photo !== undefined) {
+      setAddingPhoto(false);
+      setState((prev) => ({
+        ...prev,
+        camera: photo.gear.camera,
+        lens: photo.gear.lens,
+        focalLength: photo.cameraSettings.focalLength,
+        aperture: photo.cameraSettings.aperture,
+        exposureTime: photo.cameraSettings.exposureTime,
+        iso: photo.cameraSettings.iso,
+        date: photo.taken,
+        title: photo.title,
+        category: photo.metadata.category,
+        cameraTechniques: photo.metadata.cameraTechniques ?? [],
+        tags: photo.metadata.tags ?? [],
+        rating: photo.judgement.rating,
+        location: photo.location.name,
+        country: photo.location.country,
+        coordinates: [photo.location.coordinates.latitude, photo.location.coordinates.longitude],
+      }));
     }
-    if (exif.lens === undefined) {
-      setLens(undefined);
+  }, [photo]);
+
+  // Update photo on change and valid state
+  useEffect(() => {
+    if (stateIsComplete(state)) {
+      const photoContent = convertStateToPhotoContent(state);
+
+      if (photo === undefined && !addingPhoto) {
+        setAddingPhoto(true);
+        PhotoApi.addPhoto({ imageId, ...photoContent }, () => {
+          onNewPhoto();
+          getPhoto();
+        });
+      } else if (photo !== undefined && photoNeedsUpdate(photo, photoContent)) {
+        PhotoApi.updatePhoto(imageId, photoContent);
+      }
     }
-    if (exif.focalLength === undefined) {
-      setFocalLength(undefined);
-    }
-    if (exif.fNumber === undefined) {
-      setAperture(undefined);
-    }
-    if (exif.exposureTime === undefined) {
-      setExposureTime(undefined);
-    }
-    if (exif.iso === undefined) {
-      setIso(undefined);
-    }
-    if (exif.date === undefined) {
-      setDate(undefined);
-    }
-  }, [exif, setCamera, setLens, setFocalLength, setAperture, setExposureTime, setIso, setDate]);
+  }, [state]);
 
   return (
     <div>
-      <Grid container spacing={2}>
-        <ExifForm
-          exif={exif}
-          value={{
-            camera, lens, focalLength, aperture, exposureTime, iso, date,
-          }}
-          setCamera={(c) => setCamera(c)}
-          setLens={(l) => setLens(l)}
-          setFocalLength={(fL) => setFocalLength(fL)}
-          setAperture={(a) => setAperture(a)}
-          setExposureTime={(eT) => setExposureTime(eT)}
-          setIso={(i) => setIso(i)}
-          setDate={(d) => setDate(d)}
-        />
+      {getPhotoLoading && <CircularProgress />}
+      {!getPhotoLoading && (
+        <Grid container spacing={2}>
+          <ExifForm
+            exif={exif}
+            value={{
+              camera: state.camera,
+              lens: state.lens,
+              focalLength: state.focalLength,
+              aperture: state.aperture,
+              exposureTime: state.exposureTime,
+              iso: state.iso,
+              date: state.date,
+            }}
+            setCamera={(camera) => setState((prev) => ({ ...prev, camera }))}
+            setLens={(lens) => setState((prev) => ({ ...prev, lens }))}
+            setFocalLength={(focalLength) => setState((prev) => ({ ...prev, focalLength }))}
+            setAperture={(aperture) => setState((prev) => ({ ...prev, aperture }))}
+            setExposureTime={(exposureTime) => setState((prev) => ({ ...prev, exposureTime }))}
+            setIso={(iso) => setState((prev) => ({ ...prev, iso }))}
+            setDate={(date) => setState((prev) => ({ ...prev, date }))}
+          />
 
-        <Grid item xs={12}>
-          <Divider variant="middle" />
+          <Grid item xs={12}>
+            <Divider variant="middle" />
+          </Grid>
+
+          <BasePhotoForm
+            title={state.title}
+            category={state.category}
+            cameraTechniques={state.cameraTechniques}
+            setTitle={(title) => setState((prev) => ({ ...prev, title }))}
+            setCategory={(category) => setState((prev) => ({ ...prev, category }))}
+            setCameraTechniques={(cameraTechniques) => setState(
+              (prev) => ({ ...prev, cameraTechniques }),
+            )}
+          />
+
+          <TagsForm tags={state.tags} setTags={(tags) => setState((prev) => ({ ...prev, tags }))} />
+
+          <Grid item xs={12}>
+            <Divider variant="middle" />
+          </Grid>
+
+          <RatingForm
+            rating={state.rating}
+            setRating={(rating) => setState(
+              (prev) => ({ ...prev, rating }),
+            )}
+          />
+
+          <Grid item xs={12}>
+            <Divider variant="middle" />
+          </Grid>
+
+          <LocationForm
+            location={state.location}
+            country={state.country}
+            coordinates={state.coordinates}
+            setLocation={(location) => setState((prev) => ({ ...prev, location }))}
+            setCountry={(country) => setState((prev) => ({ ...prev, country }))}
+          />
         </Grid>
-
-        <BasePhotoForm
-          title={title}
-          category={category}
-          cameraTechniques={cameraTechniques}
-          setTitle={(t) => setTitle(t)}
-          setCategory={(c) => setCategory(c)}
-          setCameraTechniques={(cTs) => setCameraTechniques(cTs)}
+      )}
+      {!getPhotoLoading && (
+        <MapInput
+          coordinates={state.coordinates}
+          setCoordinates={(coordinates) => setState((prev) => ({ ...prev, coordinates }))}
         />
-
-        <TagsForm tags={tags} setTags={(ss) => setTags(ss)} />
-
-        <Grid item xs={12}>
-          <Divider variant="middle" />
-        </Grid>
-
-        <RatingForm rating={rating} setRating={(r) => setRating(r)} />
-
-        <Grid item xs={12}>
-          <Divider variant="middle" />
-        </Grid>
-
-        <LocationForm
-          location={location}
-          country={country}
-          coordinates={coordinates}
-          setLocation={(s) => setLocation(s)}
-          setCountry={(s) => setCountry(s)}
-        />
-      </Grid>
-      <MapInput coordinates={coordinates} setCoordinates={(c) => setCoordinates(c)} />
+      )}
     </div>
   );
 };

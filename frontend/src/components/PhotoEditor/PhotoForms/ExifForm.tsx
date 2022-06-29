@@ -47,6 +47,7 @@ export const ExifForm: React.FunctionComponent<Props> = ({
   setIso,
   setDate,
 }) => {
+  // On exif loaded - override state
   useEffect(() => {
     if (exif.camera !== undefined) setCamera(exif.camera);
     if (exif.lens !== undefined) setLens(exif.lens);
@@ -55,7 +56,8 @@ export const ExifForm: React.FunctionComponent<Props> = ({
     if (exif.exposureTime !== undefined) setExposureTime(formatExposureTime(exif.exposureTime));
     if (exif.iso !== undefined) setIso(formatIso(exif.iso));
     if (exif.date !== undefined) setDate(exif.date);
-  }, [exif, setCamera, setLens, setFocalLength, setAperture, setExposureTime, setIso, setDate]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exif]);
 
   return (
     <>

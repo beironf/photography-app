@@ -20,3 +20,5 @@ export type Photo = {
   metadata: Metadata;
   judgement: Judgement;
 };
+
+export type UpdatePhoto = Omit<Photo, 'imageId'>;

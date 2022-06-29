@@ -1,6 +1,6 @@
 import { Chip, Grid } from '@mui/material';
 import { InputTextField } from 'components/InputTextField';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 type Props = {
   tags: string[];
@@ -11,25 +11,23 @@ export const TagsForm: React.FunctionComponent<Props> = ({
   tags,
   setTags,
 }) => {
-  const [tagsInputValue, setTagsInputValue] = useState<string>('');
-
-  useEffect(() => {
-    if (tagsInputValue.trim() === '') {
-      setTags(undefined);
+  const onChange = (tagString: string): void => {
+    if (tagString.trim() === '') {
+      setTags([]);
     } else {
-      const ts = tagsInputValue.trim().toLowerCase().split(' ');
+      const ts = tagString.trim().toLowerCase().split(' ');
       const uniqueTags = [...Array.from(new Set(ts))];
       setTags(uniqueTags);
     }
-  }, [tagsInputValue, setTags]);
+  };
 
   return (
     <Grid item>
       <InputTextField
         id="tags"
         label="Tags"
-        value={tagsInputValue}
-        onChange={(s) => setTagsInputValue(s)}
+        value={tags.join(' ')}
+        onChange={onChange}
         minWidth={400}
       />
       <div>
