@@ -15,7 +15,6 @@ CREATE TABLE images_exif (
 CREATE TABLE locations (
     id              SERIAL PRIMARY KEY,
     name            VARCHAR(255) NOT NULL,
-    region          VARCHAR(255) NOT NULL,
     country         VARCHAR(255) NOT NULL,
     longitude       FLOAT NOT NULL,
     latitude        FLOAT NOT NULL
@@ -24,7 +23,7 @@ CREATE TABLE locations (
 CREATE TABLE judgements (
     id              SERIAL PRIMARY KEY,
     rating          INTEGER NOT NULL,
-    is_showroom     BOOLEAN NOT NULL
+    in_showroom     BOOLEAN NOT NULL
 );
 
 CREATE TABLE photos (
@@ -34,7 +33,7 @@ CREATE TABLE photos (
     photographer    VARCHAR(255) NOT NULL,
     `group`         VARCHAR(255),
     locations_id    INTEGER NOT NULL REFERENCES locations (id),
-    taken           DATE NOT NULL,
+    taken           TIMESTAMP NOT NULL,
     camera          VARCHAR(255) NOT NULL,
     lens            VARCHAR(255) NOT NULL,
     camera_settings JSON NOT NULL,

@@ -34,9 +34,9 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
 
   def addPhoto(photo: Photo): Future[Unit] = db.run {
     for {
-      locationDb <- addLocationDb(photo.location.toDbFormat)
-      judgementDb <- addJudgementDb(photo.judgement.toDbFormat)
-      _ <- addPhotoDb(photo.toDbFormat(locationDb.id, judgementDb.id))
+      locationId <- addLocationDb(photo.location.toDbFormat)
+      judgementId <- addJudgementDb(photo.judgement.toDbFormat)
+      _ <- addPhotoDb(photo.toDbFormat(locationId, judgementId))
     } yield (): Unit
   }
 
@@ -73,7 +73,7 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
 
 
   private def getPhotoDb(imageId: String): DBIO[Option[PhotoDb]] = get[Photos](photos, _.imageId === imageId)
-  private def addPhotoDb(photoDb: PhotoDb): DBIO[PhotoDb] = add[Photos](photos, photoDb)
+  private def addPhotoDb(photoDb: PhotoDb): DBIO[Int] = photos += photoDb
   private def removePhotoDb(imageId: String): DBIO[Int] = photos.filter(_.imageId === imageId).delete
   private def updatePhotoDb(imageId: String, u: UpdatePhotoDb): DBIO[Int] = photos
     .filter(_.imageId === imageId)
@@ -81,7 +81,7 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
     .update(UpdatePhotoDb.unapply(u).get)
 
   private def getLocationDb(locationId: Long): DBIO[Option[LocationDb]] = get[Locations](locations, _.id === locationId)
-  private def addLocationDb(locationDb: LocationDb): DBIO[LocationDb] = add[Locations](locations, locationDb)
+  private def addLocationDb(locationDb: LocationDb): DBIO[Long] = locations returning locations.map(_.id) += locationDb
   private def removeLocationDb(locationId: Long): DBIO[Int] = locations.filter(_.id === locationId).delete
   private def updateLocationDb(locationId: Long, location: Location): DBIO[Int] = locations
     .filter(_.id === locationId)
@@ -89,7 +89,7 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
     .update((location.name, location.country, location.coordinates.latitude, location.coordinates.longitude))
 
   private def getJudgementDb(judgementId: Long): DBIO[Option[JudgementDb]] = get[Judgements](judgements, _.id === judgementId)
-  private def addJudgementDb(judgementDb: JudgementDb): DBIO[JudgementDb] = add[Judgements](judgements, judgementDb)
+  private def addJudgementDb(judgementDb: JudgementDb): DBIO[Long] = judgements returning judgements.map(_.id) += judgementDb
   private def removeJudgementDb(judgementId: Long): DBIO[Int] = judgements.filter(_.id === judgementId).delete
   private def updateJudgementDb(judgementId: Long, judgement: Judgement): DBIO[Int] = judgements
     .filter(_.id === judgementId)
@@ -100,9 +100,5 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
   private def get[T <: AbstractTable[_]](table: TableQuery[T],
                                          filterCondition: T => Rep[Boolean]): DBIO[Option[T#TableElementType]] =
     table.filter(filterCondition).result.headOption
-
-  private def add[T <: AbstractTable[_]](table: TableQuery[T],
-                                         element: T#TableElementType): DBIO[T#TableElementType] =
-    table returning table += element
 
 }
