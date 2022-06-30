@@ -10,6 +10,6 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
       MYSQL_DATABASE: photography_db
     ports:
-      - "3310:3306"
+      - "4001:3306"
     volumes:
       - $PHOTO_APP_DIR/db/mysql_data:/var/lib/mysql

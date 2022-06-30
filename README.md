@@ -44,7 +44,7 @@ docker-compose up db -d
 ```
 
 #### Connect:
-The DB is hosted inside a Docker container and exposed on the port `3310`. For some reason the `--protocol=tcp` was needed when using "localhost" (`127.0.0.1` works without whis flag).
+The DB is hosted inside a Docker container and exposed on the port `4001`. For some reason the `--protocol=tcp` was needed when using "localhost" (`127.0.0.1` works without whis flag).
 ```
-mysql -u root -h localhost -P 3310 -D photography_db --protocol=tcp
+mysql -u root -h localhost -P 4001 -D photography_db --protocol=tcp
 ```
