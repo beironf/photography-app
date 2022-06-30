@@ -1,5 +1,5 @@
-import React from 'react';
-import { TileLayer, MapContainer } from 'react-leaflet';
+import React, { useEffect } from 'react';
+import { TileLayer, MapContainer, useMap } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import { LocationMarker } from './LocationMarker';
 
@@ -9,13 +9,28 @@ type Props = {
   height?: number;
 };
 
+const MapUseEffect: React.FunctionComponent<{coordinates?: number[]}> = ({ coordinates }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (coordinates !== undefined) {
+      const zoom = map.getZoom();
+      map.flyTo(coordinates as LatLngExpression, zoom < 10 ? 10 : zoom);
+    }
+  }, [coordinates, map]);
+
+  return null;
+};
+
 export const MapInput: React.FunctionComponent<Props> = ({
   coordinates, setCoordinates, height,
 }) => (
   <MapContainer
     style={{ height: height ?? 350 }}
-    center={[50, 10]}
-    zoom={3}
+    center={coordinates !== undefined ? coordinates as LatLngExpression : [50, 10]}
+    zoom={coordinates !== undefined ? 10 : 3}
+    maxZoom={17}
+    minZoom={2}
   >
     <TileLayer
       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -25,5 +40,6 @@ export const MapInput: React.FunctionComponent<Props> = ({
       location={coordinates ? coordinates as LatLngExpression : undefined}
       setLocation={(latLng) => setCoordinates([latLng.lat, latLng.lng])}
     />
+    <MapUseEffect coordinates={coordinates} />
   </MapContainer>
 );
