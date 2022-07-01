@@ -10,14 +10,16 @@ import React from 'react';
 type Props = {
   title?: string;
   category?: PhotoCategory;
+  group?: string;
   cameraTechniques?: CameraTechnique[];
   setTitle: (_: string) => void;
   setCategory: (_: PhotoCategory) => void;
+  setGroup: (_: string) => void;
   setCameraTechniques: (_: CameraTechnique[]) => void;
 };
 
 export const BasePhotoForm: React.FunctionComponent<Props> = ({
-  title, category, cameraTechniques, setTitle, setCategory, setCameraTechniques,
+  title, category, group, cameraTechniques, setTitle, setCategory, setGroup, setCameraTechniques,
 }) => (
   <>
     <Grid item>
@@ -35,12 +37,28 @@ export const BasePhotoForm: React.FunctionComponent<Props> = ({
         id="category"
         label="Category"
         options={
-              Object.values(PhotoCategory)
-                .map((c) => ({ value: c, label: c }))
-            }
+          Object.values(PhotoCategory)
+            .map((c) => ({ value: c, label: c }))
+        }
         value={category}
         onChange={(s) => setCategory(toCategory(s as string))}
         required
+      />
+    </Grid>
+
+    <Grid item>
+      <InputTextField
+        id="group"
+        label="Group"
+        value={group}
+        onChange={(s) => {
+          if (s.trim() === '') {
+            setGroup(undefined);
+          } else {
+            setGroup(s);
+          }
+        }}
+        error={group !== undefined && group.trim() === ''}
       />
     </Grid>
 

@@ -12,9 +12,11 @@ export type PhotoEditorState = {
   date?: Date;
   title?: string;
   category?: PhotoCategory;
+  group?: string;
   cameraTechniques: CameraTechnique[];
   tags: string[];
   rating?: number;
+  inShowroom: boolean;
   location?: string;
   country?: string;
   coordinates?: number[]; // [lat, long]

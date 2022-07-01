@@ -16,7 +16,7 @@ import { Exif } from 'model/exif';
 import { PhotoEditorState } from 'model/photo-editor';
 
 import { TagsForm } from 'components/PhotoEditor/PhotoForms/TagsForm';
-import { RatingForm } from 'components/PhotoEditor/PhotoForms/RatingForm';
+import { JudgementForm } from 'components/PhotoEditor/PhotoForms/JudgementForm';
 import { LocationForm } from 'components/PhotoEditor/PhotoForms/LocationForm';
 import { ExifForm } from 'components/PhotoEditor/PhotoForms/ExifForm';
 import { BasePhotoForm } from 'components/PhotoEditor/PhotoForms/BasePhotoForm';
@@ -29,6 +29,7 @@ const initialState: PhotoEditorState = {
   photographer: PHOTOGRAPHER,
   cameraTechniques: [],
   tags: [],
+  inShowroom: false,
 };
 const initialExif: Exif = {};
 
@@ -80,9 +81,11 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
         date: photo.taken,
         title: photo.title,
         category: photo.metadata.category,
+        group: photo.group,
         cameraTechniques: photo.metadata.cameraTechniques ?? [],
         tags: photo.metadata.tags ?? [],
         rating: photo.judgement.rating,
+        inShowroom: photo.judgement.inShowroom,
         location: photo.location.name,
         country: photo.location.country,
         coordinates: [photo.location.coordinates.latitude, photo.location.coordinates.longitude],
@@ -115,9 +118,11 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
           <BasePhotoForm
             title={state.title}
             category={state.category}
+            group={state.group}
             cameraTechniques={state.cameraTechniques}
             setTitle={(title) => setState((prev) => ({ ...prev, title }))}
             setCategory={(category) => setState((prev) => ({ ...prev, category }))}
+            setGroup={(group) => setState((prev) => ({ ...prev, group }))}
             setCameraTechniques={(cameraTechniques) => setState(
               (prev) => ({ ...prev, cameraTechniques }),
             )}
@@ -153,10 +158,14 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
 
           <TagsForm tags={state.tags} setTags={(tags) => setState((prev) => ({ ...prev, tags }))} />
 
-          <RatingForm
+          <JudgementForm
             rating={state.rating}
+            inShowroom={state.inShowroom}
             setRating={(rating) => setState(
               (prev) => ({ ...prev, rating }),
+            )}
+            setInShowroom={(inShowroom) => setState(
+              (prev) => ({ ...prev, inShowroom }),
             )}
           />
 

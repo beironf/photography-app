@@ -10,6 +10,7 @@ export const stateIsComplete = (state: PhotoEditorState): boolean => state.camer
   && state.date !== undefined
   && state.title !== undefined && state.title !== ''
   && state.category !== undefined
+  && (state.group === undefined || state.group.trim() !== '')
   && state.tags.find((_) => _.trim() === '') === undefined
   && state.rating !== undefined
   && state.location !== undefined && state.location !== ''
@@ -19,6 +20,7 @@ export const stateIsComplete = (state: PhotoEditorState): boolean => state.camer
 export const convertStateToPhotoContent = (state: PhotoEditorState): UpdatePhoto => ({
   photographer: state.photographer,
   title: state.title,
+  group: state.group,
   taken: state.date,
   location: {
     name: state.location,
@@ -40,5 +42,5 @@ export const convertStateToPhotoContent = (state: PhotoEditorState): UpdatePhoto
     cameraTechniques: state.cameraTechniques,
     tags: state.tags,
   },
-  judgement: { rating: state.rating, inShowroom: false },
+  judgement: { rating: state.rating, inShowroom: state.inShowroom },
 });
