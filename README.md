@@ -48,3 +48,9 @@ The DB is hosted inside a Docker container and exposed on the port `4001`. For s
 ```
 mysql -u root -h localhost -P 4001 -D photography_db --protocol=tcp
 ```
+
+## Example Images
+
+### Photo Editor
+<img width="1728" alt="image" src="https://user-images.githubusercontent.com/17812202/177056791-24a2868d-f7e8-4285-b00c-cc7d1f4bf197.png">
+
