@@ -1,7 +1,6 @@
 import {
   Chip, FormControlLabel, Grid, Switch,
 } from '@mui/material';
-import { InputTextField } from 'components/InputTextField';
 import React from 'react';
 
 type Props = {
@@ -22,8 +21,39 @@ export const JudgementForm: React.FunctionComponent<Props> = ({
     symbols.push(rating ? i <= rating : false);
   }
 
+  const ratingColor = (isHighlighted: boolean): 'default' | 'primary' | 'error' => {
+    if (rating !== undefined) return isHighlighted ? 'primary' : 'default';
+    return 'error';
+  };
+
+  const ratingVariant = (isHighlighted: boolean): 'filled' | 'outlined' => {
+    if (rating !== undefined && isHighlighted) return 'filled';
+    return 'outlined';
+  };
+
   return (
     <>
+      <Grid item>
+        <FormControlLabel
+          style={{ margin: 0 }}
+          control={(
+            <div style={{ marginRight: 12, padding: '6px 0' }}>
+              {symbols.map((isHighlighted, i) => (
+                <Chip
+                  onClick={() => setRating(i + 1)}
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`tag-${i}`}
+                  label={i + 1}
+                  color={ratingColor(isHighlighted)}
+                  variant={ratingVariant(isHighlighted)}
+                  size="small"
+                />
+              ))}
+            </div>
+          )}
+          label="Rating"
+        />
+      </Grid>
       <Grid item>
         <FormControlLabel
           control={(
@@ -34,29 +64,6 @@ export const JudgementForm: React.FunctionComponent<Props> = ({
         )}
           label="In Showroom"
         />
-      </Grid>
-      <Grid item>
-        <InputTextField
-          id="rating"
-          label="Rating"
-          value={rating ? rating.toString() : undefined}
-          onChange={() => 1}
-          required
-          disabled
-          minWidth={150}
-        />
-        <div>
-          {symbols.map((isHighlighted, i) => (
-            <Chip
-              onClick={() => setRating(i + 1)}
-              // eslint-disable-next-line react/no-array-index-key
-              key={`tag-${i}`}
-              label={i + 1}
-              color={isHighlighted ? 'secondary' : undefined}
-              size="small"
-            />
-          ))}
-        </div>
       </Grid>
     </>
   );

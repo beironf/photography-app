@@ -100,7 +100,7 @@ export const ManagePhotos: React.FunctionComponent = () => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            p: 2,
+            p: `${theme.primaryPadding}px`,
           },
         }}
         variant="permanent"

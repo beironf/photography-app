@@ -30,13 +30,13 @@ export const TagsForm: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <Grid item>
+    <Grid item xs={12}>
       <InputTextField
         id="tags"
         label="Tags"
         value={tags.join(' ')}
         onChange={onChange}
-        minWidth={400}
+        fullWidth
         error={tags.find((_) => _.trim() === '') !== undefined}
       />
       <div>

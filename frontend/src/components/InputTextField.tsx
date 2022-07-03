@@ -11,11 +11,12 @@ type Props = {
   error?: boolean;
   disabled?: boolean;
   variant?: 'filled' | 'outlined' | 'standard';
+  fullWidth?: boolean;
   minWidth?: number;
 };
 
 export const InputTextField: React.FunctionComponent<Props> = ({
-  id, label, onChange, value, helperText, disabled, required, error, variant, minWidth,
+  id, label, onChange, value, helperText, disabled, required, error, variant, fullWidth, minWidth,
 }) => (
   <TextField
     id={id}
@@ -28,6 +29,7 @@ export const InputTextField: React.FunctionComponent<Props> = ({
     helperText={(value === undefined || value === '') ? helperText : undefined}
     InputLabelProps={{ shrink: true }}
     size="small"
+    fullWidth={fullWidth}
     style={{ minWidth: minWidth ?? 200 }}
     variant={variant}
   />

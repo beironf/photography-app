@@ -112,9 +112,27 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
 
   return (
     <div>
+      {!getPhotoLoading && (
+        <MapInput
+          coordinates={state.coordinates}
+          setCoordinates={(coordinates) => setState((prev) => ({ ...prev, coordinates }))}
+        />
+      )}
       {getPhotoLoading && <CircularProgress />}
       {!getPhotoLoading && (
         <Grid container spacing={2}>
+          <LocationForm
+            location={state.location}
+            country={state.country}
+            coordinates={state.coordinates}
+            setLocation={(location) => setState((prev) => ({ ...prev, location }))}
+            setCountry={(country) => setState((prev) => ({ ...prev, country }))}
+          />
+
+          <Grid item xs={12}>
+            <Divider variant="middle" />
+          </Grid>
+
           <BasePhotoForm
             title={state.title}
             category={state.category}
@@ -156,8 +174,6 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
             <Divider variant="middle" />
           </Grid>
 
-          <TagsForm tags={state.tags} setTags={(tags) => setState((prev) => ({ ...prev, tags }))} />
-
           <JudgementForm
             rating={state.rating}
             inShowroom={state.inShowroom}
@@ -169,24 +185,8 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
             )}
           />
 
-          <Grid item xs={12}>
-            <Divider variant="middle" />
-          </Grid>
-
-          <LocationForm
-            location={state.location}
-            country={state.country}
-            coordinates={state.coordinates}
-            setLocation={(location) => setState((prev) => ({ ...prev, location }))}
-            setCountry={(country) => setState((prev) => ({ ...prev, country }))}
-          />
+          <TagsForm tags={state.tags} setTags={(tags) => setState((prev) => ({ ...prev, tags }))} />
         </Grid>
-      )}
-      {!getPhotoLoading && (
-        <MapInput
-          coordinates={state.coordinates}
-          setCoordinates={(coordinates) => setState((prev) => ({ ...prev, coordinates }))}
-        />
       )}
     </div>
   );

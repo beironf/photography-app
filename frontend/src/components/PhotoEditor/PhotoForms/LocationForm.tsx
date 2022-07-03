@@ -15,7 +15,7 @@ const round = (x: number, decimals: number): number => (
 );
 
 const formatCoordinates = (coord: number[]): string => (
-  `Latitude: ${round(coord[0], 3)}, Longitude: ${round(coord[1], 3)}`
+  `Lat: ${round(coord[0], 3)}, Long: ${round(coord[1], 3)}`
 );
 
 export const LocationForm: React.FunctionComponent<Props> = ({
@@ -54,7 +54,7 @@ export const LocationForm: React.FunctionComponent<Props> = ({
         required
         disabled
         variant="standard"
-        minWidth={300}
+        minWidth={190}
       />
     </Grid>
   </>
