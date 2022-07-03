@@ -114,13 +114,11 @@ export const ManagePhotos: React.FunctionComponent = () => {
         {listPhotosLoading && <CircularProgress />}
         {listPhotosError && <NonIdealState title="There was a problem when fetching photos" />}
         {selectedImageId !== undefined && !listPhotosError && (
-          <PhotoEditor
-            imageId={selectedImageId}
-            onNewPhoto={() => reloadPhotos()}
-          />
-        )}
-        {selectedImageId !== undefined && !listPhotosError && (
           <>
+            <PhotoEditor
+              imageId={selectedImageId}
+              onNewPhoto={() => reloadPhotos()}
+            />
             <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
             <ImageRemover
               imageId={selectedImageId}

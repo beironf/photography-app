@@ -28,7 +28,7 @@ export const MapInput: React.FunctionComponent<Props> = ({
 }) => (
   <MapContainer
     style={{
-      height: height ?? 320,
+      height: height ?? 370,
       margin: `${-theme.primaryPadding}px ${-theme.primaryPadding}px ${theme.primaryPadding}px`,
     }}
     center={coordinates !== undefined ? coordinates as LatLngExpression : [50, 10]}

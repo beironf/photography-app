@@ -3,6 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
 } from '@mui/material';
+import { theme } from 'style/theme';
 import { ImageApi } from 'api/ImageApi';
 
 type props = {
@@ -24,6 +25,7 @@ export const ImageRemover: React.FunctionComponent<props> = ({ imageId, onImageR
     <>
       {!showConfirm && (
         <Button
+          style={{ margin: `0 ${-theme.primaryPadding}px ${-theme.primaryPadding}px` }}
           startIcon={<DeleteIcon />}
           variant="contained"
           component="span"
