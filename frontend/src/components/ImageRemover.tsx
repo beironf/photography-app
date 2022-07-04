@@ -23,18 +23,19 @@ export const ImageRemover: React.FunctionComponent<props> = ({ imageId, onImageR
 
   return (
     <>
-      {!showConfirm && (
-        <Button
-          style={{ margin: `0 ${-theme.primaryPadding}px ${-theme.primaryPadding}px` }}
-          startIcon={<DeleteIcon />}
-          variant="contained"
-          component="span"
-          color="error"
-          onClick={() => setShowConfirm(true)}
-        >
-          Remove
-        </Button>
-      )}
+
+      <Button
+        style={{
+          position: 'fixed', zIndex: 500, top: theme.primaryPadding, right: theme.primaryPadding,
+        }}
+        startIcon={<DeleteIcon />}
+        variant="contained"
+        component="span"
+        color="error"
+        onClick={() => setShowConfirm(true)}
+      >
+        Remove
+      </Button>
       {showConfirm && (
         <Dialog
           open={showConfirm}

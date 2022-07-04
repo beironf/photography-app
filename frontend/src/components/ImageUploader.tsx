@@ -37,7 +37,7 @@ export const ImageUploader: React.FunctionComponent<props> = ({
         hidden
       />
       <Button startIcon={<ImageIcon />} variant="contained" component="span">
-        Upload
+        Upload Image
       </Button>
     </label>
   );

@@ -1,5 +1,5 @@
 import {
-  Box, CircularProgress, Divider, Drawer,
+  Box, CircularProgress, Drawer,
 } from '@mui/material';
 import { ImageApi } from 'api/ImageApi';
 import { NonIdealState } from 'components/NonIdealState';
@@ -65,13 +65,14 @@ export const ManagePhotos: React.FunctionComponent = () => {
     <Box sx={{ display: 'flex', backgroundColor: theme.primaryDark }}>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: '2px' }}
+        sx={{ flexGrow: 1 }}
       >
         {listImagesLoading && <CircularProgress />}
         {listImagesError && <NonIdealState title="No images found" />}
         {images !== undefined && (
           <ImageGallery
             images={images}
+            margin={2}
             renderImage={
               ({ photo: image }) => (
                 <ImageRenderer
@@ -99,7 +100,13 @@ export const ManagePhotos: React.FunctionComponent = () => {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
+            backgroundColor: theme.primaryDark,
             boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
             p: `${theme.primaryPadding}px`,
           },
         }}
@@ -111,15 +118,32 @@ export const ManagePhotos: React.FunctionComponent = () => {
             onImageUploaded={(imageId) => setImageUploaded(imageId)}
           />
         )}
-        {listPhotosLoading && <CircularProgress />}
+        {listPhotosLoading && <CircularProgress style={{ margin: theme.primaryPadding }} />}
         {listPhotosError && <NonIdealState title="There was a problem when fetching photos" />}
+      </Drawer>
+      <Drawer
+        sx={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          width: drawerWidth,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            backgroundColor: theme.primaryDark,
+            boxSizing: 'border-box',
+            p: `${theme.primaryPadding}px`,
+          },
+        }}
+        variant="persistent"
+        anchor="right"
+        open={selectedImageId !== undefined}
+      >
         {selectedImageId !== undefined && !listPhotosError && (
           <>
             <PhotoEditor
               imageId={selectedImageId}
               onNewPhoto={() => reloadPhotos()}
             />
-            <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
             <ImageRemover
               imageId={selectedImageId}
               onImageRemoved={(imageId) => setImageRemoved(imageId)}

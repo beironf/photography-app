@@ -1,11 +1,20 @@
+import { createTheme, ThemeProvider } from '@mui/material';
 import { PageLayout } from 'components/PageLayout';
 import React from 'react';
 import { ManagePhotos } from 'views/ManagePhotos';
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
 const App: React.FC = () => (
-  <PageLayout
-    body={<ManagePhotos />}
-  />
+  <ThemeProvider theme={darkTheme}>
+    <PageLayout
+      body={<ManagePhotos />}
+    />
+  </ThemeProvider>
 );
 
 export default App;

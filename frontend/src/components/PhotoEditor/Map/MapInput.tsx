@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import { TileLayer, MapContainer, useMap } from 'react-leaflet';
+import {
+  TileLayer, MapContainer, useMap,
+} from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import { theme } from 'style/theme';
 import { LocationMarker } from './LocationMarker';
@@ -33,6 +35,7 @@ export const MapInput: React.FunctionComponent<Props> = ({
     }}
     center={coordinates !== undefined ? coordinates as LatLngExpression : [50, 10]}
     zoom={coordinates !== undefined ? 10 : 3}
+    zoomControl={false}
     maxZoom={17}
     minZoom={2}
   >

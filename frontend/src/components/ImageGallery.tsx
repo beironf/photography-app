@@ -5,26 +5,30 @@ import { ImageDto } from 'api/ImageApi/model';
 
 type props = {
   images: ImageDto[];
+  margin: number;
   onImageClick?: (_: string) => void; // will not work if custom renderImage is used
   renderImage?: React.ComponentType<RenderImageProps<{}>>;
 };
 
 export const ImageGallery: React.FunctionComponent<props> = ({
   images,
+  margin,
   onImageClick,
   renderImage,
 }) => (
-  <Gallery
-    photos={Object.values(images).map(({ id, width, height }) => ({
-      key: id,
-      src: ImageApi.ThumbnailRoute.getThumbnailUrl(id),
-      width,
-      height,
-      alt: id,
-    }))}
-    renderImage={renderImage}
-    onClick={onImageClick !== undefined
-      ? (_, { photo: { key } }) => onImageClick(key)
-      : undefined}
-  />
+  <div style={{ minHeight: '100vh', padding: `${margin}px` }}>
+    <Gallery
+      photos={Object.values(images).map(({ id, width, height }) => ({
+        key: id,
+        src: ImageApi.ThumbnailRoute.getThumbnailUrl(id),
+        width,
+        height,
+        alt: id,
+      }))}
+      renderImage={renderImage}
+      onClick={onImageClick !== undefined
+        ? (_, { photo: { key } }) => onImageClick(key)
+        : undefined}
+    />
+  </div>
 );

@@ -16,7 +16,7 @@ export const Burger: React.FunctionComponent<props> = ({ onClick }) => (
       left: theme.primaryPadding - 8,
       padding: '8px',
       color: 'white',
-      zIndex: 10,
+      zIndex: 1000,
     }}
   >
     <MenuIcon fontSize="large" />
