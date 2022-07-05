@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material';
-import { PageLayout } from 'components/PageLayout';
+import { PageLayout } from 'views/PageLayout';
 import React from 'react';
 import { ManagePhotos } from 'views/ManagePhotos';
 

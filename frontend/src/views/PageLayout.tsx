@@ -3,7 +3,7 @@ import { Paper } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import React from 'react';
 
-import { Menu, MenuItem } from './Menu';
+import { Menu, MenuItem } from 'components/Menu';
 
 type props = {
   body: JSX.Element;
