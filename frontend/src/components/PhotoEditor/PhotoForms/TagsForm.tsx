@@ -1,6 +1,7 @@
 import { Chip, Grid } from '@mui/material';
 import { InputTextField } from 'components/InputTextField';
 import React from 'react';
+import { theme } from 'style/theme';
 
 type Props = {
   tags: string[];
@@ -46,7 +47,7 @@ export const TagsForm: React.FunctionComponent<Props> = ({
             label={tag}
             color="secondary"
             size="small"
-            sx={{ marginLeft: '2px' }}
+            sx={{ marginLeft: '2px', marginTop: `${theme.primaryPadding / 2}px` }}
             onClick={() => removeTag(tag)}
           />
         ))}

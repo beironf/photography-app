@@ -4,7 +4,6 @@ import {
 import { ImageApi } from 'api/ImageApi';
 import { NonIdealState } from 'components/NonIdealState';
 import { PhotoEditor } from 'components/PhotoEditor';
-import { ImageUploader } from 'components/ImageUploader';
 import { ImageRemover } from 'components/ImageRemover';
 import { usePromise } from 'hooks';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -12,6 +11,23 @@ import { ImageGallery } from 'components/ImageGallery';
 import { theme } from 'style/theme';
 import { PhotoApi } from 'api/PhotoApi';
 import { ImageRenderer } from './ImageRenderer';
+import { ManagePhotosMenu } from './ManagePhotosMenu';
+
+// Styling constants
+const drawerWidth = '40%';
+const selectionColor = 'white';
+const opacityWhenNotSelected = 0.4;
+
+const drawerBaseStyle = {
+  width: drawerWidth,
+};
+
+const drawerPaperBaseStyle = {
+  width: drawerWidth,
+  backgroundColor: theme.primaryDark,
+  boxSizing: 'border-box',
+  p: `${theme.primaryPadding}px`,
+};
 
 export const ManagePhotos: React.FunctionComponent = () => {
   const [imageUploaded, setImageUploaded] = useState<string>();
@@ -56,16 +72,11 @@ export const ManagePhotos: React.FunctionComponent = () => {
     }
   }, [reloadImages, imageRemoved]);
 
-  // Styling constants
-  const drawerWidth = '40%';
-  const selectionColor = 'white';
-  const opacityWhenNotSelected = 0.4;
-
   return (
     <Box sx={{ display: 'flex', backgroundColor: theme.primaryDark }}>
       <Box
         component="main"
-        sx={{ flexGrow: 1 }}
+        sx={{ flexGrow: 1, marginRight: '-3px' }}
       >
         {listImagesLoading && <CircularProgress />}
         {listImagesError && <NonIdealState title="No images found" />}
@@ -95,48 +106,38 @@ export const ManagePhotos: React.FunctionComponent = () => {
         )}
       </Box>
       <Drawer
+        variant="permanent"
+        anchor="right"
         sx={{
-          width: drawerWidth,
+          ...drawerBaseStyle,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            backgroundColor: theme.primaryDark,
-            boxSizing: 'border-box',
+            ...drawerPaperBaseStyle,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             flexWrap: 'wrap',
-            p: `${theme.primaryPadding}px`,
           },
         }}
-        variant="permanent"
-        anchor="right"
       >
-        {selectedImageId === undefined && (
-          <ImageUploader
-            onImageUploaded={(imageId) => setImageUploaded(imageId)}
-          />
-        )}
         {listPhotosLoading && <CircularProgress style={{ margin: theme.primaryPadding }} />}
         {listPhotosError && <NonIdealState title="There was a problem when fetching photos" />}
+        <ManagePhotosMenu setImageUploaded={(imageId) => setImageUploaded(imageId)} />
       </Drawer>
       <Drawer
-        sx={{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          width: drawerWidth,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            backgroundColor: theme.primaryDark,
-            boxSizing: 'border-box',
-            p: `${theme.primaryPadding}px`,
-          },
-        }}
         variant="persistent"
         anchor="right"
         open={selectedImageId !== undefined}
+        sx={{
+          ...drawerBaseStyle,
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          '& .MuiDrawer-paper': {
+            ...drawerPaperBaseStyle,
+          },
+        }}
       >
         {selectedImageId !== undefined && !listPhotosError && (
           <>

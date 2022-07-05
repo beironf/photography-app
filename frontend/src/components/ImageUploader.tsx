@@ -5,6 +5,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import {
   Button, Input,
 } from '@mui/material';
+import { theme } from 'style/theme';
 
 type props = {
   onImageUploaded: (_: string) => void;
@@ -35,6 +36,7 @@ export const ImageUploader: React.FunctionComponent<props> = ({
           setFileName(e.target.files[0] ? e.target.files[0].name : '');
         }}
         hidden
+        sx={{ margin: theme.primaryPadding }}
       />
       <Button startIcon={<ImageIcon />} variant="contained" component="span">
         Upload Image
