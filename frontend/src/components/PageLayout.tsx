@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { Box } from '@mui/material';
+import { Paper } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import React from 'react';
-import { theme } from 'style/theme';
+
 import { Menu, MenuItem } from './Menu';
 
 type props = {
@@ -22,7 +22,9 @@ const menuItems: MenuItem[] = [
 export const PageLayout: React.FunctionComponent<props> = ({ body, footer }) => (
   <>
     <Menu items={menuItems} />
-    <Box
+    <Paper
+      elevation={0}
+      square
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -35,7 +37,6 @@ export const PageLayout: React.FunctionComponent<props> = ({ body, footer }) => 
           flexGrow: 1,
           margin: 0,
           padding: 0,
-          backgroundColor: theme.primaryDark,
         }}
       >
         {body}
@@ -52,6 +53,6 @@ export const PageLayout: React.FunctionComponent<props> = ({ body, footer }) => 
           {footer}
         </footer>
       )}
-    </Box>
+    </Paper>
   </>
 );

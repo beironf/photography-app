@@ -1,6 +1,6 @@
-import {
-  Box, CircularProgress, Drawer,
-} from '@mui/material';
+import { CircularProgress, Drawer } from '@mui/material';
+import DangerousIcon from '@mui/icons-material/Dangerous';
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import { ImageApi } from 'api/ImageApi';
 import { NonIdealState } from 'components/NonIdealState';
 import { PhotoEditor } from 'components/PhotoEditor';
@@ -24,7 +24,6 @@ const drawerBaseStyle = {
 
 const drawerPaperBaseStyle = {
   width: drawerWidth,
-  backgroundColor: theme.primaryDark,
   boxSizing: 'border-box',
   p: `${theme.primaryPadding}px`,
 };
@@ -33,6 +32,8 @@ export const ManagePhotos: React.FunctionComponent = () => {
   const [imageUploaded, setImageUploaded] = useState<string>();
   const [imageRemoved, setImageRemoved] = useState<string>();
   const [selectedImageId, setSelectedImageId] = useState<string>();
+
+  const [onlyUnfinished, setOnlyUnfinished] = useState(false);
 
   const listImages = useCallback(() => ImageApi.ImageRoute.listImages(), []);
   const {
@@ -72,17 +73,34 @@ export const ManagePhotos: React.FunctionComponent = () => {
     }
   }, [reloadImages, imageRemoved]);
 
+  const filteredImages = (images ?? []).filter((image) => {
+    if (image.id === selectedImageId) return true;
+    if (onlyUnfinished) {
+      return !(photos ?? []).map((_) => _.imageId).includes(image.id);
+    }
+    return true;
+  });
+
   return (
-    <Box sx={{ display: 'flex', backgroundColor: theme.primaryDark }}>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, marginRight: '-3px' }}
-      >
-        {listImagesLoading && <CircularProgress />}
-        {listImagesError && <NonIdealState title="No images found" />}
-        {images !== undefined && (
+    <div style={{ display: 'flex' }}>
+      <div style={{ flexGrow: 1, marginRight: '-2px' }}>
+        {listImagesLoading
+            && <NonIdealState description="Loading images" icon={<CircularProgress />} />}
+        {listImagesError && (
+          <NonIdealState
+            description="No images found"
+            icon={<ImageSearchIcon fontSize="large" />}
+          />
+        )}
+        {!listImagesError && filteredImages.length === 0 && (
+          <NonIdealState
+            title="No images matched filter."
+            icon={<ImageSearchIcon fontSize="large" />}
+          />
+        )}
+        {filteredImages.length > 0 && (
           <ImageGallery
-            images={images}
+            images={filteredImages}
             margin={2}
             renderImage={
               ({ photo: image }) => (
@@ -104,7 +122,7 @@ export const ManagePhotos: React.FunctionComponent = () => {
             }
           />
         )}
-      </Box>
+      </div>
       <Drawer
         variant="permanent"
         anchor="right"
@@ -121,9 +139,19 @@ export const ManagePhotos: React.FunctionComponent = () => {
           },
         }}
       >
-        {listPhotosLoading && <CircularProgress style={{ margin: theme.primaryPadding }} />}
-        {listPhotosError && <NonIdealState title="There was a problem when fetching photos" />}
-        <ManagePhotosMenu setImageUploaded={(imageId) => setImageUploaded(imageId)} />
+        <ManagePhotosMenu
+          onlyUnfinished={onlyUnfinished}
+          setOnlyUnfinished={(bool) => setOnlyUnfinished(bool)}
+          setImageUploaded={(imageId) => setImageUploaded(imageId)}
+        />
+        {listPhotosLoading
+          && <NonIdealState description="Loading photo metadata" icon={<CircularProgress />} />}
+        {listPhotosError && (
+          <NonIdealState
+            description="Failed to fetch photos"
+            icon={<DangerousIcon fontSize="large" />}
+          />
+        )}
       </Drawer>
       <Drawer
         variant="persistent"
@@ -152,6 +180,6 @@ export const ManagePhotos: React.FunctionComponent = () => {
           </>
         )}
       </Drawer>
-    </Box>
+    </div>
   );
 };

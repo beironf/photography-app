@@ -61,7 +61,7 @@ export const JudgementForm: React.FunctionComponent<Props> = ({
               checked={inShowroom}
               onChange={(event) => setInShowroom(event.target.checked)}
             />
-        )}
+          )}
           label="In Showroom"
         />
       </Grid>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Typography } from '@mui/material';
+import { theme } from 'style/theme';
 
 interface INonIdealStateProps {
   action?: JSX.Element;
@@ -20,7 +21,7 @@ export const NonIdealState: React.FC<INonIdealStateProps> = ({
     if (icon === null || icon === undefined) {
       return null;
     }
-    return <Grid item>{icon}</Grid>;
+    return <Grid item style={{ marginTop: theme.primaryPadding }}>{icon}</Grid>;
   };
 
   return (
