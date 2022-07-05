@@ -52,5 +52,5 @@ mysql -u root -h localhost -P 4001 -D photography_db --protocol=tcp
 ## Example Images
 
 ### Photo Editor
-<img width="1728" alt="image" src="https://user-images.githubusercontent.com/17812202/177056791-24a2868d-f7e8-4285-b00c-cc7d1f4bf197.png">
+<img width="1728" alt="image" src="https://user-images.githubusercontent.com/17812202/177271632-8ae1149c-5bf3-4c00-96bc-0970b67e9562.png">
 
