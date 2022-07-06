@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { InputTextField } from 'components/InputTextField';
+import { InputTextField } from 'components/Inputs/InputTextField';
 import React from 'react';
 
 type Props = {

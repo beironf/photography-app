@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
-import { InputTextField } from 'components/InputTextField';
-import { MultiSelectField } from 'components/MultiSelectField';
-import { SelectField } from 'components/SelectField';
+import { InputTextField } from 'components/Inputs/InputTextField';
+import { MultiSelectField } from 'components/Inputs/MultiSelectField';
+import { SelectField } from 'components/Inputs/SelectField';
 import {
   CameraTechnique, PhotoCategory, toCameraTechnique, toCategory,
 } from 'model/metadata';

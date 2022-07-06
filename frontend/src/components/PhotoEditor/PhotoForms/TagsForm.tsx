@@ -1,5 +1,5 @@
 import { Chip, Grid } from '@mui/material';
-import { InputTextField } from 'components/InputTextField';
+import { InputTextField } from 'components/Inputs/InputTextField';
 import React from 'react';
 import { theme } from 'style/theme';
 

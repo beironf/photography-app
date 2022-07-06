@@ -1,8 +1,8 @@
 import { Grid, TextField } from '@mui/material';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { InputTextField } from 'components/InputTextField';
-import { SelectField } from 'components/SelectField';
+import { InputTextField } from 'components/Inputs/InputTextField';
+import { SelectField } from 'components/Inputs/SelectField';
 import {
   Camera, Lens, toCamera, toLens,
 } from 'model/camera';

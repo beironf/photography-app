@@ -1,7 +1,7 @@
 import {
   Divider, FormControlLabel, Switch, Typography,
 } from '@mui/material';
-import { ImageUploader } from 'components/ImageUploader';
+import { ImageUploader } from 'components/Image/ImageUploader';
 import React from 'react';
 import { theme } from 'style/theme';
 
