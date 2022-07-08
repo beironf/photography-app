@@ -6,11 +6,13 @@ import { NonIdealState } from 'components/NonIdealState';
 import { usePromise } from 'hooks';
 import React, { useCallback, useEffect } from 'react';
 import { PhotoGallery } from 'components/Photo/PhotoGallery';
+import { useParams } from 'react-router-dom';
 
 export const Gallery: React.FunctionComponent = () => {
   const listPhotos = useCallback(() => PhotoApi.listPhotos(), []);
   const {
-    trigger: reloadPhotos, data: photos, error: listPhotosError, loading: listPhotosLoading,
+    trigger: reloadPhotos, data: photosWithRatio, error: listPhotosError,
+    loading: listPhotosLoading,
   } = usePromise(listPhotos);
 
   // Fetch photos on startup
@@ -18,7 +20,9 @@ export const Gallery: React.FunctionComponent = () => {
     reloadPhotos();
   }, [reloadPhotos]);
 
-  const photosWithRatio = (photos ?? []).map((photo) => ({ ...photo, width: 1, height: 1 }));
+  const params = useParams();
+  // eslint-disable-next-line no-unused-vars
+  const { imageId } = params;
 
   return (
     <>
@@ -30,15 +34,15 @@ export const Gallery: React.FunctionComponent = () => {
           icon={<DangerousIcon fontSize="large" />}
         />
       )}
-      {photos !== undefined && photos.length === 0 && (
+      {photosWithRatio !== undefined && photosWithRatio.length === 0 && (
         <NonIdealState
           title="No photos found."
           icon={<PhotoLibraryIcon fontSize="large" />}
         />
       )}
-      {photos !== undefined && photos.length > 0 && (
+      {photosWithRatio !== undefined && photosWithRatio.length > 0 && (
         <PhotoGallery
-          photos={photosWithRatio}
+          photosWithRatio={photosWithRatio}
           margin={2}
           onPhotoClick={(_) => 1}
         />

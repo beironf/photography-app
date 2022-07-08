@@ -1,6 +1,6 @@
-package backend.image.ports
+package backend.exif.ports
 
-import backend.image.entities._
+import backend.exif.entities._
 
 import scala.concurrent.Future
 

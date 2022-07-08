@@ -1,6 +1,6 @@
 package backend.image.api.model
 
-import backend.image.entities.ImageExif
+import backend.exif.entities.ImageExif
 
 trait ImplicitDtoConversion {
 

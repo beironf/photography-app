@@ -21,6 +21,8 @@ trait ImplicitDtoConversion extends ImplicitEnumConversion {
       photo.metadata.toDto,
       photo.judgement
     )
+
+    def toDtoWithRatio(width: Int, height: Int): PhotoWithRatioDto = PhotoWithRatioDto(photo.toDto, width, height)
   }
 
   implicit class PhotoDtoToDomain(photoDto: PhotoDto) {

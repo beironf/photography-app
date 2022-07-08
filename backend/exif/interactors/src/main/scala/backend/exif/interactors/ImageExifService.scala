@@ -1,7 +1,7 @@
-package backend.image.interactors
+package backend.exif.interactors
 
-import backend.image.entities.ImageExif
-import backend.image.ports.ImageExifRepository
+import backend.exif.entities.ImageExif
+import backend.exif.ports.ImageExifRepository
 
 import scala.concurrent.Future
 

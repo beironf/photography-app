@@ -1,7 +1,7 @@
-package backend.image.adapters
+package backend.exif.adapters
 
-import backend.image.entities._
-import backend.image.ports.ImageExifRepository
+import backend.exif.entities._
+import backend.exif.ports.ImageExifRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 

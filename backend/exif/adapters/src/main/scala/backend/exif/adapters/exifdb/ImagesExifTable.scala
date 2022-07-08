@@ -1,4 +1,4 @@
-package backend.image.adapters.exifdb
+package backend.exif.adapters.exifdb
 
 import backend.core.sqlstorage.DatabaseConnector
 

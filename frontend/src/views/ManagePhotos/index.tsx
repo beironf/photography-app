@@ -42,7 +42,8 @@ export const ManagePhotos: React.FunctionComponent = () => {
 
   const listPhotos = useCallback(() => PhotoApi.listPhotos(), []);
   const {
-    trigger: reloadPhotos, data: photos, error: listPhotosError, loading: listPhotosLoading,
+    trigger: reloadPhotos, data: photosWithRatio, error: listPhotosError,
+    loading: listPhotosLoading,
   } = usePromise(listPhotos);
 
   // Fetch images on startup
@@ -76,7 +77,7 @@ export const ManagePhotos: React.FunctionComponent = () => {
   const filteredImages = (images ?? []).filter((image) => {
     if (image.id === selectedImageId) return true;
     if (onlyUnfinished) {
-      return !(photos ?? []).map((_) => _.imageId).includes(image.id);
+      return !(photosWithRatio ?? []).map((_) => _.photo.imageId).includes(image.id);
     }
     return true;
   });
@@ -107,7 +108,8 @@ export const ManagePhotos: React.FunctionComponent = () => {
                 <ImageRenderer
                   key={image.key}
                   selectedImageId={selectedImageId}
-                  unfinished={(photos ?? []).findIndex((_) => _.imageId === image.key) === -1}
+                  unfinished={(photosWithRatio ?? [])
+                    .findIndex((_) => _.photo.imageId === image.key) === -1}
                   image={image}
                   margin={2}
                   selectionColor={selectionColor}

@@ -6,7 +6,8 @@ import backend.common.api.utils.ApiServiceSupport
 import backend.image.api.ApiSpecs.ImageFileUpload
 import backend.image.api.model.{ImageDto, ImageExifDto, ImplicitDtoConversion}
 import backend.image.entities.ImageIO
-import backend.image.interactors.{ImageExifService, ImageService}
+import backend.image.interactors.ImageService
+import backend.exif.interactors.ImageExifService
 import sttp.capabilities.akka.AkkaStreams
 
 import java.io.File

@@ -1,4 +1,4 @@
-package backend.image.entities
+package backend.exif.entities
 
 import java.time.Instant
 

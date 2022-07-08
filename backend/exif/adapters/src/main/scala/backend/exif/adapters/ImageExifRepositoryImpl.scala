@@ -1,8 +1,8 @@
-package backend.image.adapters
+package backend.exif.adapters
 
-import backend.image.adapters.exifdb._
-import backend.image.entities.ImageExif
-import backend.image.ports.ImageExifRepository
+import backend.exif.adapters.exifdb._
+import backend.exif.entities.ImageExif
+import backend.exif.ports.ImageExifRepository
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 

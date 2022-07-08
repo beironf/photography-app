@@ -1,6 +1,6 @@
 import { BaseApi } from 'api/BaseApi';
 import { Config } from 'Config';
-import { Photo, UpdatePhoto } from 'model/photo';
+import { Photo, PhotoWithRatio, UpdatePhoto } from 'model/photo';
 
 export namespace PhotoApi {
   const api = new BaseApi(`${Config.photoApi}/v1/photos/`);
@@ -10,7 +10,7 @@ export namespace PhotoApi {
       .then((photo) => ({ ...photo, taken: new Date(photo.taken) }));
   }
 
-  export function listPhotos(): Promise<Photo[]> {
+  export function listPhotos(): Promise<PhotoWithRatio[]> {
     return api.getData('');
   }
 

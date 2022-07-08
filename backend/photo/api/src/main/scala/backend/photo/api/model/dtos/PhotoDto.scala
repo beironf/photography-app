@@ -16,3 +16,5 @@ case class PhotoDto(imageId: String,
                     cameraSettings: CameraSettings,
                     metadata: MetadataDto,
                     judgement: Judgement)
+
+case class PhotoWithRatioDto(photo: PhotoDto, width: Int, height: Int)

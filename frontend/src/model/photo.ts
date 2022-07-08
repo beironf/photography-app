@@ -22,3 +22,9 @@ export type Photo = {
 };
 
 export type UpdatePhoto = Omit<Photo, 'imageId'>;
+
+export type PhotoWithRatio = {
+  photo: Photo;
+  width: number;
+  height: number;
+};

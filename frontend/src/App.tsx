@@ -2,7 +2,9 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { PageLayout } from 'views/PageLayout';
 import React from 'react';
 import { ManagePhotos } from 'views/ManagePhotos';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter, Routes, Route, Navigate,
+} from 'react-router-dom';
 import { Gallery } from 'views/Gallery';
 import { Showroom } from 'views/Showroom';
 
@@ -17,7 +19,9 @@ const App: React.FC = () => {
     <Routes>
       <Route path="/" element={<Showroom />} />
       <Route path="/gallery" element={<Gallery />} />
+      <Route path="/gallery/:imageId" element={<Gallery />} />
       <Route path="/manage-photos" element={<ManagePhotos />} />
+      <Route path="*" element={<Navigate replace to="/" />} />
     </Routes>
   );
 

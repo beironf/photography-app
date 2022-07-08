@@ -1,6 +1,6 @@
 package backend.image.api
 
-import backend.image.entities.ImageExif
+import backend.exif.entities.ImageExif
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.metadata.ImageMetadata
 

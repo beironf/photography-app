@@ -1,23 +1,23 @@
 import React from 'react';
 import { ImageApi } from 'api/ImageApi';
 import Gallery from 'react-photo-gallery';
-import { Photo } from 'model/photo';
+import { PhotoWithRatio } from 'model/photo';
 
 type props = {
-  photos: (Photo & { width: number, height: number })[];
+  photosWithRatio: PhotoWithRatio[];
   margin: number;
   onPhotoClick?: (_: string) => void;
 };
 
 export const PhotoGallery: React.FunctionComponent<props> = ({
-  photos,
+  photosWithRatio,
   margin,
   onPhotoClick,
 }) => (
   <div style={{ minHeight: '100vh', padding: `${margin}px` }}>
     <Gallery
-      photos={Object.values(photos).map(({
-        title, imageId, width, height,
+      photos={Object.values(photosWithRatio).map(({
+        photo: { title, imageId }, width, height,
       }) => ({
         key: imageId,
         src: ImageApi.ThumbnailRoute.getThumbnailUrl(imageId),

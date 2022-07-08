@@ -3,9 +3,11 @@ package backend.image.api
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import backend.common.api.CommonApiRoute
-import backend.image.adapters.{ImageExifRepositoryImpl, ImageRepositoryImpl}
+import backend.exif.adapters.ImageExifRepositoryImpl
+import backend.exif.interactors.ImageExifService
+import backend.image.adapters.ImageRepositoryImpl
 import backend.image.api.ApiSpecs._
-import backend.image.interactors.{ImageExifService, ImageService}
+import backend.image.interactors.ImageService
 
 import scala.concurrent.ExecutionContext
 

@@ -70,6 +70,8 @@ lazy val photoApi = createProject("photo-api", inFile = Some("photo/api"))()
   .dependsOn(commonApi)
   .dependsOn(photoInteractors)
   .dependsOn(photoAdapters)
+  .dependsOn(exifInteractors)
+  .dependsOn(exifAdapters)
 
 lazy val photoEntities = createProject("photo-entities", inFile = Some("photo/entities"))()
 
@@ -85,6 +87,23 @@ lazy val photoInteractors = createProject("photo-interactors", inFile = Some("ph
   .dependsOn(photoPorts)
 
 
+// ---- Exif (Image metadata)
+
+lazy val exif = createProject("exif")()
+
+lazy val exifEntities = createProject("exif-entities", inFile = Some("exif/entities"))()
+
+lazy val exifPorts = createProject("exif-ports", inFile = Some("exif/ports"))()
+  .dependsOn(exifEntities)
+
+lazy val exifAdapters = createProject("exif-adapters", inFile = Some("exif/adapters"))()
+  .dependsOn(exifPorts)
+  .dependsOn(coreSqlStorage)
+
+lazy val exifInteractors = createProject("exif-interactors", inFile = Some("exif/interactors"))()
+  .dependsOn(exifPorts)
+
+
 // ---- Image
 
 lazy val image = createProject("image")()
@@ -94,6 +113,8 @@ lazy val imageApi = createProject("image-api", inFile = Some("image/api"))(Seq(
 )).dependsOn(commonApi)
   .dependsOn(imageInteractors)
   .dependsOn(imageAdapters)
+  .dependsOn(exifInteractors)
+  .dependsOn(exifAdapters)
 
 lazy val imageEntities = createProject("image-entities", inFile = Some("image/entities"))(Seq(
   dependencies.akkaStream

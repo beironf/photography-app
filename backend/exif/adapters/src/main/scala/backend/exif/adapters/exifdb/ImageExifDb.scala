@@ -1,6 +1,6 @@
-package backend.image.adapters.exifdb
+package backend.exif.adapters.exifdb
 
-import backend.image.entities.ImageExif
+import backend.exif.entities.ImageExif
 
 import java.sql.Timestamp
 

@@ -3,13 +3,14 @@ package backend.photo.api
 import backend.common.api.model.ApiHttpErrors.HttpError
 import backend.common.api.model.ApiHttpResponse._
 import backend.common.api.utils.ApiServiceSupport
+import backend.exif.interactors.ImageExifService
 import backend.photo.api.model.ImplicitDtoConversion
-import backend.photo.api.model.dtos.{PhotoDto, UpdatePhotoDto}
+import backend.photo.api.model.dtos._
 import backend.photo.interactors.PhotoService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ApiService(service: PhotoService, validator: ApiValidationService)
+class ApiService(service: PhotoService, validator: ApiValidationService, exifService: ImageExifService)
                 (implicit executionContext: ExecutionContext) extends ApiServiceSupport
   with ImplicitDtoConversion {
 
@@ -19,10 +20,14 @@ class ApiService(service: PhotoService, validator: ApiValidationService)
       .toEnveloped
 
   def listPhotos(group: Option[String] = None,
-                 rating: Option[Int] = None): Future[EnvelopedHttpResponse[Seq[PhotoDto]]] =
-    service.listPhotos(group, rating)
-      .map(_.map(_.toDto))
-      .toEnvelopedHttpResponse
+                 rating: Option[Int] = None): Future[EnvelopedHttpResponse[Seq[PhotoWithRatioDto]]] = (for {
+    photos <- service.listPhotos(group, rating)
+    exifList <- exifService.listExif(Some(photos.map(_.imageId)))
+    width = exifList.map { case (imageId, exif) => imageId -> exif.width }.toMap
+    height = exifList.map { case (imageId, exif) => imageId -> exif.height }.toMap
+  } yield photos.map { photo =>
+    photo.toDtoWithRatio(width.getOrElse(photo.imageId, 1), height.getOrElse(photo.imageId, 1))
+  }).toEnvelopedHttpResponse
 
   def addPhoto(photoDto: PhotoDto): Future[HttpResponse[Unit]] = (for {
     _ <- validator.photoDoesNotExist(photoDto.imageId).toEitherT

@@ -3,6 +3,8 @@ package backend.photo.api
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import backend.common.api.CommonApiRoute
+import backend.exif.adapters.ImageExifRepositoryImpl
+import backend.exif.interactors.ImageExifService
 import backend.photo.adapters.PhotoRepositoryImpl
 import backend.photo.api.ApiSpecs._
 import backend.photo.interactors.PhotoService
@@ -14,7 +16,9 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
   private val photoRepository = PhotoRepositoryImpl()
   private val photoService = new PhotoService(photoRepository)
   private val validationService = new ApiValidationService(photoRepository)
-  private val apiService = new ApiService(photoService, validationService)
+  private val exifRepository = ImageExifRepositoryImpl()
+  private val exifService = new ImageExifService(exifRepository)
+  private val apiService = new ApiService(photoService, validationService, exifService)
 
   private val getPhoto = endpoint(
     specification = getPhotoEndpoint,
