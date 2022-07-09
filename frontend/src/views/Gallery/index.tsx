@@ -1,14 +1,20 @@
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Dialog } from '@mui/material';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { PhotoApi } from 'api/PhotoApi';
 import { NonIdealState } from 'components/NonIdealState';
 import { usePromise } from 'hooks';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { PhotoGallery } from 'components/Photo/PhotoGallery';
 import { useParams } from 'react-router-dom';
+import { ImageApi } from 'api/ImageApi';
 
 export const Gallery: React.FunctionComponent = () => {
+  const params = useParams();
+
+  const [selectedPhotoId, setSelectedPhotoId] = useState<string>();
+  const { imageId } = params;
+
   const listPhotos = useCallback(() => PhotoApi.listPhotos(), []);
   const {
     trigger: reloadPhotos, data: photosWithRatio, error: listPhotosError,
@@ -20,9 +26,13 @@ export const Gallery: React.FunctionComponent = () => {
     reloadPhotos();
   }, [reloadPhotos]);
 
-  const params = useParams();
-  // eslint-disable-next-line no-unused-vars
-  const { imageId } = params;
+  // Set selected photo on param change
+  useEffect(() => {
+    setSelectedPhotoId(imageId);
+  }, [imageId]);
+
+  const selectedPhoto = (photosWithRatio ?? [])
+    .find((_) => _.photo.imageId === (selectedPhotoId ?? -1));
 
   return (
     <>
@@ -41,11 +51,25 @@ export const Gallery: React.FunctionComponent = () => {
         />
       )}
       {photosWithRatio !== undefined && photosWithRatio.length > 0 && (
-        <PhotoGallery
-          photosWithRatio={photosWithRatio}
-          margin={2}
-          onPhotoClick={(_) => 1}
-        />
+        <>
+          <PhotoGallery
+            photosWithRatio={photosWithRatio}
+            margin={2}
+            onPhotoClick={(id) => setSelectedPhotoId(id)}
+          />
+          <Dialog
+            open={selectedPhotoId !== undefined}
+            onClose={() => setSelectedPhotoId(undefined)}
+            fullWidth
+          >
+            {selectedPhoto !== undefined && (
+              <img
+                src={ImageApi.ImageRoute.getImageUrl(selectedPhoto.photo.imageId)}
+                alt={selectedPhoto.photo.title}
+              />
+            )}
+          </Dialog>
+        </>
       )}
     </>
   );
