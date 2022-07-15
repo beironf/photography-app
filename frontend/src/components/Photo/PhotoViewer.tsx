@@ -28,11 +28,17 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
     onClose={onClose}
     fullWidth
     maxWidth="xl"
+    sx={{
+      backdropFilter: 'blur(1px)',
+    }}
     PaperProps={{
       sx: {
         p: '0 48px',
         height: '85%',
         position: 'relative',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundImage: 'none',
+        boxShadow: 'none',
       },
     }}
   >
