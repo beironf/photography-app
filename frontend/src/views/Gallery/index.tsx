@@ -1,38 +1,61 @@
-import { CircularProgress, Dialog } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { PhotoApi } from 'api/PhotoApi';
 import { NonIdealState } from 'components/NonIdealState';
 import { usePromise } from 'hooks';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useMemo, useState,
+} from 'react';
 import { PhotoGallery } from 'components/Photo/PhotoGallery';
-import { useParams } from 'react-router-dom';
-import { ImageApi } from 'api/ImageApi';
+import { PhotoViewer } from 'components/Photo/PhotoViewer';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ImageRenderer } from 'components/Image/ImageRenderer';
+import { ARROW_LEFT, ARROW_RIGHT, useKeyPress } from 'hooks/use-key-press';
+import { nextIndex, prevIndex } from 'util/carousel-utils';
 
 export const Gallery: React.FunctionComponent = () => {
   const params = useParams();
-
-  const [selectedPhotoId, setSelectedPhotoId] = useState<string>();
   const { imageId } = params;
+
+  const [imageIsLoading, setImageIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const setImageId = useCallback((id?: string) => {
+    if (id !== undefined) {
+      navigate(`/gallery/${id}`);
+      setImageIsLoading(true);
+    } else navigate('/gallery');
+  }, [navigate]);
 
   const listPhotos = useCallback(() => PhotoApi.listPhotos(), []);
   const {
     trigger: reloadPhotos, data: photosWithRatio, error: listPhotosError,
     loading: listPhotosLoading,
   } = usePromise(listPhotos);
+  const photos = useMemo(() => (photosWithRatio ?? []).map((_) => _.photo), [photosWithRatio]);
 
   // Fetch photos on startup
   useEffect(() => {
     reloadPhotos();
   }, [reloadPhotos]);
 
-  // Set selected photo on param change
-  useEffect(() => {
-    setSelectedPhotoId(imageId);
-  }, [imageId]);
+  const selectedIndex = photos.findIndex((_) => _.imageId === imageId);
+  const selectedPhoto = selectedIndex !== -1 ? photos[selectedIndex] : undefined;
 
-  const selectedPhoto = (photosWithRatio ?? [])
-    .find((_) => _.photo.imageId === (selectedPhotoId ?? -1));
+  const goTo = useCallback((direction: 'next' | 'prev') => {
+    if (!imageIsLoading) {
+      const newIndex = direction === 'next'
+        ? nextIndex(selectedIndex, photos.length)
+        : prevIndex(selectedIndex, photos.length);
+      if (newIndex === -1) setImageId(undefined);
+      else setImageId(photos[newIndex].imageId);
+    }
+  }, [photos, selectedIndex, imageIsLoading, setImageId]);
+
+  const galleryRef = useRef();
+  useKeyPress([ARROW_RIGHT], (_) => goTo('next'), galleryRef.current);
+  useKeyPress([ARROW_LEFT], (_) => goTo('prev'), galleryRef.current);
 
   return (
     <>
@@ -55,20 +78,32 @@ export const Gallery: React.FunctionComponent = () => {
           <PhotoGallery
             photosWithRatio={photosWithRatio}
             margin={2}
-            onPhotoClick={(id) => setSelectedPhotoId(id)}
+            targetRowHeight={300}
+            onPhotoClick={(id) => setImageId(id)}
+            renderPhoto={
+              ({ photo: image }) => (
+                <ImageRenderer
+                  key={image.key}
+                  selected={imageId === image.key}
+                  noImageSelected={imageId === undefined}
+                  image={image}
+                  onImageClick={
+                    () => (imageId === image.key
+                      ? setImageId(undefined)
+                      : setImageId(image.key))
+                  }
+                />
+              )
+            }
           />
-          <Dialog
-            open={selectedPhotoId !== undefined}
-            onClose={() => setSelectedPhotoId(undefined)}
-            fullWidth
-          >
-            {selectedPhoto !== undefined && (
-              <img
-                src={ImageApi.ImageRoute.getImageUrl(selectedPhoto.photo.imageId)}
-                alt={selectedPhoto.photo.title}
-              />
-            )}
-          </Dialog>
+          <PhotoViewer
+            selectedPhoto={selectedPhoto}
+            loading={imageIsLoading}
+            onClose={() => setImageId(undefined)}
+            onLoaded={() => setImageIsLoading(false)}
+            goToNext={photos.length > 1 ? () => goTo('next') : undefined}
+            goToPrevious={photos.length > 1 ? () => goTo('prev') : undefined}
+          />
         </>
       )}
     </>

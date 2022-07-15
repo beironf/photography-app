@@ -6,6 +6,7 @@ import { ImageDto } from 'api/ImageApi/model';
 type props = {
   images: ImageDto[];
   margin: number;
+  targetRowHeight?: number;
   onImageClick?: (_: string) => void; // will not work if custom renderImage is used
   renderImage?: React.ComponentType<RenderImageProps<{}>>;
 };
@@ -13,6 +14,7 @@ type props = {
 export const ImageGallery: React.FunctionComponent<props> = ({
   images,
   margin,
+  targetRowHeight,
   onImageClick,
   renderImage,
 }) => (
@@ -29,6 +31,7 @@ export const ImageGallery: React.FunctionComponent<props> = ({
       onClick={onImageClick !== undefined
         ? (_, { photo: { key } }) => onImageClick(key)
         : undefined}
+      targetRowHeight={targetRowHeight}
     />
   </div>
 );

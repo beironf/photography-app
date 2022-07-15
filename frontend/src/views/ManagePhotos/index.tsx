@@ -1,4 +1,5 @@
 import { CircularProgress, Drawer } from '@mui/material';
+import FlagIcon from '@mui/icons-material/Flag';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import { ImageApi } from 'api/ImageApi';
@@ -8,20 +9,15 @@ import { ImageRemover } from 'components/Image/ImageRemover';
 import { usePromise } from 'hooks';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ImageGallery } from 'components/Image/ImageGallery';
+import { ImageRenderer } from 'components/Image/ImageRenderer';
 import { theme } from 'style/theme';
 import { PhotoApi } from 'api/PhotoApi';
-import { ImageRenderer } from './ImageRenderer';
 import { ManagePhotosMenu } from './ManagePhotosMenu';
 
-// Styling constants
 const drawerWidth = '40%';
-const selectionColor = 'white';
-const opacityWhenNotSelected = 0.4;
-
 const drawerBaseStyle = {
   width: drawerWidth,
 };
-
 const drawerPaperBaseStyle = {
   width: drawerWidth,
   boxSizing: 'border-box',
@@ -82,6 +78,19 @@ export const ManagePhotos: React.FunctionComponent = () => {
     return true;
   });
 
+  const unfinishedIcon = (imageId: string): JSX.Element | undefined => {
+    const isUnfinished = (photosWithRatio ?? [])
+      .findIndex((_) => _.photo.imageId === imageId) === -1;
+
+    return isUnfinished ? (
+      <FlagIcon
+        style={{
+          color: 'red', position: 'absolute', top: 0, right: 0,
+        }}
+      />
+    ) : undefined;
+  };
+
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ flexGrow: 1, marginRight: '-2px' }}>
@@ -103,17 +112,15 @@ export const ManagePhotos: React.FunctionComponent = () => {
           <ImageGallery
             images={filteredImages}
             margin={2}
+            targetRowHeight={250}
             renderImage={
               ({ photo: image }) => (
                 <ImageRenderer
                   key={image.key}
-                  selectedImageId={selectedImageId}
-                  unfinished={(photosWithRatio ?? [])
-                    .findIndex((_) => _.photo.imageId === image.key) === -1}
+                  selected={selectedImageId === image.key}
+                  noImageSelected={selectedImageId === undefined}
+                  child={unfinishedIcon(image.key)}
                   image={image}
-                  margin={2}
-                  selectionColor={selectionColor}
-                  opacityWhenNotSelected={opacityWhenNotSelected}
                   onImageClick={
                     () => (selectedImageId === image.key
                       ? setSelectedImageId(undefined)
@@ -131,7 +138,9 @@ export const ManagePhotos: React.FunctionComponent = () => {
         sx={{
           ...drawerBaseStyle,
           flexShrink: 0,
-          '& .MuiDrawer-paper': {
+        }}
+        PaperProps={{
+          sx: {
             ...drawerPaperBaseStyle,
             display: 'flex',
             flexDirection: 'column',
@@ -164,10 +173,8 @@ export const ManagePhotos: React.FunctionComponent = () => {
           position: 'absolute',
           right: 0,
           top: 0,
-          '& .MuiDrawer-paper': {
-            ...drawerPaperBaseStyle,
-          },
         }}
+        PaperProps={{ sx: { ...drawerPaperBaseStyle } }}
       >
         {selectedImageId !== undefined && !listPhotosError && (
           <>
