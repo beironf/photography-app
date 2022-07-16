@@ -84,8 +84,8 @@ export const Gallery: React.FunctionComponent = () => {
               ({ photo: image }) => (
                 <ImageRenderer
                   key={image.key}
-                  selected={imageId === image.key}
-                  noImageSelected={imageId === undefined}
+                  selected={false}
+                  noImageSelected
                   image={image}
                   onImageClick={
                     () => (imageId === image.key
