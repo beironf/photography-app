@@ -51,7 +51,8 @@ mysql -u root -h localhost -P 4001 -D photography_db --protocol=tcp
 
 ## Example Images
 
-### Photo Editor
+### Photo Manager
+<img width="1728" alt="image" src="https://user-images.githubusercontent.com/17812202/181303835-c16d5b7c-7c68-488b-bb7e-22678c786ce1.png">
 <img width="1728" alt="image" src="https://user-images.githubusercontent.com/17812202/177271632-8ae1149c-5bf3-4c00-96bc-0970b67e9562.png">
 
 ### Photo Viewer
