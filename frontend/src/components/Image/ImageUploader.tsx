@@ -8,10 +8,12 @@ import {
 import { theme } from 'style/theme';
 
 type props = {
+  onImageUploading: () => void;
   onImageUploaded: (_: string) => void;
 };
 
 export const ImageUploader: React.FunctionComponent<props> = ({
+  onImageUploading,
   onImageUploaded,
 }) => {
   const [fileName, setFileName] = useState('');
@@ -23,8 +25,9 @@ export const ImageUploader: React.FunctionComponent<props> = ({
       const file = fileInput.files[0];
       formData.append('image', file);
       ImageApi.ImageRoute.uploadImage(formData, () => onImageUploaded(file.name));
+      onImageUploading();
     }
-  }, [fileName, onImageUploaded]);
+  }, [fileName, onImageUploaded, onImageUploading]);
 
   return (
     <label htmlFor="file-input">
