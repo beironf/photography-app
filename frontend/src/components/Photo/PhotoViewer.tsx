@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { ImageApi } from 'api/ImageApi';
 import { Photo } from 'model/photo';
 import {
@@ -9,6 +9,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { theme } from 'style/theme';
+import { useKeyPress } from 'hooks/use-key-press';
 import { PhotoInfoDrawer } from './PhotoInfoDrawer';
 
 type props = {
@@ -30,6 +31,11 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
 }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [infoHeight, setInfoHeight] = useState(0);
+
+  const toggleShowInfo = useCallback(() => setShowInfo(!showInfo), [showInfo]);
+
+  const viewerRef = useRef();
+  useKeyPress(['i'], (_) => toggleShowInfo(), viewerRef.current);
 
   return (
     <Dialog

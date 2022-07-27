@@ -40,7 +40,11 @@ export const Menu: React.FunctionComponent<Props> = ({ items }) => {
           <List style={{ marginTop: theme.primaryPadding }}>
             {items.map((item) => (
               <ListItem key={item.id} disablePadding>
-                <ListItemButton onClick={item.onClick}>
+                <ListItemButton onClick={() => {
+                  item.onClick();
+                  setOpen(false);
+                }}
+                >
                   <ListItemIcon>
                     {item.icon}
                   </ListItemIcon>
