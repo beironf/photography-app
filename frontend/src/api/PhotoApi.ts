@@ -5,13 +5,20 @@ import { Photo, PhotoWithRatio, UpdatePhoto } from 'model/photo';
 export namespace PhotoApi {
   const api = new BaseApi(`${Config.photoApi}/v1/photos/`);
 
+  const convertToDate = (photo: Photo): Photo => (
+    { ...photo, taken: new Date(photo.taken) }
+  );
+
   export function getPhoto(id: string): Promise<Photo> {
     return api.getData<Photo>(`${id}`)
-      .then((photo) => ({ ...photo, taken: new Date(photo.taken) }));
+      .then(convertToDate);
   }
 
   export function listPhotos(): Promise<PhotoWithRatio[]> {
-    return api.getData('');
+    return api.getData<PhotoWithRatio[]>('')
+      .then((photosWithRatio) => photosWithRatio.map(
+        (pwr) => ({ photo: convertToDate(pwr.photo), width: pwr.width, height: pwr.height }),
+      ));
   }
 
   export function addPhoto(photo: Photo, callback?: () => void): void {

@@ -112,6 +112,7 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
             width: '100%',
             objectFit: 'contain',
             display: !loading ? 'flex' : 'none',
+            padding: `${theme.secondaryPadding}px 0`,
           }}
           src={ImageApi.ImageRoute.getImageUrl(selectedPhoto.imageId)}
           alt={selectedPhoto.title}

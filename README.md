@@ -40,7 +40,7 @@ Common webhotels usually have support for MySQL so I went for this even though i
 #### Initiate/Start:
 The DB is specified in the `docker-compose.yaml` file (services: `db`) where we create a MySQL-container (`photography-db`) with the database `photography_db` inside.
 ```
-docker-compose up db -d
+docker-compose up -d db
 ```
 
 #### Connect:
