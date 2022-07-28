@@ -1,5 +1,6 @@
 package backend.photo.interactors
 
+import backend.photo.entities.meta.Category.Category
 import backend.photo.entities.{Photo, UpdatePhoto}
 import backend.photo.ports.PhotoRepository
 
@@ -19,8 +20,10 @@ class PhotoService(repository: PhotoRepository) {
   def removePhoto(imageId: String): Future[Unit] =
     repository.removePhoto(imageId)
 
-  def listPhotos(group: Option[String] = None,
-                 rating: Option[Int] = None): Future[Seq[Photo]] =
-    repository.listPhotos(group, rating)
+  def listPhotos(category: Option[Category] = None,
+                 group: Option[String] = None,
+                 rating: Option[Int] = None,
+                 inShowroom: Option[Boolean] = None): Future[Seq[Photo]] =
+    repository.listPhotos(category, group, rating, inShowroom)
 
 }

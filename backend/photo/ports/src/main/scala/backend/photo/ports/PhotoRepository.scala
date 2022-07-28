@@ -1,6 +1,7 @@
 package backend.photo.ports
 
 import backend.photo.entities._
+import backend.photo.entities.meta.Category.Category
 
 import scala.concurrent.Future
 
@@ -14,7 +15,9 @@ trait PhotoRepository {
 
   def removePhoto(imageId: String): Future[Unit]
 
-  def listPhotos(group: Option[String] = None,
-                 rating: Option[Int] = None): Future[Seq[Photo]]
+  def listPhotos(category: Option[Category] = None,
+                 group: Option[String] = None,
+                 rating: Option[Int] = None,
+                 inShowroom: Option[Boolean] = None): Future[Seq[Photo]]
 
 }

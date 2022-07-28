@@ -2,6 +2,7 @@ package backend.photo.adapters
 
 import backend.photo.adapters.db._
 import backend.photo.entities._
+import backend.photo.entities.meta.Category.Category
 import backend.photo.entities.meta.{Judgement, Location}
 import backend.photo.ports.PhotoRepository
 import cats.data.OptionT
@@ -60,15 +61,21 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
       .map(_.getOrElse((): Unit))
   }
 
-  def listPhotos(groupOpt: Option[String] = None,
-                 ratingOpt: Option[Int] = None): Future[Seq[Photo]] = db.run {
+  def listPhotos(categoryOpt: Option[Category] = None,
+                 groupOpt: Option[String] = None,
+                 ratingOpt: Option[Int] = None,
+                 inShowroomOpt: Option[Boolean] = None): Future[Seq[Photo]] = db.run {
     photos
       .join(locations).on(_.locationId === _.id)
       .join(judgements).on { case ((p, _), j) => p.judgementId === j.id }
       .filterOpt(groupOpt) { case (((p, _), _), group) => p.group === group }
       .filterOpt(ratingOpt) { case ((_, j), rating) => j.rating === rating }
+      .filterOpt(inShowroomOpt) { case ((_, j), inShowroom) => j.inShowroom === inShowroom }
       .result
-      .map(_.map { case ((p, l), j) => p.toDomain(l.toDomain, j.toDomain) })
+      .map(_
+        .filter { case ((p, _), _) => categoryOpt.forall(_ == p.metadata.category) }
+        .map { case ((p, l), j) => p.toDomain(l.toDomain, j.toDomain) }
+      )
   }
 
 

@@ -1,5 +1,6 @@
 package backend.photo.adapters
 
+import backend.photo.entities.meta.Category.Category
 import backend.photo.entities.{Photo, UpdatePhoto}
 import backend.photo.ports.PhotoRepository
 
@@ -14,11 +15,15 @@ class InMemoryPhotoRepository()
     photos.find(_.imageId == imageId)
   }
 
-  def listPhotos(groupOpt: Option[String] = None,
-                 ratingOpt: Option[Int] = None): Future[Seq[Photo]] = Future.successful {
+  def listPhotos(categoryOpt: Option[Category] = None,
+                 groupOpt: Option[String] = None,
+                 ratingOpt: Option[Int] = None,
+                 inShowroomOpt: Option[Boolean] = None): Future[Seq[Photo]] = Future.successful {
     photos.filter(p =>
-      groupOpt.forall(group => p.group.contains(group)) &&
-        ratingOpt.forall(_ == p.judgement.rating)
+      categoryOpt.forall(_ == p.metadata.category) &&
+        groupOpt.forall(group => p.group.contains(group)) &&
+        ratingOpt.forall(_ == p.judgement.rating) &&
+        inShowroomOpt.forall(_ == p.judgement.inShowroom)
     )
   }
 

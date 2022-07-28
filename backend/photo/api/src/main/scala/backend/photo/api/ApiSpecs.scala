@@ -29,12 +29,14 @@ object ApiSpecs extends EndpointsSpec
       .errorOut(commonErrorsOut)
       .out(toEnvelopedJson[PhotoDto])
 
-  val listPhotosEndpoint: EnvelopedHttpErrorEndpoint[(Option[String], Option[Int]), Seq[PhotoWithRatioDto]] =
+  val listPhotosEndpoint: EnvelopedHttpErrorEndpoint[(Option[String], Option[String], Option[Int], Option[Boolean]), Seq[PhotoWithRatioDto]] =
     photos
       .name("listPhotos")
       .get
+      .in(query[Option[String]]("category"))
       .in(query[Option[String]]("group"))
       .in(query[Option[Int]]("rating"))
+      .in(query[Option[Boolean]]("inShowroom"))
       .errorOut(commonErrorsOut)
       .out(toEnvelopedJson[Seq[PhotoWithRatioDto]])
 
