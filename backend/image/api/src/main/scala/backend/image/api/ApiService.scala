@@ -11,6 +11,7 @@ import backend.exif.interactors.ImageExifService
 import sttp.capabilities.akka.AkkaStreams
 
 import java.io.File
+import java.time.Instant
 import scala.concurrent.{ExecutionContext, Future}
 
 class ApiService(service: ImageService,
@@ -41,7 +42,10 @@ class ApiService(service: ImageService,
       exifList <- exifService.listExif(Some(ids))
       widthById = exifList.map { case (imageId, exif) => imageId -> exif.width }.toMap
       heightById = exifList.map { case (imageId, exif) => imageId -> exif.height }.toMap
-    } yield ids.map(id => ImageDto(id, widthById.getOrElse(id, 1), heightById.getOrElse(id, 1))))
+      dateById = exifList.map { case (imageId, exif) => imageId -> exif.date.getOrElse(Instant.now) }.toMap
+    } yield ids
+      .sortWith { case (a, b) => dateById(a).isAfter(dateById(b)) }
+      .map(id => ImageDto(id, widthById.getOrElse(id, 1), heightById.getOrElse(id, 1))))
       .toEnvelopedHttpResponse
 
   def getImageExif(imageId: String): Future[EnvelopedHttpResponse[ImageExifDto]] =
