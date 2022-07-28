@@ -25,7 +25,7 @@ class ApiService(service: PhotoService, validator: ApiValidationService, exifSer
     exifList <- exifService.listExif(Some(photos.map(_.imageId)))
     width = exifList.map { case (imageId, exif) => imageId -> exif.width }.toMap
     height = exifList.map { case (imageId, exif) => imageId -> exif.height }.toMap
-  } yield photos.map { photo =>
+  } yield photos.sortBy(_.taken).reverse.map { photo =>
     photo.toDtoWithRatio(width.getOrElse(photo.imageId, 1), height.getOrElse(photo.imageId, 1))
   }).toEnvelopedHttpResponse
 
