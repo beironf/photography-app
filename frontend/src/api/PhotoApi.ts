@@ -1,5 +1,6 @@
 import { BaseApi } from 'api/BaseApi';
 import { Config } from 'Config';
+import { PhotoCategory } from 'model/metadata';
 import { Photo, PhotoWithRatio, UpdatePhoto } from 'model/photo';
 
 export namespace PhotoApi {
@@ -14,8 +15,15 @@ export namespace PhotoApi {
       .then(convertToDate);
   }
 
-  export function listPhotos(): Promise<PhotoWithRatio[]> {
-    return api.getData<PhotoWithRatio[]>('')
+  export function listPhotos(
+    category?: PhotoCategory,
+    group?: string,
+    rating?: number,
+    inShowroom?: boolean,
+  ): Promise<PhotoWithRatio[]> {
+    return api.getData<PhotoWithRatio[]>('', {
+      category, group, rating, inShowroom,
+    })
       .then((photosWithRatio) => photosWithRatio.map(
         (pwr) => ({ photo: convertToDate(pwr.photo), width: pwr.width, height: pwr.height }),
       ));
