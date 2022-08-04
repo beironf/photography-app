@@ -30,7 +30,7 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
       .errorOut(commonErrorsOut)
       .out(toEnvelopedJson[Seq[ImageDto]])
 
-  val getImageEndpoint: AkkaStreamsEndpoint[String, AkkaStreams.BinaryStream] =
+  val getImageEndpoint: HttpErrorStreamingEndpoint[String, AkkaStreams.BinaryStream, AkkaStreams] =
     images
       .name("getImage")
       .get
@@ -57,7 +57,7 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
 
-  val getThumbnailEndpoint: AkkaStreamsEndpoint[String, AkkaStreams.BinaryStream] =
+  val getThumbnailEndpoint: HttpErrorStreamingEndpoint[String, AkkaStreams.BinaryStream, AkkaStreams] =
     thumbnails
       .name("getThumbnail")
       .get

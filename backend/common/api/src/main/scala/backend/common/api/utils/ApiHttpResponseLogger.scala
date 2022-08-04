@@ -11,7 +11,7 @@ import scala.concurrent.{ExecutionContext, Future}
 trait ApiHttpResponseLogger extends DefaultService {
 
   implicit class HttpResponseLogger[R](response: Future[HttpResponse[R]]) {
-    def logErrors()(implicit executionContext: ExecutionContext): Future[Unit] = response
+    def logErrors(implicit executionContext: ExecutionContext): Future[Unit] = response
       .map {
         case Left(e) => logHttpError(e)
         case Right(_) => (): Unit
