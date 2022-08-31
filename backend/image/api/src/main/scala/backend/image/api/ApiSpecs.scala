@@ -5,7 +5,7 @@ import backend.common.api.model.EndpointsSpec
 import backend.common.api.utils.ApiHttpErrorsHandler.commonErrorsOut
 import backend.image.api.model.{ImageDto, ImageExifDto, JsonProtocol}
 import sttp.capabilities.akka.AkkaStreams
-import sttp.model.{Part, StatusCode}
+import sttp.model.{Header, MediaType, Part, StatusCode}
 import sttp.tapir.generic.auto._
 import sttp.tapir._
 
@@ -40,6 +40,7 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
         Schema(Schema.schemaForFile.schemaType),
         CodecFormat.OctetStream()
       ))
+      .out(header(Header.contentType(MediaType.ImageJpeg)))
 
   val uploadImageEndpoint: HttpErrorEndpoint[ImageFileUpload, Unit] =
     images

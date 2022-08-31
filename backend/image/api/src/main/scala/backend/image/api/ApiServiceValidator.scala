@@ -23,7 +23,7 @@ class ApiServiceValidator(imageService: ImageService)
     }
 
   def fileIsJPG(fileName: String): Either[HttpError, Unit] =
-    if (fileName.contains(".jpg")) {
+    if (fileName.endsWith(".jpg")) {
       Right((): Unit)
     } else {
       Left(BadRequest(s"[fileName: $fileName] File is not JPG"))
