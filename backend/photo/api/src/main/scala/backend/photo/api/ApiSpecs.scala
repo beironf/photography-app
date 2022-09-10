@@ -5,6 +5,7 @@ import backend.common.api.model.EndpointsSpec
 import backend.common.api.utils.ApiHttpErrorsHandler.commonErrorsOut
 import backend.photo.api.model._
 import backend.photo.api.model.dtos._
+import backend.photo.api.model.enums.CategoryDto
 import sttp.model.StatusCode
 import sttp.tapir._
 import sttp.tapir.codec.enumeratum.TapirCodecEnumeratum
@@ -29,11 +30,11 @@ object ApiSpecs extends EndpointsSpec
       .errorOut(commonErrorsOut)
       .out(toEnvelopedJson[PhotoDto])
 
-  val listPhotosEndpoint: EnvelopedHttpErrorEndpoint[(Option[String], Option[String], Option[Int], Option[Boolean]), Seq[PhotoWithRatioDto]] =
+  val listPhotosEndpoint: EnvelopedHttpErrorEndpoint[(Option[CategoryDto], Option[String], Option[Int], Option[Boolean]), Seq[PhotoWithRatioDto]] =
     photos
       .name("listPhotos")
       .get
-      .in(query[Option[String]]("category"))
+      .in(query[Option[CategoryDto]]("category"))
       .in(query[Option[String]]("group"))
       .in(query[Option[Int]]("rating"))
       .in(query[Option[Boolean]]("inShowroom"))

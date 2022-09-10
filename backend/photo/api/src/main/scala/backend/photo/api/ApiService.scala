@@ -7,7 +7,7 @@ import backend.common.model.CommonExceptions.BadRequestException
 import backend.exif.interactors.ImageExifService
 import backend.photo.api.model.ImplicitDtoConversion
 import backend.photo.api.model.dtos._
-import backend.photo.entities.meta.Category
+import backend.photo.api.model.enums.CategoryDto
 import backend.photo.interactors.PhotoService
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -21,11 +21,11 @@ class ApiService(service: PhotoService, validator: ApiValidationService, exifSer
       .map(_.map(_.toDto))
       .toEnveloped
 
-  def listPhotos(category: Option[String] = None,
+  def listPhotos(category: Option[CategoryDto] = None,
                  group: Option[String] = None,
                  rating: Option[Int] = None,
                  inShowroom: Option[Boolean] = None): Future[EnvelopedHttpResponse[Seq[PhotoWithRatioDto]]] = (for {
-    cat <- Future.apply(category.map(Category.withName))
+    cat <- Future.apply(category.map(_.toDomain))
       .recover { case _: NoSuchElementException => throw BadRequestException(s"'${category.get}' is not a valid category") }
     photos <- service.listPhotos(cat, group, rating, inShowroom)
     exifList <- exifService.listExif(Some(photos.map(_.imageId)))
