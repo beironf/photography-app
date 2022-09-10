@@ -24,7 +24,7 @@ export const SelectField: React.FunctionComponent<Props> = ({
     id={id}
     label={label}
     value={value || ''}
-    error={value === undefined || value === ''}
+    error={required && (value === undefined || value === '')}
     required={required}
     onChange={(e) => onChange(e.target.value)}
     disabled={disabled}

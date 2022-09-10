@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { Grid } from '@mui/material';
-import { PhotoCategory } from 'model/metadata';
+import { NumberRatingField } from 'components/Inputs/NumberRatingField';
+import { SelectField } from 'components/Inputs/SelectField';
+import { PhotoCategory, toCategory } from 'model/metadata';
 import React from 'react';
 import { theme } from 'style/theme';
 
@@ -40,13 +42,33 @@ export const GalleryFilters: React.FunctionComponent<props> = ({
       }}
     >
       <Grid item>
-        Category Filter
+        <SelectField
+          id="category-filter"
+          label="Category"
+          options={
+            Object.values(PhotoCategory)
+              .map((c) => ({ value: c, label: c }))
+          }
+          value={category}
+          onChange={(s) => setCategory(toCategory(s as string))}
+        />
       </Grid>
       <Grid item>
-        Group Filter
+        <SelectField
+          id="group-filter"
+          label="Group"
+          options={groups.map((g) => ({ value: g, label: g }))}
+          value={group}
+          onChange={(s) => setGroup(s)}
+        />
       </Grid>
       <Grid item>
-        Rating Filter
+        <NumberRatingField
+          id="rating-filter"
+          label="Rating"
+          rating={rating}
+          setRating={setRating}
+        />
       </Grid>
     </Grid>
   );

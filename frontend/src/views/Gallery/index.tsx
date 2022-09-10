@@ -55,6 +55,15 @@ export const Gallery: React.FunctionComponent = () => {
     reloadPhotos();
   }, [reloadPhotos]);
 
+  // Reset filters on hide
+  useEffect(() => {
+    if (!useFilters) {
+      setCategoryFilter(undefined);
+      setGroupFilter(undefined);
+      setRatingFilter(undefined);
+    }
+  }, [useFilters]);
+
   const selectedIndex = photos.findIndex((_) => _.imageId === imageId);
   const selectedPhoto = selectedIndex !== -1 ? photos[selectedIndex] : undefined;
 
@@ -74,6 +83,31 @@ export const Gallery: React.FunctionComponent = () => {
 
   return (
     <>
+      <Card sx={{ p: `${theme.primaryPadding}px` }}>
+        <Typography variant="h4" align="center">
+          Gallery
+        </Typography>
+        <IconButton
+          onClick={() => setUseFilters(!useFilters)}
+          sx={{
+            position: 'absolute',
+            top: `${theme.primaryPadding}px`,
+            right: `${theme.primaryPadding}px`,
+          }}
+        >
+          {useFilters && <FilterAltOffIcon />}
+          {!useFilters && <FilterAltIcon />}
+        </IconButton>
+        <GalleryFilters
+          active={useFilters}
+          category={categoryFilter}
+          group={groupFilter}
+          rating={ratingFilter}
+          setCategory={(c) => setCategoryFilter(c)}
+          setGroup={(g) => setGroupFilter(g)}
+          setRating={(r) => setRatingFilter(r)}
+        />
+      </Card>
       {listPhotosLoading
         && <NonIdealState description="Loading photo metadata" icon={<CircularProgress />} />}
       {listPhotosError && (
@@ -90,31 +124,6 @@ export const Gallery: React.FunctionComponent = () => {
       )}
       {photosWithRatio !== undefined && photosWithRatio.length > 0 && (
         <>
-          <Card sx={{ p: `${theme.primaryPadding}px` }}>
-            <Typography variant="h4" align="center">
-              Gallery
-            </Typography>
-            <IconButton
-              onClick={() => setUseFilters(!useFilters)}
-              sx={{
-                position: 'absolute',
-                top: `${theme.primaryPadding}px`,
-                right: `${theme.primaryPadding}px`,
-              }}
-            >
-              {useFilters && <FilterAltOffIcon />}
-              {!useFilters && <FilterAltIcon />}
-            </IconButton>
-            <GalleryFilters
-              active={useFilters}
-              category={categoryFilter}
-              group={groupFilter}
-              rating={ratingFilter}
-              setCategory={(c) => setCategoryFilter(c)}
-              setGroup={(g) => setGroupFilter(g)}
-              setRating={(r) => setRatingFilter(r)}
-            />
-          </Card>
           <PhotoGallery
             photosWithRatio={photosWithRatio}
             margin={2}
