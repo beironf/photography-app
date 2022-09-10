@@ -30,6 +30,11 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
     implementation = (apiService.listPhotos _).tupled
   )
 
+  private val listPhotoGroups = endpoint(
+    specification = listPhotoGroupsEndpoint,
+    implementation = (_: Unit) => apiService.listPhotoGroups
+  )
+
   private val addPhoto = endpoint(
     specification = addPhotoEndpoint,
     implementation = apiService.addPhoto
@@ -48,6 +53,7 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
   val route: Route =
     getPhoto ~
       listPhotos ~
+      listPhotoGroups ~
       addPhoto ~
       updatePhoto ~
       removePhoto

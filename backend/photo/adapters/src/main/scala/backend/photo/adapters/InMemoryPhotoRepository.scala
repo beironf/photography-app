@@ -27,6 +27,10 @@ class InMemoryPhotoRepository()
     )
   }
 
+  def listPhotoGroups: Future[Seq[String]] = Future.successful {
+    photos.groupBy(_.group).keys.flatten.toSeq
+  }
+
   def addPhoto(photo: Photo): Future[Unit] = Future.successful {
     photos = photos.appended(photo)
   }

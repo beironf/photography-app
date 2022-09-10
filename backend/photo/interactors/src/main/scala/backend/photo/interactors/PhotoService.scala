@@ -26,4 +26,7 @@ class PhotoService(repository: PhotoRepository) {
                  inShowroom: Option[Boolean] = None): Future[Seq[Photo]] =
     repository.listPhotos(category, group, rating, inShowroom)
 
+  def listPhotoGroups: Future[Seq[String]] =
+    repository.listPhotoGroups
+
 }

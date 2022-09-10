@@ -78,6 +78,14 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
       )
   }
 
+  def listPhotoGroups: Future[Seq[String]] = db.run {
+    photos
+      .filter(_.group.nonEmpty)
+      .map(_.group)
+      .result
+      .map(_.flatten.distinct)
+  }
+
 
   private def getPhotoDb(imageId: String): DBIO[Option[PhotoDb]] = get[Photos](photos, _.imageId === imageId)
   private def addPhotoDb(photoDb: PhotoDb): DBIO[Int] = photos += photoDb

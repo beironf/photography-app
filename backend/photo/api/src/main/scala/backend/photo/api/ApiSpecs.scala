@@ -22,6 +22,11 @@ object ApiSpecs extends EndpointsSpec
     .in("photos")
     .tag("photos")
 
+  private val photoGroups = endpoint
+    .in("v1")
+    .in("photo-groups")
+    .tag("photo-groups")
+
   val getPhotoEndpoint: EnvelopedHttpErrorEndpoint[String, PhotoDto] =
     photos
       .name("getPhoto")
@@ -40,6 +45,13 @@ object ApiSpecs extends EndpointsSpec
       .in(query[Option[Boolean]]("inShowroom"))
       .errorOut(commonErrorsOut)
       .out(toEnvelopedJson[Seq[PhotoWithRatioDto]])
+
+  val listPhotoGroupsEndpoint: EnvelopedHttpErrorEndpoint[Unit, Seq[String]] =
+    photoGroups
+      .name("listPhotoGroups")
+      .get
+      .errorOut(commonErrorsOut)
+      .out(toEnvelopedJson[Seq[String]])
 
   val addPhotoEndpoint: HttpErrorEndpoint[PhotoDto, Unit] =
     photos
@@ -70,6 +82,7 @@ object ApiSpecs extends EndpointsSpec
   val endpoints: List[AnyEndpoint] = List(
     getPhotoEndpoint,
     listPhotosEndpoint,
+    listPhotoGroupsEndpoint,
     addPhotoEndpoint,
     updatePhotoEndpoint,
     removePhotoEndpoint

@@ -35,6 +35,10 @@ class ApiService(service: PhotoService, validator: ApiValidationService, exifSer
     photo.toDtoWithRatio(width.getOrElse(photo.imageId, 1), height.getOrElse(photo.imageId, 1))
   }).toEnvelopedHttpResponse
 
+  def listPhotoGroups: Future[EnvelopedHttpResponse[Seq[String]]] =
+    service.listPhotoGroups
+      .toEnvelopedHttpResponse
+
   def addPhoto(photoDto: PhotoDto): Future[HttpResponse[Unit]] = (for {
     _ <- validator.photoDoesNotExist(photoDto.imageId).toEitherT
     _ <- service.addPhoto(photoDto.toDomain).toEitherT[HttpError]

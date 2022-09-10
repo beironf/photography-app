@@ -20,4 +20,6 @@ trait PhotoRepository {
                  rating: Option[Int] = None,
                  inShowroom: Option[Boolean] = None): Future[Seq[Photo]]
 
+  def listPhotoGroups: Future[Seq[String]]
+
 }
