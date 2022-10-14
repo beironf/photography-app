@@ -13,6 +13,7 @@ import scala.concurrent.{ExecutionContext, Future}
 object ImageRepositoryImpl extends DefaultService {
   val IMAGE_PATH: Path = Paths.get(config.getString("file-storage.images.local.path"))
   val THUMBNAIL_PATH: Path = Paths.get(config.getString("file-storage.thumbnails.local.path"))
+  val SITE_IMAGE_PATH: Path = Paths.get(config.getString("file-storage.site-images.local.path"))
 
   def apply()(implicit executionContext: ExecutionContext): ImageRepositoryImpl =
     new ImageRepositoryImpl
@@ -53,6 +54,9 @@ class ImageRepositoryImpl()
     deleteFile(fullPath(imageId, ImageType.Thumbnail))
       .map(_ => (): Unit)
 
+  def getSiteImageStream(fileName: String): Future[Option[ImageStream]] =
+    getFileStream(fullPath(fileName, ImageType.Site))
+
   private def getFileStream(filePath: Path): Future[Option[ImageStream]] =
     Future(Option.when(filePath.toFile.exists)(FileIO.fromPath(filePath)))
 
@@ -86,6 +90,7 @@ class ImageRepositoryImpl()
     `type` match {
       case ImageType.FullSize => IMAGE_PATH
       case ImageType.Thumbnail => THUMBNAIL_PATH
+      case ImageType.Site => SITE_IMAGE_PATH
     }
 
 }

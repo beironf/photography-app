@@ -28,4 +28,7 @@ class ImageService(repository: ImageRepository) extends ImageIO {
   def removeThumbnail(imageId: String): Future[Unit] =
     repository.removeThumbnail(imageId)
 
+  def getSiteImageStream(fileName: String): Future[Option[ImageStream]] =
+    repository.getSiteImageStream(fileName)
+
 }

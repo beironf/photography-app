@@ -36,6 +36,12 @@ class ApiService(service: ImageService,
       case None => Left(NotFound(s"[imageId: $imageId] Thumbnail not found"))
     }
 
+  def getSiteImage(fileName: String): Future[HttpResponse[AkkaStreams.BinaryStream]] =
+    service.getSiteImageStream(fileName).map {
+      case Some(stream) => Right(stream)
+      case None => Left(NotFound(s"[fileName: $fileName] Site image not found"))
+    }
+
   def listImages: Future[EnvelopedHttpResponse[Seq[ImageDto]]] =
     (for {
       ids <- service.listImageIds

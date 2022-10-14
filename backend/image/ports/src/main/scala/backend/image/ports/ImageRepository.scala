@@ -20,4 +20,6 @@ trait ImageRepository extends ImageIO {
 
   def removeThumbnail(imageId: String): Future[Unit]
 
+  def getSiteImageStream(fileName: String): Future[Option[ImageStream]]
+
 }

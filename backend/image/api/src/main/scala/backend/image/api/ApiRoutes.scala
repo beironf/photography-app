@@ -35,6 +35,11 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
     implementation = apiService.getThumbnail
   )
 
+  private val getSiteImage = streamingAkkaEndpoint(
+    specification = getSiteImageEndpoint,
+    implementation = apiService.getSiteImage
+  )
+
   private val uploadImage = endpoint(
     specification = uploadImageEndpoint,
     implementation = apiService.uploadImage
@@ -56,6 +61,7 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
       uploadImage ~
       removeImage ~
       getThumbnail ~
+      getSiteImage ~
       getExif
   }
 }
