@@ -6,7 +6,7 @@ import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
 import { Gallery } from 'views/Gallery';
-import { Showroom } from 'views/Showroom';
+import { Home } from 'views/Home';
 
 const darkTheme = createTheme({
   palette: {
@@ -17,7 +17,7 @@ const darkTheme = createTheme({
 const App: React.FC = () => {
   const body = (
     <Routes>
-      <Route path="/" element={<Showroom />} />
+      <Route path="/" element={<Home />} />
       <Route path="/gallery" element={<Gallery />} />
       <Route path="/gallery/:imageId" element={<Gallery />} />
       <Route path="/manage-photos" element={<ManagePhotos />} />

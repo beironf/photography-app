@@ -13,8 +13,8 @@ type props = {
 
 const menuItems = (navigate: NavigateFunction): MenuItem[] => [
   {
-    id: 'showroom',
-    label: 'Showroom',
+    id: 'home',
+    label: 'Home',
     icon: <HomeIcon />,
     onClick: () => navigate('/'),
   },
