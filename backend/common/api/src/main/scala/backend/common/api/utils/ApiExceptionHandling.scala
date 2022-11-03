@@ -8,22 +8,22 @@ trait ApiExceptionHandling extends ApiHttpResponseLogger {
   type ExceptionToHttpError = PartialFunction[Exception, HttpError]
 
   implicit class ExceptionHandling(exception: Exception) {
-    def toHttpError(additionalExceptionHandling: Option[ExceptionToHttpError] = None): HttpError =
-      commonExceptionHandling.lift(exception)
-        .getOrElse(additionalExceptionHandling.flatMap(_.lift(exception))
-          .getOrElse(internalServerHttpError(exception)))
+    def toHttpError(customExceptionConverter: ExceptionToHttpError = PartialFunction.empty): HttpError = {
+      if (customExceptionConverter.isDefinedAt(exception))  {
+        logCustomException(exception)
+        customExceptionConverter(exception)
+      } else {
+        logCommonException(exception)
+        commonExceptionConverter(exception)
+      }
+    }
   }
 
-  private def commonExceptionHandling: PartialFunction[Exception, HttpError] = {
+  private def commonExceptionConverter(exception: Exception): HttpError = exception match {
     case e: NotFoundException => NotFound(e.msg)
     case e: BadRequestException => BadRequest(e.msg)
     case e: ForbiddenException => Forbidden(e.msg)
-  }
-
-  private val internalServerHttpError = (e: Exception) => {
-    // We don't want the internal message in the http-response, log here before it's removed
-    logException(e)
-    InternalServerError()
+    case _ => InternalServerError()
   }
 
 }

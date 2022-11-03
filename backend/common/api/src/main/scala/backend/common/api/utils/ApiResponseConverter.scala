@@ -14,20 +14,22 @@ trait ApiResponseConverter extends ApiExceptionHandling {
   }
 
   implicit class FromFutureEither[R](response: Future[Either[Exception, R]]) {
-    def toHttpResponse(additionalExceptionHandling: Option[ExceptionToHttpError] = None)
+    def toHttpResponse(customExceptionConverter: ExceptionToHttpError = PartialFunction.empty)
                       (implicit executionContext: ExecutionContext): Future[HttpResponse[R]] =
-      mapResponse(response, additionalExceptionHandling)
+      mapResponse(response, customExceptionConverter)
 
-    def toEnvelopedHttpResponse(additionalExceptionHandling: Option[ExceptionToHttpError] = None)
+    def toEnvelopedHttpResponse(customExceptionConverter: ExceptionToHttpError = PartialFunction.empty)
                                (implicit executionContext: ExecutionContext): Future[EnvelopedHttpResponse[R]] =
-      mapResponse(response.map(_.map(Enveloped(_))), additionalExceptionHandling)
+      mapResponse(response.map(_.map(Enveloped(_))), customExceptionConverter)
 
     private def mapResponse[T](response: Future[Either[Exception, T]],
-                              additionalExceptionHandling: Option[ExceptionToHttpError] = None)
+                               customExceptionConverter: ExceptionToHttpError)
                               (implicit executionContext: ExecutionContext): Future[HttpResponse[T]] =
       response.map {
         case Right(r) => Right(r)
-        case Left(e) => Left(e.toHttpError(additionalExceptionHandling))
+        case Left(e) => Left(e.toHttpError(customExceptionConverter))
+      }.recover {
+        case e: Exception => Left(e.toHttpError(customExceptionConverter))
       }
   }
 

@@ -17,7 +17,6 @@ trait CommonApiRoute extends ApiHttpResponseLogger with ApiResponseConverter {
 
   implicit class ResponseHandler[O](response: Future[HttpResponse[O]]) {
     def handleResponse(implicit executionContext: ExecutionContext): Future[HttpResponse[O]] = response
-      .recover { case e: Exception => Left(e.toHttpError()) }
       .tap(_.logErrors)
   }
 
