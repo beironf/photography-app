@@ -1,13 +1,14 @@
 package backend.image.api
 
 import backend.common.api.model.ApiHttpErrorEndpoint._
-import backend.common.api.model.EndpointsSpec
+import backend.common.api.model.{EndpointsSpec, Enveloped}
 import backend.common.api.utils.ApiHttpErrorsHandler.commonErrorsOut
 import backend.image.api.model.{ImageDto, ImageExifDto, JsonProtocol}
 import sttp.capabilities.akka.AkkaStreams
 import sttp.model.{Header, MediaType, Part, StatusCode}
 import sttp.tapir.generic.auto._
 import sttp.tapir._
+import sttp.tapir.json.spray._
 
 object ApiSpecs extends EndpointsSpec with JsonProtocol {
 
@@ -33,7 +34,7 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
       .name("listImages")
       .get
       .errorOut(commonErrorsOut)
-      .out(toEnvelopedJson[Seq[ImageDto]])
+      .out(jsonBody[Enveloped[Seq[ImageDto]]])
 
   val getImageEndpoint: HttpErrorStreamingEndpoint[String, AkkaStreams.BinaryStream, AkkaStreams] =
     images
@@ -94,7 +95,7 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
       .in(path[String]("imageId"))
       .in("exif")
       .errorOut(commonErrorsOut)
-      .out(toEnvelopedJson[ImageExifDto])
+      .out(jsonBody[Enveloped[ImageExifDto]])
 
   // Add the endpoint here in order to include it in the documentation
   val endpoints: List[AnyEndpoint] = List(
