@@ -1,12 +1,12 @@
 package backend.photo.adapters
 
+import backend.core.utils.OptionTExtensions
 import backend.photo.adapters.db._
 import backend.photo.entities._
 import backend.photo.entities.meta.Category.Category
 import backend.photo.entities.meta.{Judgement, Location}
 import backend.photo.ports.PhotoRepository
-import cats.data.OptionT
-import com.rms.miu.slickcats.DBIOInstances._
+import com.rms.miu.slickcats.DBIOInstances.dbioInstance
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 import slick.lifted.AbstractTable
@@ -22,14 +22,15 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
   with PhotosTable
   with LocationsTable
   with JudgementsTable
-  with ImplicitDbModelConverter {
+  with ImplicitDbModelConverter
+  with OptionTExtensions {
   import dbConfig.profile.api._
 
   def getPhoto(imageId: String): Future[Option[Photo]] = db.run {
     (for {
-      photoDb <- OptionT(getPhotoDb(imageId))
-      locationDb <- OptionT(getLocationDb(photoDb.locationId))
-      judgementDb <- OptionT(getJudgementDb(photoDb.judgementId))
+      photoDb <- getPhotoDb(imageId).toOptionT
+      locationDb <- getLocationDb(photoDb.locationId).toOptionT
+      judgementDb <- getJudgementDb(photoDb.judgementId).toOptionT
     } yield photoDb.toDomain(locationDb.toDomain, judgementDb.toDomain)).value
   }
 
@@ -43,20 +44,20 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
 
   def updatePhoto(imageId: String, update: UpdatePhoto): Future[Unit] = db.run {
     (for {
-      photoDb <- OptionT(getPhotoDb(imageId))
-      _ <- OptionT.liftF(updatePhotoDb(imageId, update.toDbFormat))
-      _ <- OptionT.liftF(updateLocationDb(photoDb.locationId, update.location))
-      _ <- OptionT.liftF(updateJudgementDb(photoDb.judgementId, update.judgement))
+      photoDb <- getPhotoDb(imageId).toOptionT
+      _ <- updatePhotoDb(imageId, update.toDbFormat).toOptionT
+      _ <- updateLocationDb(photoDb.locationId, update.location).toOptionT
+      _ <- updateJudgementDb(photoDb.judgementId, update.judgement).toOptionT
     } yield (): Unit).value
       .map(_.getOrElse((): Unit))
   }
 
   def removePhoto(imageId: String): Future[Unit] = db.run {
     (for {
-      photoDb <- OptionT(getPhotoDb(imageId))
-      _ <- OptionT.liftF(removeLocationDb(photoDb.locationId))
-      _ <- OptionT.liftF(removeJudgementDb(photoDb.judgementId))
-      _ <- OptionT.liftF(removePhotoDb(imageId))
+      photoDb <- getPhotoDb(imageId).toOptionT
+      _ <- removeLocationDb(photoDb.locationId).toOptionT
+      _ <- removeJudgementDb(photoDb.judgementId).toOptionT
+      _ <- removePhotoDb(imageId).toOptionT
     } yield (): Unit).value
       .map(_.getOrElse((): Unit))
   }

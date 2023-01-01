@@ -62,8 +62,8 @@ class ApiService(service: ImageService,
 
   def uploadImage(form: ImageFileUpload): Future[HttpResponse[Unit]] =
     (for {
-      fileName <- validator.fileHasFileName(form.image).toEitherT
-      _ <- validator.fileIsJPG(fileName).toEitherT
+      fileName <- validator.fileHasFileName(form.image).toEitherT[Future]
+      _ <- validator.fileIsJPG(fileName).toEitherT[Future]
       _ <- validator.imageDoesNotExist(fileName).toEitherT
       exif = ExifUtil.getExif(form.image.body)
       _ <- exifService.addExif(fileName, exif).toEitherT[HttpError]
