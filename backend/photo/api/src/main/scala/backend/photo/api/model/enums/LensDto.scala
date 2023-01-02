@@ -10,6 +10,7 @@ object LensDto extends TapirEnum[LensDto] {
   case object Canon70_300 extends LensDto("Canon 70-300mm f:4-5.6")
   case object Canon24_70L extends LensDto("EF24-70mm f/2.8L USM")
   case object Fujinon35 extends LensDto("Fujinon 35mm f:2")
+  case object DJI6_7F1_7 extends LensDto("DJI 6.7mm f/1.7")
 
   def values: IndexedSeq[LensDto] = findValues
   def apply: String => LensDto = withName

@@ -5,6 +5,7 @@ export enum Camera {
   CANON_EOS_5D_MARK_II = 'Canon EOS 5D Mark II',
   CANON_EOS_600D = 'Canon EOS 600D',
   FUJI_X100F = 'Fujifilm X100F',
+  DJI_MINI_3 = 'DJI Mini 3',
 }
 
 export const toCamera = (s?: string): Camera | undefined => {
@@ -16,6 +17,8 @@ export const toCamera = (s?: string): Camera | undefined => {
     return Camera.CANON_EOS_600D;
   } if (s.includes('X100F')) {
     return Camera.FUJI_X100F;
+  } if (s.includes('FC3582')) {
+    return Camera.DJI_MINI_3;
   }
   return undefined;
 };
@@ -26,6 +29,7 @@ export enum Lens {
   CANON_70_300 = 'EF70-300mm f/4-5.6 IS USM',
   SIGMA_10_20_EX_DC_HSM = 'Sigma 10-20mm f/4-5.6 EX DC HSM',
   FUJINON_35 = 'Fujinon 35mm f:2',
+  DJI_MINI_3 = 'DJI 6.7mm f/1.7',
 }
 
 export const toLens = (s?: string, isX100F: boolean = false): Lens | undefined => {
@@ -41,6 +45,8 @@ export const toLens = (s?: string, isX100F: boolean = false): Lens | undefined =
     return Lens.SIGMA_10_20_EX_DC_HSM;
   } if (s.includes('EF70-300mm f/4-5.6 IS USM')) {
     return Lens.CANON_70_300;
+  } if (s.includes('6.7 mm f/1.7')) {
+    return Lens.DJI_MINI_3;
   }
   return undefined;
 };
