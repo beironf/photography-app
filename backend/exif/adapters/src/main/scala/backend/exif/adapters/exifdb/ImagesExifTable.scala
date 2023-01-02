@@ -14,7 +14,7 @@ trait ImagesExifTable extends DatabaseConnector {
     def cameraMake: Rep[Option[String]] = column[Option[String]]("camera_make")
     def cameraModel: Rep[Option[String]] = column[Option[String]]("camera_model")
     def lens: Rep[Option[String]] = column[Option[String]]("lens")
-    def focalLength: Rep[Option[Int]] = column[Option[Int]]("focal_length")
+    def focalLength: Rep[Option[Float]] = column[Option[Float]]("focal_length")
     def fNumber: Rep[Option[Float]] = column[Option[Float]]("f_number")
     def iso: Rep[Option[Int]] = column[Option[Int]]("iso")
     def exposureTime: Rep[Option[String]] = column[Option[String]]("exposure_time")

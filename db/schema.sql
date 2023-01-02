@@ -3,7 +3,7 @@ CREATE TABLE images_exif (
     camera_make     VARCHAR(255),
     camera_model    VARCHAR(255),
     lens            VARCHAR(255),
-    focal_length    INTEGER,
+    focal_length    FLOAT,
     f_number        FLOAT,
     iso             INTEGER,
     exposure_time   VARCHAR(10),

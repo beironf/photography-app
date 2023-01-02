@@ -37,7 +37,7 @@ object ExifUtil {
     val cameraMake = getValue(CAMERA_MAKE)
     val cameraModel = getValue(CAMERA_MODEL)
     val lens = getValue(LENS_MODEL)
-    val focalLength = getValue(FOCAL_LENGTH, _.toInt, useRawValue = true)
+    val focalLength = getValue(FOCAL_LENGTH, _.toFloat, useRawValue = true)
     val fNumber = getValue(F_NUMBER, _.toFloat, useRawValue = true)
     val iso = getValue(ISO, _.toInt)
     val exposureTime = getValue(EXPOSURE_TIME, useRawValue = true)
