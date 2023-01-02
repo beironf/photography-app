@@ -1,7 +1,8 @@
 package backend.common.api
 
 import akka.http.scaladsl.server.Route
-import backend.common.api.model.ApiHttpErrorEndpoint.{HttpErrorStreamingEndpoint, HttpErrorEndpoint}
+import backend.common.api.model.ApiHttpErrorEndpoint._
+import backend.common.api.model.ApiHttpErrors.Unauthorized
 import backend.common.api.model.ApiHttpResponse.HttpResponse
 import backend.common.api.utils.{ApiHttpResponseLogger, ApiResponseConverter}
 import sttp.capabilities.akka.AkkaStreams
@@ -13,6 +14,7 @@ import scala.util.chaining._
 trait CommonApiRoute extends ApiHttpResponseLogger with ApiResponseConverter {
   def route: Route
 
+  val Password: String = config.getString("admin.api.password")
   val interpreter: AkkaHttpServerInterpreter = AkkaHttpServerInterpreter()
 
   implicit class ResponseHandler[O](response: Future[HttpResponse[O]]) {
@@ -20,13 +22,32 @@ trait CommonApiRoute extends ApiHttpResponseLogger with ApiResponseConverter {
       .tap(_.logErrors)
   }
 
+  private def authorize(token: AuthenticationToken)
+                       (implicit executionContext: ExecutionContext): Future[HttpResponse[Unit]] = Future {
+    if (token.value == Password) Right((): Unit)
+    else Left(Unauthorized("Wrong password"))
+  }
+
   def endpoint[I, O](specification: HttpErrorEndpoint[I, O],
                      implementation: I => Future[HttpResponse[O]])
                     (implicit executionContext: ExecutionContext): Route =
-    interpreter.toRoute(specification.serverLogic(implementation(_).handleResponse))
+    interpreter.toRoute(
+      specification.serverLogic(implementation(_).handleResponse)
+    )
+
+  def secureEndpoint[I, O](specification: SecureHttpErrorEndpoint[I, O],
+                           implementation: I => Future[HttpResponse[O]])
+                    (implicit executionContext: ExecutionContext): Route =
+    interpreter.toRoute(
+      specification
+        .serverSecurityLogic(authorize)
+        .serverLogic(_ => implementation(_).handleResponse)
+    )
 
   def streamingAkkaEndpoint[I, O](specification: HttpErrorStreamingEndpoint[I, O, AkkaStreams],
                                   implementation: I => Future[HttpResponse[O]])
                                  (implicit executionContext: ExecutionContext): Route =
-    interpreter.toRoute(specification.serverLogic(implementation(_).handleResponse))
+    interpreter.toRoute(
+      specification.serverLogic(implementation(_).handleResponse)
+    )
 }

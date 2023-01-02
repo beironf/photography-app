@@ -48,21 +48,23 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol {
       ))
       .out(header(Header.contentType(MediaType.ImageJpeg)))
 
-  val uploadImageEndpoint: HttpErrorEndpoint[ImageFileUpload, Unit] =
+  val uploadImageEndpoint: SecureHttpErrorEndpoint[ImageFileUpload, Unit] =
     images
       .name("uploadImage")
       .post
       .in(multipartBody[ImageFileUpload](MultipartCodec.multipartCaseClassCodec[ImageFileUpload]))
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
+      .appendPasswordProtection
 
-  val removeImageEndpoint: HttpErrorEndpoint[String, Unit] =
+  val removeImageEndpoint: SecureHttpErrorEndpoint[String, Unit] =
     images
       .name("removeImage")
       .delete
       .in(path[String]("imageId"))
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
+      .appendPasswordProtection
 
   val getThumbnailEndpoint: HttpErrorStreamingEndpoint[String, AkkaStreams.BinaryStream, AkkaStreams] =
     thumbnails

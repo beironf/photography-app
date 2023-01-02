@@ -53,15 +53,16 @@ object ApiSpecs extends EndpointsSpec
       .errorOut(commonErrorsOut)
       .out(jsonBody[Enveloped[Seq[String]]])
 
-  val addPhotoEndpoint: HttpErrorEndpoint[PhotoDto, Unit] =
+  val addPhotoEndpoint: SecureHttpErrorEndpoint[PhotoDto, Unit] =
     photos
       .name("addPhoto")
       .post
       .in(jsonBody[PhotoDto])
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
+      .appendPasswordProtection
 
-  val updatePhotoEndpoint: HttpErrorEndpoint[(String, UpdatePhotoDto), Unit] =
+  val updatePhotoEndpoint: SecureHttpErrorEndpoint[(String, UpdatePhotoDto), Unit] =
     photos
       .name("updatePhoto")
       .post
@@ -69,14 +70,16 @@ object ApiSpecs extends EndpointsSpec
       .in(jsonBody[UpdatePhotoDto])
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
+      .appendPasswordProtection
 
-  val removePhotoEndpoint: HttpErrorEndpoint[String, Unit] =
+  val removePhotoEndpoint: SecureHttpErrorEndpoint[String, Unit] =
     photos
       .name("removePhoto")
       .delete
       .in(path[String]("imageId"))
       .errorOut(commonErrorsOut)
       .out(statusCode(StatusCode.NoContent))
+      .appendPasswordProtection
 
   // Add the endpoint here in order to include it in the documentation
   val endpoints: List[AnyEndpoint] = List(

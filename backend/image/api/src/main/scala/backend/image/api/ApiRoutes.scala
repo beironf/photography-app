@@ -40,12 +40,12 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
     implementation = apiService.getSiteImage
   )
 
-  private val uploadImage = endpoint(
+  private val uploadImage = secureEndpoint(
     specification = uploadImageEndpoint,
     implementation = apiService.uploadImage
   )
 
-  private val removeImage = endpoint(
+  private val removeImage = secureEndpoint(
     specification = removeImageEndpoint,
     implementation = apiService.removeImage
   )

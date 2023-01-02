@@ -35,17 +35,17 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
     implementation = (_: Unit) => apiService.listPhotoGroups
   )
 
-  private val addPhoto = endpoint(
+  private val addPhoto = secureEndpoint(
     specification = addPhotoEndpoint,
     implementation = apiService.addPhoto
   )
 
-  private val updatePhoto = endpoint(
+  private val updatePhoto = secureEndpoint(
     specification = updatePhotoEndpoint,
     implementation = (apiService.updatePhoto _).tupled
   )
 
-  private val removePhoto = endpoint(
+  private val removePhoto = secureEndpoint(
     specification = removePhotoEndpoint,
     implementation = apiService.removePhoto
   )
