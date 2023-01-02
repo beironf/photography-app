@@ -33,16 +33,21 @@ export namespace PhotoApi {
     return api.getData<string[]>('photo-groups');
   }
 
-  export function addPhoto(photo: Photo, callback?: () => void): void {
-    api.post('photos', photo)
-      .then(callback);
+  export function addPhoto(photo: Photo, passwordToken: string, callback?: () => void): void {
+    api.post('photos', photo, undefined, {
+      Authorization: `Bearer ${passwordToken}`,
+    }).then(callback);
   }
 
-  export function updatePhoto(id: string, update: UpdatePhoto): void {
-    api.post(`photos/${id}`, update);
+  export function updatePhoto(id: string, update: UpdatePhoto, passwordToken: string): void {
+    api.post(`photos/${id}`, update, undefined, {
+      Authorization: `Bearer ${passwordToken}`,
+    });
   }
 
-  export function removePhoto(id: string): void {
-    api.delete(`photos/${id}`);
+  export function removePhoto(id: string, passwordToken: string): void {
+    api.delete(`photos/${id}`, undefined, undefined, {
+      Authorization: `Bearer ${passwordToken}`,
+    });
   }
 }

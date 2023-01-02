@@ -14,8 +14,10 @@ type props = {
 export const ImageRemover: React.FunctionComponent<props> = ({ imageId, onImageRemoved }) => {
   const [showConfirm, setShowConfirm] = useState(false);
 
+  const password = 'password'; // TODO: set password in pop-up and local storage
+
   const removeImage = (): void => {
-    ImageApi.ImageRoute.removeImage(imageId)
+    ImageApi.ImageRoute.removeImage(imageId, password)
       .then((_: any) => {
         onImageRemoved(imageId);
       });

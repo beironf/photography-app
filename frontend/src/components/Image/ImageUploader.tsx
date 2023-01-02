@@ -18,13 +18,15 @@ export const ImageUploader: React.FunctionComponent<props> = ({
 }) => {
   const [fileName, setFileName] = useState('');
 
+  const password = 'password'; // TODO: set password in pop-up and local storage
+
   useEffect(() => {
     const formData = new FormData();
     const fileInput = document.querySelector('#file-input') as any;
     if (fileInput && fileInput.files[0]) {
       const file = fileInput.files[0];
       formData.append('image', file);
-      ImageApi.ImageRoute.uploadImage(formData, () => onImageUploaded(file.name));
+      ImageApi.ImageRoute.uploadImage(formData, password, () => onImageUploaded(file.name));
       onImageUploading();
     }
   }, [fileName, onImageUploaded, onImageUploading]);

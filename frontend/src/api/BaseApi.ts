@@ -29,10 +29,11 @@ export class BaseApi {
     });
   }
 
-  public post(path: string, data?: any, params?: any): Promise<AxiosResponse> {
+  public post(path: string, data?: any, params?: any, headers?: any): Promise<AxiosResponse> {
     return axios.post(this.urlFor(path), data, {
       params,
       paramsSerializer,
+      headers,
     });
   }
 

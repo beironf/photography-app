@@ -19,19 +19,27 @@ export namespace ImageRoute {
     return api.getData(`${filename}/exif`);
   }
 
-  export function uploadImage(formData: FormData, onImageUploaded: () => void): void {
+  export function uploadImage(
+    formData: FormData,
+    passwordToken: string,
+    onImageUploaded: () => void,
+  ): void {
     api
-      .post('', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      .post('', formData, undefined, {
+        Authorization: `Bearer ${passwordToken}`,
+        'Content-Type': 'multipart/form-data',
       })
       .then((_: any) => {
         onImageUploaded();
       });
   }
 
-  export function removeImage(imageId: string): Promise<AxiosResponse<any, any>> {
-    return api.delete(`${imageId}`);
+  export function removeImage(
+    imageId: string,
+    passwordToken: string,
+  ): Promise<AxiosResponse<any, any>> {
+    return api.delete(`${imageId}`, undefined, undefined, {
+      Authorization: `Bearer ${passwordToken}`,
+    });
   }
 }

@@ -24,6 +24,7 @@ import { MapInput } from 'components/PhotoEditor/Map/MapInput';
 import { Photo, UpdatePhoto } from 'model/photo';
 
 const PHOTOGRAPHER = 'Fredrik Beiron';
+const password = 'password'; // TODO: set password in pop-up and local storage
 
 const initialState: PhotoEditorState = {
   photographer: PHOTOGRAPHER,
@@ -39,12 +40,20 @@ type Props = {
 };
 
 const throttledUpdatePhoto = throttle(
-  (imageId: string, update: UpdatePhoto) => PhotoApi.updatePhoto(imageId, update),
+  (
+    imageId: string,
+    update: UpdatePhoto,
+    passwordToken: string,
+  ) => PhotoApi.updatePhoto(imageId, update, passwordToken),
   2000,
 );
 
 const throttledAddPhoto = throttle(
-  (photo: Photo, callback: () => void) => PhotoApi.addPhoto(photo, callback),
+  (
+    photo: Photo,
+    passwordToken: string,
+    callback: () => void,
+  ) => PhotoApi.addPhoto(photo, passwordToken, callback),
   5000,
 );
 
@@ -100,12 +109,12 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
 
       if (photo === undefined && !addingPhoto) {
         setAddingPhoto(true);
-        throttledAddPhoto({ imageId, ...photoContent }, () => {
+        throttledAddPhoto({ imageId, ...photoContent }, password, () => {
           onNewPhoto();
           getPhoto();
         });
       } else if (photo !== undefined) {
-        throttledUpdatePhoto(imageId, photoContent);
+        throttledUpdatePhoto(imageId, photoContent, password);
       }
     }
   }, [state]);
