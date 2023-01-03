@@ -10,6 +10,26 @@ export namespace PhotoApi {
     { ...photo, taken: new Date(photo.taken) }
   );
 
+  export function validatePassword(
+    password: string,
+    authorizedCallback: () => void,
+    unauthorizedCallback: () => void,
+  ): Promise<boolean> {
+    return api.post('auth/validate', undefined, undefined, {
+      Authorization: `Bearer ${password}`,
+    })
+      .then(
+        () => {
+          authorizedCallback();
+          return true;
+        },
+        () => {
+          unauthorizedCallback();
+          return false;
+        },
+      );
+  }
+
   export function getPhoto(id: string): Promise<Photo> {
     return api.getData<Photo>(`photos/${id}`)
       .then(convertToDate);

@@ -22,9 +22,9 @@ import { ExifForm } from 'components/PhotoEditor/PhotoForms/ExifForm';
 import { BasePhotoForm } from 'components/PhotoEditor/PhotoForms/BasePhotoForm';
 import { MapInput } from 'components/PhotoEditor/Map/MapInput';
 import { Photo, UpdatePhoto } from 'model/photo';
+import { usePasswordContext } from 'contexts/PasswordContext';
 
 const PHOTOGRAPHER = 'Fredrik Beiron';
-const password = 'password'; // TODO: set password in pop-up and local storage
 
 const initialState: PhotoEditorState = {
   photographer: PHOTOGRAPHER,
@@ -61,6 +61,7 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
   const [state, setState] = useState<PhotoEditorState>(initialState);
   const [exif, setExif] = useState<Exif>(initialExif);
   const [addingPhoto, setAddingPhoto] = useState(false);
+  const { password } = usePasswordContext();
 
   const getPhotoCallback = useCallback(() => PhotoApi.getPhoto(imageId), [imageId]);
   const {

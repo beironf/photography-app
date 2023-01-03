@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { theme } from 'style/theme';
 import { ImageApi } from 'api/ImageApi';
+import { usePasswordContext } from 'contexts/PasswordContext';
 
 type props = {
   imageId: string;
@@ -13,8 +14,7 @@ type props = {
 
 export const ImageRemover: React.FunctionComponent<props> = ({ imageId, onImageRemoved }) => {
   const [showConfirm, setShowConfirm] = useState(false);
-
-  const password = 'password'; // TODO: set password in pop-up and local storage
+  const { password } = usePasswordContext();
 
   const removeImage = (): void => {
     ImageApi.ImageRoute.removeImage(imageId, password)

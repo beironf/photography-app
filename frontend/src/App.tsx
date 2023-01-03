@@ -7,6 +7,8 @@ import {
 } from 'react-router-dom';
 import { Gallery } from 'views/Gallery';
 import { Home } from 'views/Home';
+import { PasswordContextProvider } from 'contexts/PasswordContext';
+import { PasswordRestricted } from 'components/PasswordRestricted';
 
 const darkTheme = createTheme({
   palette: {
@@ -20,7 +22,14 @@ const App: React.FC = () => {
       <Route path="/" element={<Home />} />
       <Route path="/gallery" element={<Gallery />} />
       <Route path="/gallery/:imageId" element={<Gallery />} />
-      <Route path="/manage-photos" element={<ManagePhotos />} />
+      <Route
+        path="/manage-photos"
+        element={(
+          <PasswordRestricted>
+            <ManagePhotos />
+          </PasswordRestricted>
+        )}
+      />
       <Route path="*" element={<Navigate replace to="/" />} />
     </Routes>
   );
@@ -28,9 +37,11 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <BrowserRouter>
-        <PageLayout
-          body={body}
-        />
+        <PasswordContextProvider>
+          <PageLayout
+            body={body}
+          />
+        </PasswordContextProvider>
       </BrowserRouter>
     </ThemeProvider>
   );

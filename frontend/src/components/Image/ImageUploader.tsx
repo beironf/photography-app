@@ -6,6 +6,7 @@ import {
   Button, Input,
 } from '@mui/material';
 import { theme } from 'style/theme';
+import { usePasswordContext } from 'contexts/PasswordContext';
 
 type props = {
   onImageUploading: () => void;
@@ -17,8 +18,7 @@ export const ImageUploader: React.FunctionComponent<props> = ({
   onImageUploaded,
 }) => {
   const [fileName, setFileName] = useState('');
-
-  const password = 'password'; // TODO: set password in pop-up and local storage
+  const { password } = usePasswordContext();
 
   useEffect(() => {
     const formData = new FormData();
@@ -29,7 +29,7 @@ export const ImageUploader: React.FunctionComponent<props> = ({
       ImageApi.ImageRoute.uploadImage(formData, password, () => onImageUploaded(file.name));
       onImageUploading();
     }
-  }, [fileName, onImageUploaded, onImageUploading]);
+  }, [fileName, password, onImageUploaded, onImageUploading]);
 
   return (
     <label htmlFor="file-input">
