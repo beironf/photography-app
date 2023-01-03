@@ -17,6 +17,17 @@ object ApiSpecs extends EndpointsSpec
   with JsonProtocol
   with TapirCodecEnumeratum {
 
+  val validateAuthorizationTokenEndpoint: SecureHttpErrorEndpoint[Unit, Unit] = endpoint
+    .in("v1")
+    .in("auth")
+    .tag("auth")
+    .name("validateAuthorizationToken")
+    .post
+    .in("validate")
+    .errorOut(commonErrorsOut)
+    .out(statusCode(StatusCode.NoContent))
+    .appendPasswordProtection
+
   private val photos = endpoint
     .in("v1")
     .in("photos")
@@ -83,6 +94,7 @@ object ApiSpecs extends EndpointsSpec
 
   // Add the endpoint here in order to include it in the documentation
   val endpoints: List[AnyEndpoint] = List(
+    validateAuthorizationTokenEndpoint,
     getPhotoEndpoint,
     listPhotosEndpoint,
     listPhotoGroupsEndpoint,

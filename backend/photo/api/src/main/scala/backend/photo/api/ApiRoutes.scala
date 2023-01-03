@@ -1,15 +1,17 @@
 package backend.photo.api
 
+import cats.implicits.catsSyntaxEitherId
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import backend.common.api.CommonApiRoute
+import backend.common.api.model.ApiHttpErrors.HttpError
 import backend.exif.adapters.ImageExifRepositoryImpl
 import backend.exif.interactors.ImageExifService
 import backend.photo.adapters.PhotoRepositoryImpl
 import backend.photo.api.ApiSpecs._
 import backend.photo.interactors.PhotoService
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApiRoute {
 
@@ -19,6 +21,11 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
   private val exifRepository = ImageExifRepositoryImpl()
   private val exifService = new ImageExifService(exifRepository)
   private val apiService = new ApiService(photoService, validationService, exifService)
+
+  private val validateAuthorizationToken = secureEndpoint(
+    specification = validateAuthorizationTokenEndpoint,
+    implementation = (_: Unit) => Future { ((): Unit).asRight[HttpError] }
+  )
 
   private val getPhoto = endpoint(
     specification = getPhotoEndpoint,
@@ -50,11 +57,13 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
     implementation = apiService.removePhoto
   )
 
-  val route: Route =
-    getPhoto ~
-      listPhotos ~
-      listPhotoGroups ~
-      addPhoto ~
-      updatePhoto ~
-      removePhoto
+  val route: Route = concat(
+    validateAuthorizationToken,
+    getPhoto,
+    listPhotos,
+    listPhotoGroups,
+    addPhoto,
+    updatePhoto,
+    removePhoto
+  )
 }

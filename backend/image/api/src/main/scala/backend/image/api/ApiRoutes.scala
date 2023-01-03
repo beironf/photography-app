@@ -55,13 +55,13 @@ class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApi
     implementation = apiService.getImageExif
   )
 
-  val route: Route = {
-    listImages ~
-      getImage ~
-      uploadImage ~
-      removeImage ~
-      getThumbnail ~
-      getSiteImage ~
-      getExif
-  }
+  val route: Route = concat(
+    listImages,
+    getImage,
+    uploadImage,
+    removeImage,
+    getThumbnail,
+    getSiteImage,
+    getExif
+  )
 }
