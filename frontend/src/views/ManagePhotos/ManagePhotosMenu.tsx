@@ -42,7 +42,7 @@ export const ManagePhotosMenu: React.FunctionComponent<props> = ({
                 checked={onlyUnfinished}
                 onChange={(event) => setOnlyUnfinished(event.target.checked)}
               />
-          )}
+            )}
             label="Only Unfinished"
           />
         </>

@@ -1,4 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material';
+import '@fontsource/raleway';
 import { PageLayout } from 'views/PageLayout';
 import React from 'react';
 import { ManagePhotos } from 'views/ManagePhotos';
@@ -11,6 +12,16 @@ import { PasswordContextProvider } from 'contexts/PasswordContext';
 import { PasswordRestricted } from 'components/PasswordRestricted';
 
 const darkTheme = createTheme({
+  typography: {
+    fontFamily: "'Raleway', sans-serif",
+    h4: { fontWeight: 'lighter' },
+    h5: { fontWeight: 'lighter' },
+    h6: { fontWeight: 'lighter' },
+    subtitle1: { fontWeight: 'lighter' },
+    subtitle2: { fontWeight: 'lighter' },
+    body1: { fontWeight: 'lighter' },
+    body2: { fontWeight: 'lighter' },
+  },
   palette: {
     mode: 'dark',
   },
