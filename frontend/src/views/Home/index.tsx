@@ -4,10 +4,7 @@ import { theme } from 'style/theme';
 import { HomeHeader } from './HomeHeader';
 
 export const Home: React.FunctionComponent = () => (
-  <>
-    <Card sx={{ p: `${theme.primaryPadding}px` }}>
-      <HomeHeader />
-    </Card>
-    <p />
-  </>
+  <Card elevation={0} sx={{ p: `${theme.primaryPadding}px` }}>
+    <HomeHeader />
+  </Card>
 );

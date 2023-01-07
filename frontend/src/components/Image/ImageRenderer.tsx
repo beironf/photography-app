@@ -1,6 +1,7 @@
 import { Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { PhotoProps } from 'react-photo-gallery';
+import { theme } from 'style/theme';
 
 type props = {
   selected: boolean;
@@ -21,8 +22,8 @@ export const ImageRenderer: React.FunctionComponent<props> = ({
 }) => {
   const [isHovering, setIsHovering] = useState(false);
 
-  const opacity = selected || noImageSelected ? 1 : 0.4;
-  const border = selected ? `2px solid ${selectionColor ?? 'white'}` : undefined;
+  const opacity = selected || noImageSelected || isHovering ? 1 : 0.7;
+  const border = selected ? `2px solid ${selectionColor ?? theme.modeContrastColor}` : undefined;
 
   return (
     <Button
@@ -36,10 +37,12 @@ export const ImageRenderer: React.FunctionComponent<props> = ({
         <div
           style={{
             position: 'absolute',
-            width: '100%',
+            width: `calc(100% - ${selected ? 4 : 0}px)`,
             color: 'white',
             backgroundColor: 'rgba(0,0,0,0.5)',
-            bottom: 0,
+            bottom: selected ? 2 : 0,
+            left: selected ? 2 : 0,
+            right: selected ? 2 : 0,
           }}
         >
           <Typography variant="caption" textOverflow="ellipsis" width="100%">

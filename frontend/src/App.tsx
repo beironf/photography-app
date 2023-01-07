@@ -10,6 +10,7 @@ import { Gallery } from 'views/Gallery';
 import { Home } from 'views/Home';
 import { PasswordContextProvider } from 'contexts/PasswordContext';
 import { PasswordRestricted } from 'components/PasswordRestricted';
+import { theme } from 'style/theme';
 
 const darkTheme = createTheme({
   typography: {
@@ -23,7 +24,7 @@ const darkTheme = createTheme({
     body2: { fontWeight: 'lighter' },
   },
   palette: {
-    mode: 'dark',
+    mode: theme.mode,
   },
 });
 

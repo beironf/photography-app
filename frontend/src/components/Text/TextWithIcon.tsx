@@ -8,6 +8,7 @@ type props = {
   marginBottom?: number;
   align?: 'left' | 'right';
   noValue?: boolean;
+  textColor?: string;
 };
 
 export const TextWithIcon: React.FunctionComponent<props> = ({
@@ -16,6 +17,7 @@ export const TextWithIcon: React.FunctionComponent<props> = ({
   marginBottom,
   align,
   noValue,
+  textColor,
 }) => (
   <div style={{
     display: 'flex',
@@ -30,6 +32,7 @@ export const TextWithIcon: React.FunctionComponent<props> = ({
         key={text}
         variant="body2"
         style={{
+          color: textColor ?? theme.modeContrastColor,
           marginLeft: align !== 'right'
             ? `${(i === 0) ? theme.body2IconMargin : theme.body2Margin}px`
             : undefined,

@@ -33,7 +33,7 @@ export const PhotoInfoDrawer: React.FunctionComponent<props> = ({
   const [height, setHeight] = useState(0);
   const heightRef = useRef(null);
 
-  const dividerBorder = '0.5px rgba(255, 255, 255, 0.12) solid';
+  const dividerBorder = `0.5px ${theme.photoInfoDividerColor} solid`;
 
   useEffect(() => {
     const newHeight = heightRef.current.clientHeight;
@@ -57,21 +57,31 @@ export const PhotoInfoDrawer: React.FunctionComponent<props> = ({
           height: 'auto',
           display: open ? 'flex' : 'none',
           p: `${theme.secondaryPadding}px ${theme.primaryPadding}px`,
-          backgroundColor: 'rgba(0,0,0,0)',
+          borderTop: `1px solid ${theme.photoInfoDividerColor}`,
+          backgroundColor: theme.photoInfoBackgroundColor,
         },
       }}
     >
       <IconButton
         onClick={() => onClose()}
         size="large"
-        style={{ position: 'absolute', top: 0, right: 0 }}
+        style={{
+          color: theme.photoViewerIconColor,
+          position: 'absolute',
+          top: 0,
+          right: 0,
+        }}
       >
         <ExpandMoreIcon />
       </IconButton>
 
       <Typography
         variant="h6"
-        style={{ textAlign: 'center', marginBottom: `${theme.secondaryPadding}px` }}
+        style={{
+          color: theme.photoViewerTitleColor,
+          textAlign: 'center',
+          marginBottom: `${theme.secondaryPadding}px`,
+        }}
       >
         {photo.title}
       </Typography>
@@ -83,31 +93,35 @@ export const PhotoInfoDrawer: React.FunctionComponent<props> = ({
           style={{ borderRight: dividerBorder, padding: `${theme.secondaryPadding}px` }}
         >
           <TextWithIcon
-            icon={<CategoryIcon fontSize="small" />}
+            icon={<CategoryIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
             texts={[photo.metadata.category]}
+            textColor={theme.photoViewerTextColor}
             align="right"
           />
           <TextWithIcon
-            icon={<CollectionsIcon fontSize="small" />}
+            icon={<CollectionsIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
             texts={[photo.group ?? 'Not in a collection']}
+            textColor={theme.photoViewerTextColor}
             marginBottom={theme.secondaryPadding}
             align="right"
             noValue={photo.group === undefined}
           />
 
           <TextWithIcon
-            icon={<PhotoFilterIcon fontSize="small" />}
+            icon={<PhotoFilterIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
             texts={(photo.metadata.cameraTechniques ?? []).length > 0
               ? [photo.metadata.cameraTechniques.join(', ')]
               : ['No special techniques used']}
+            textColor={theme.photoViewerTextColor}
             align="right"
             noValue={(photo.metadata.cameraTechniques ?? []).length === 0}
           />
           <TextWithIcon
-            icon={<SellIcon fontSize="small" />}
+            icon={<SellIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
             texts={(photo.metadata.tags ?? []).length > 0
               ? [photo.metadata.tags.join(', ')]
               : ['No tags']}
+            textColor={theme.photoViewerTextColor}
             align="right"
             noValue={(photo.metadata.tags ?? []).length === 0}
           />
@@ -118,31 +132,36 @@ export const PhotoInfoDrawer: React.FunctionComponent<props> = ({
           style={{ borderLeft: dividerBorder, padding: `${theme.secondaryPadding}px` }}
         >
           <TextWithIcon
-            icon={<PlaceIcon fontSize="small" />}
+            icon={<PlaceIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
             texts={[`${photo.location.name}, ${photo.location.country}`]}
+            textColor={theme.photoViewerTextColor}
           />
           <TextWithIcon
-            icon={<ScheduleIcon fontSize="small" />}
+            icon={<ScheduleIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
             texts={[formatDate(photo.taken)]}
+            textColor={theme.photoViewerTextColor}
             marginBottom={theme.secondaryPadding}
           />
 
           <TextWithIcon
-            icon={<PhotoCameraIcon fontSize="small" />}
+            icon={<PhotoCameraIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
             texts={[photo.gear.camera]}
+            textColor={theme.photoViewerTextColor}
           />
           <TextWithIcon
-            icon={<CameraIcon fontSize="small" />}
+            icon={<CameraIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
             texts={[photo.gear.lens]}
+            textColor={theme.photoViewerTextColor}
           />
           <TextWithIcon
-            icon={<TuneIcon fontSize="small" />}
+            icon={<TuneIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
             texts={[
               photo.cameraSettings.focalLength,
               photo.cameraSettings.aperture,
               photo.cameraSettings.exposureTime,
               photo.cameraSettings.iso,
             ]}
+            textColor={theme.photoViewerTextColor}
           />
         </Grid>
       </Grid>

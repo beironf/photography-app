@@ -15,7 +15,7 @@ export const Burger: React.FunctionComponent<props> = ({ onClick }) => (
       top: theme.primaryPadding - 8,
       left: theme.primaryPadding - 8,
       padding: '8px',
-      color: 'white',
+      color: theme.modeContrastColor,
       zIndex: 1000,
     }}
   >

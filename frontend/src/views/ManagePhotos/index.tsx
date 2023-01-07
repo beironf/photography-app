@@ -119,6 +119,7 @@ export const ManagePhotos: React.FunctionComponent = () => {
                   key={image.key}
                   selected={selectedImageId === image.key}
                   noImageSelected={selectedImageId === undefined}
+                  selectionColor={theme.managePhotosSelectedColor}
                   child={unfinishedIcon(image.key)}
                   image={image}
                   onImageClick={

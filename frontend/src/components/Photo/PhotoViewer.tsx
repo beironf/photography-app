@@ -44,15 +44,15 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
       fullWidth
       maxWidth="xl"
       sx={{
-        backdropFilter: 'blur(1px)',
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backdropFilter: theme.photoViewerBackdropFilter,
+        backgroundColor: theme.photoViewerBackdropColor,
       }}
       PaperProps={{
         sx: {
           p: '0 48px',
           height: '85%',
           position: 'relative',
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: theme.photoViewerBackgroundColor,
           backgroundImage: 'none',
           boxShadow: 'none',
         },
@@ -62,7 +62,10 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
         onClick={onClose}
         size="large"
         style={{
-          position: 'absolute', top: 0, right: 0,
+          color: theme.photoViewerIconColor,
+          position: 'absolute',
+          top: 0,
+          right: 0,
         }}
       >
         <CloseIcon />
@@ -72,6 +75,7 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
           onClick={goToPrevious}
           size="large"
           style={{
+            color: theme.photoViewerIconColor,
             position: 'absolute',
             left: 0,
             top: `calc(50% - ${infoHeight / 2}px)`,
@@ -87,6 +91,7 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
           onClick={goToNext}
           size="large"
           style={{
+            color: theme.photoViewerIconColor,
             position: 'absolute',
             top: `calc(50% - ${infoHeight / 2}px)`,
             right: 0,
@@ -102,7 +107,10 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
           onClick={() => setShowInfo(true)}
           size="large"
           style={{
-            position: 'absolute', bottom: 0, right: 0,
+            color: theme.photoViewerIconColor,
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
           }}
         >
           <InfoOutlinedIcon />
