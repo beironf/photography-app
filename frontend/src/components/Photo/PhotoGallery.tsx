@@ -3,17 +3,17 @@ import { ImageApi } from 'api/ImageApi';
 import Gallery, { RenderImageProps } from 'react-photo-gallery';
 import { PhotoWithRatio } from 'model/photo';
 
-type props = {
+type Props = {
   photosWithRatio: PhotoWithRatio[];
   sideMargin?: number;
   bottomMargin?: number;
   targetRowHeight?: number; // Select either row height or columns
   columns?: number; // Select either row height or columns
-  onPhotoClick?: (_: string) => void; // will not work if custom renderImage is used
+  onPhotoClick?: (_: string) => void; // will not work if custom renderPhoto is used
   renderPhoto?: React.ComponentType<RenderImageProps<{}>>;
 };
 
-export const PhotoGallery: React.FunctionComponent<props> = ({
+export const PhotoGallery: React.FunctionComponent<Props> = ({
   photosWithRatio,
   sideMargin,
   bottomMargin,

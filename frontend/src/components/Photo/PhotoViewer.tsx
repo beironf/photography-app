@@ -29,7 +29,7 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
   goToNext,
   goToPrevious,
 }) => {
-  const [showInfo, setShowInfo] = useState(false);
+  const [showInfo, setShowInfo] = useState(true);
   const [infoHeight, setInfoHeight] = useState(0);
 
   const toggleShowInfo = useCallback(() => setShowInfo(!showInfo), [showInfo]);
@@ -49,8 +49,9 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
       }}
       PaperProps={{
         sx: {
+          margin: '32px',
+          height: 'calc(100% - 64px)',
           p: '0 48px',
-          height: '85%',
           position: 'relative',
           backgroundColor: theme.photoViewerBackgroundColor,
           backgroundImage: 'none',

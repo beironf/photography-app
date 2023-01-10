@@ -38,8 +38,8 @@ export const ImageRenderer: React.FunctionComponent<props> = ({
           style={{
             position: 'absolute',
             width: `calc(100% - ${selected ? 4 : 0}px)`,
-            color: 'white',
-            backgroundColor: 'rgba(0,0,0,0.5)',
+            color: theme.thumbnailCaptionColor,
+            backgroundColor: theme.thumbnailCaptionBackgroundColor,
             bottom: selected ? 2 : 0,
             left: selected ? 2 : 0,
             right: selected ? 2 : 0,
