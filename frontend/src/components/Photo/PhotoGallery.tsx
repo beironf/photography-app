@@ -5,7 +5,8 @@ import { PhotoWithRatio } from 'model/photo';
 
 type props = {
   photosWithRatio: PhotoWithRatio[];
-  margin: number;
+  sideMargin?: number;
+  bottomMargin?: number;
   targetRowHeight?: number; // Select either row height or columns
   columns?: number; // Select either row height or columns
   onPhotoClick?: (_: string) => void; // will not work if custom renderImage is used
@@ -14,13 +15,14 @@ type props = {
 
 export const PhotoGallery: React.FunctionComponent<props> = ({
   photosWithRatio,
-  margin,
+  sideMargin,
+  bottomMargin,
   targetRowHeight,
   columns,
   onPhotoClick,
   renderPhoto,
 }) => (
-  <div style={{ minHeight: '100vh', padding: `${margin}px` }}>
+  <div style={{ padding: `0 ${sideMargin ?? 0}px ${bottomMargin ?? 0}px` }}>
     <Gallery
       photos={Object.values(photosWithRatio)
         .map(({

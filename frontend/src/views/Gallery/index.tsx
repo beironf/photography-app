@@ -1,5 +1,5 @@
 import {
-  Card, CircularProgress, IconButton, Typography,
+  CircularProgress, IconButton,
 } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
@@ -83,31 +83,26 @@ export const Gallery: React.FunctionComponent = () => {
 
   return (
     <>
-      <Card sx={{ p: `${theme.primaryPadding}px` }}>
-        <Typography variant="h4" align="center">
-          Gallery
-        </Typography>
-        <IconButton
-          onClick={() => setUseFilters(!useFilters)}
-          sx={{
-            position: 'absolute',
-            top: `${theme.primaryPadding}px`,
-            right: `${theme.primaryPadding}px`,
-          }}
-        >
-          {useFilters && <FilterAltOffIcon />}
-          {!useFilters && <FilterAltIcon />}
-        </IconButton>
-        <GalleryFilters
-          active={useFilters}
-          category={categoryFilter}
-          group={groupFilter}
-          rating={ratingFilter}
-          setCategory={(c) => setCategoryFilter(c)}
-          setGroup={(g) => setGroupFilter(g)}
-          setRating={(r) => setRatingFilter(r)}
-        />
-      </Card>
+      <IconButton
+        onClick={() => setUseFilters(!useFilters)}
+        sx={{
+          position: 'absolute',
+          top: `${theme.primaryPadding}px`,
+          right: `${theme.primaryPadding}px`,
+        }}
+      >
+        {useFilters && <FilterAltOffIcon />}
+        {!useFilters && <FilterAltIcon />}
+      </IconButton>
+      <GalleryFilters
+        active={useFilters}
+        category={categoryFilter}
+        group={groupFilter}
+        rating={ratingFilter}
+        setCategory={(c) => setCategoryFilter(c)}
+        setGroup={(g) => setGroupFilter(g)}
+        setRating={(r) => setRatingFilter(r)}
+      />
       {listPhotosLoading
         && <NonIdealState description="Loading photo metadata" icon={<CircularProgress />} />}
       {listPhotosError && (
@@ -126,7 +121,8 @@ export const Gallery: React.FunctionComponent = () => {
         <>
           <PhotoGallery
             photosWithRatio={photosWithRatio}
-            margin={2}
+            sideMargin={theme.primaryPadding}
+            bottomMargin={theme.primaryPadding}
             targetRowHeight={300}
             onPhotoClick={(id) => setImageId(id)}
             renderPhoto={

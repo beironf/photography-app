@@ -1,10 +1,9 @@
 import React from 'react';
 import { Card } from '@mui/material';
 import { theme } from 'style/theme';
-import { HomeHeader } from './HomeHeader';
 
-export const Home: React.FunctionComponent = () => (
+export const Showroom: React.FunctionComponent = () => (
   <Card elevation={0} sx={{ p: `${theme.primaryPadding}px` }}>
-    <HomeHeader />
+    Showroom
   </Card>
 );
