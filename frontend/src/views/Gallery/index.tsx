@@ -87,7 +87,8 @@ export const Gallery: React.FunctionComponent = () => {
           photosWithRatio={photosWithRatio}
           sideMargin={theme.primaryPadding}
           bottomMargin={theme.primaryPadding}
-          targetRowHeight={300}
+          targetRowHeight={theme.galleryTargetRowHeight}
+          columns={theme.galleryColumns}
         />
       )}
     </>

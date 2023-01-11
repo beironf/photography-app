@@ -19,7 +19,7 @@ const menuItems: MenuItem[] = [
     id: 'showroom',
     label: 'Showroom',
     icon: <HomeIcon />,
-    onClickDestination: '/',
+    onClickDestination: '/showroom',
   },
   {
     id: 'gallery',

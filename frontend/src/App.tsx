@@ -31,7 +31,8 @@ const darkTheme = createTheme({
 const App: React.FC = () => {
   const body = (
     <Routes>
-      <Route path="/" element={<Showroom />} />
+      <Route path="/showroom" element={<Showroom />} />
+      <Route path="/showroom/:imageId" element={<Showroom />} />
       <Route path="/gallery" element={<Gallery />} />
       <Route path="/gallery/:imageId" element={<Gallery />} />
       <Route
@@ -42,7 +43,7 @@ const App: React.FC = () => {
           </PasswordRestricted>
         )}
       />
-      <Route path="*" element={<Navigate replace to="/" />} />
+      <Route path="*" element={<Navigate replace to="/showroom" />} />
     </Routes>
   );
 

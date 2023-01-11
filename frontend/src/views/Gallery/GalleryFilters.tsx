@@ -37,14 +37,17 @@ export const GalleryFilters: React.FunctionComponent<props> = ({
       {(groups) => (
         <Grid
           container
-          columnGap={`${theme.primaryPadding}px`}
+          columnGap={`${theme.secondaryPadding}px`}
+          rowGap={`${theme.secondaryPadding}px`}
           justifyContent="center"
           sx={{
             opacity: active ? 1 : 0,
             height: active ? 'auto' : 0,
+            maxWidth: '100%',
             transition: 'opacity 1s ease-out',
             overflow: active ? undefined : 'hidden',
-            mt: active ? `${theme.secondaryPadding}px` : 0,
+            m: active ? `${theme.secondaryPadding}px 0` : 0,
+            p: active ? `0 ${theme.secondaryPadding}px` : 0,
           }}
         >
           <Grid item>

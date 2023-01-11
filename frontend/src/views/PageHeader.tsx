@@ -27,7 +27,7 @@ export const PageHeader: React.FunctionComponent<Props> = ({ hidden }) => {
         alignItems="center"
       >
         <Grid item>
-          <Typography variant="h4" align="center">
+          <Typography variant={theme.headerHSize as any} align="center">
             Fredrik Beiron
           </Typography>
         </Grid>
@@ -39,7 +39,7 @@ export const PageHeader: React.FunctionComponent<Props> = ({ hidden }) => {
           />
         </Grid>
         <Grid item>
-          <Typography variant="h4" align="center">
+          <Typography variant={theme.headerHSize as any} align="center">
             Photography
           </Typography>
         </Grid>
