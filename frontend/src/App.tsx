@@ -11,6 +11,7 @@ import { Showroom } from 'views/Showroom';
 import { PasswordContextProvider } from 'contexts/PasswordContext';
 import { PasswordRestricted } from 'components/PasswordRestricted';
 import { theme } from 'style/theme';
+import { AboutMe } from 'views/AboutMe';
 
 const darkTheme = createTheme({
   typography: {
@@ -35,6 +36,7 @@ const App: React.FC = () => {
       <Route path="/showroom/:imageId" element={<Showroom />} />
       <Route path="/gallery" element={<Gallery />} />
       <Route path="/gallery/:imageId" element={<Gallery />} />
+      <Route path="/about-me" element={<AboutMe />} />
       <Route
         path="/admin"
         element={(
