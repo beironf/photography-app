@@ -36,7 +36,7 @@ const App: React.FC = () => {
       <Route path="/gallery" element={<Gallery />} />
       <Route path="/gallery/:imageId" element={<Gallery />} />
       <Route
-        path="/manage-photos"
+        path="/admin"
         element={(
           <PasswordRestricted>
             <ManagePhotos />

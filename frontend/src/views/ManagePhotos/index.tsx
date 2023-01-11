@@ -7,11 +7,17 @@ import { NonIdealState } from 'components/NonIdealState';
 import { PhotoEditor } from 'components/PhotoEditor';
 import { ImageRemover } from 'components/Image/ImageRemover';
 import { usePromise } from 'hooks';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import { ImageGallery } from 'components/Image/ImageGallery';
 import { ImageRenderer } from 'components/Image/ImageRenderer';
 import { theme } from 'style/theme';
 import { PhotoApi } from 'api/PhotoApi';
+import { nextIndex, prevIndex } from 'util/carousel-utils';
+import {
+  ARROW_DOWN, ARROW_UP, useKeyPress,
+} from 'hooks/use-key-press';
 import { ManagePhotosMenu } from './ManagePhotosMenu';
 
 const drawerWidth = '40%';
@@ -25,6 +31,8 @@ const drawerPaperBaseStyle = {
 };
 
 export const ManagePhotos: React.FunctionComponent = () => {
+  const ref = useRef();
+
   const [imageUploaded, setImageUploaded] = useState<string>();
   const [imageRemoved, setImageRemoved] = useState<string>();
   const [selectedImageId, setSelectedImageId] = useState<string>();
@@ -77,6 +85,18 @@ export const ManagePhotos: React.FunctionComponent = () => {
     }
     return true;
   });
+
+  const goTo = useCallback((direction: 'next' | 'prev') => {
+    const selectedIndex = filteredImages.findIndex((i) => i.id === selectedImageId);
+    const newIndex = direction === 'next'
+      ? nextIndex(selectedIndex, filteredImages.length)
+      : prevIndex(selectedIndex, filteredImages.length);
+    if (newIndex === -1) setSelectedImageId(undefined);
+    else setSelectedImageId(filteredImages[newIndex].id);
+  }, [filteredImages, selectedImageId, setSelectedImageId]);
+
+  useKeyPress([ARROW_DOWN], (_) => goTo('next'), ref.current);
+  useKeyPress([ARROW_UP], (_) => goTo('prev'), ref.current);
 
   const unfinishedIcon = (imageId: string): JSX.Element | undefined => {
     const isUnfinished = (photosWithRatio ?? [])

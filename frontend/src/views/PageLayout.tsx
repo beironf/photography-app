@@ -2,7 +2,6 @@ import { Paper } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HomeIcon from '@mui/icons-material/Home';
 import CollectionsIcon from '@mui/icons-material/Collections';
-import SettingsIcon from '@mui/icons-material/Settings';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Menu } from 'components/Menu';
@@ -33,18 +32,12 @@ const menuItems: MenuItem[] = [
     icon: <AccountCircleIcon />,
     onClickDestination: '/about-me',
   },
-  {
-    id: 'manage-photos',
-    label: 'Manage Photos',
-    icon: <SettingsIcon />,
-    onClickDestination: '/manage-photos',
-  },
 ];
 
 export const PageLayout: React.FunctionComponent<props> = ({ body, footer }) => {
   const location = useLocation();
-  const pageHeaderShouldBeHidden = location.pathname.includes('manage-photos');
-  const pageMenuShouldBeHidden = location.pathname.includes('manage-photos');
+  const pageHeaderShouldBeHidden = location.pathname.includes('admin');
+  const pageMenuShouldBeHidden = location.pathname.includes('admin');
 
   return (
     <Paper
