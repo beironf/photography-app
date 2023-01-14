@@ -27,10 +27,10 @@ const menuItems: MenuItem[] = [
     onClickDestination: '/gallery',
   },
   {
-    id: 'about-me',
-    label: 'About Me',
+    id: 'about',
+    label: 'About',
     icon: <AccountCircleIcon />,
-    onClickDestination: '/about-me',
+    onClickDestination: '/about',
   },
 ];
 

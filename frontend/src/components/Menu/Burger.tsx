@@ -2,6 +2,7 @@ import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import React from 'react';
 import { theme } from 'style/theme';
+import { isTablet } from 'react-device-detect';
 
 type props = {
   onClick: () => void;
@@ -19,6 +20,6 @@ export const Burger: React.FunctionComponent<props> = ({ onClick }) => (
       zIndex: 1000,
     }}
   >
-    <MenuIcon fontSize="large" />
+    <MenuIcon fontSize={isTablet ? 'large' : 'medium'} />
   </IconButton>
 );

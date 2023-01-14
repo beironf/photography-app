@@ -1,6 +1,6 @@
 import React from 'react';
 import { ImageApi } from 'api/ImageApi';
-import { Grid, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { theme } from 'style/theme';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,37 +13,47 @@ export const PageHeader: React.FunctionComponent<Props> = ({ hidden }) => {
 
   return (
     <div
-      style={{ margin: theme.primaryPadding }}
+      style={{
+        width: `${theme.logoSize}px`,
+        margin: `${theme.primaryPadding}px auto ${theme.secondaryPadding}px`,
+        position: 'relative',
+        textAlign: 'center',
+      }}
       hidden={hidden}
       role="button"
       onClick={() => navigate('/')}
       onKeyUp={() => navigate('/')}
       tabIndex={0}
     >
-      <Grid
-        container
-        columnGap={`${theme.primaryPadding}px`}
-        justifyContent="center"
-        alignItems="center"
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        right: `calc(100% + ${theme.secondaryPadding}px`,
+        whiteSpace: 'nowrap',
+      }}
       >
-        <Grid item>
-          <Typography variant={theme.headerHSize as any} align="center">
-            Fredrik Beiron
-          </Typography>
-        </Grid>
-        <Grid item>
-          <img
-            src={ImageApi.SiteImageRoute.getSiteImageUrl('logo.png')}
-            alt="Icon"
-            width={`${theme.logoSize}px`}
-          />
-        </Grid>
-        <Grid item>
-          <Typography variant={theme.headerHSize as any} align="center">
-            Photography
-          </Typography>
-        </Grid>
-      </Grid>
+        <Typography variant={theme.headerTextVariant as any} align="center">
+          Fredrik Beiron
+        </Typography>
+      </div>
+      <img
+        src={ImageApi.SiteImageRoute.getSiteImageUrl('logo.png')}
+        alt="Icon"
+        width="100%"
+      />
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        left: `calc(100% + ${theme.secondaryPadding}px`,
+        whiteSpace: 'nowrap',
+      }}
+      >
+        <Typography variant={theme.headerTextVariant as any} align="center">
+          Photography
+        </Typography>
+      </div>
     </div>
   );
 };

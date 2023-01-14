@@ -3,6 +3,12 @@ import { isMobile, isTablet } from 'react-device-detect';
 
 const mode: PaletteMode = 'light';
 
+const deviceSensitive = (desktopVal: any, tabletVal: any, mobileVal: any): any => {
+  if (isTablet) { return tabletVal; }
+  if (isMobile) { return mobileVal; }
+  return desktopVal;
+};
+
 export const theme = {
   mode,
   modeContrastColor: (mode === 'light') ? 'black' : 'white',
@@ -10,34 +16,29 @@ export const theme = {
   primaryPadding: 20,
   secondaryPadding: 12,
 
-  // Mobil Menu
-  menuWidth: 300,
+  // Header and Logo
+  headerTextVariant: deviceSensitive('h4', 'h4', 'subtitle1'),
+  logoSize: deviceSensitive(70, 70, 50),
 
   // Menu
   menuActiveColor: 'rgba(0, 0, 0, 0.4)',
   menuInactiveColor: 'rgba(0, 0, 0, 0.8)',
-
-  // Header and Logo
-  headerHSize: isMobile ? 'h5' : 'h4',
-  logoSize: isMobile ? 55 : 75,
+  menuTextVariant: 'button',
+  mobileMenuDrawerWidth: 300,
 
   // Showroom
-  // eslint-disable-next-line no-nested-ternary
-  showroomColumns: isTablet
-    ? 2
-    : isMobile
-      ? 1
-      : undefined,
-  showroomTargetRowHeight: isMobile ? undefined : 400,
+  showroomColumns: deviceSensitive(undefined, 2, 1),
+  showroomTargetRowHeight: deviceSensitive(400, undefined, undefined),
 
   // Gallery
-  // eslint-disable-next-line no-nested-ternary
-  galleryColumns: isTablet
-    ? 2
-    : isMobile
-      ? 1
-      : undefined,
-  galleryTargetRowHeight: isMobile ? undefined : 250,
+  galleryColumns: deviceSensitive(undefined, 2, 1),
+  galleryTargetRowHeight: deviceSensitive(250, undefined, undefined),
+
+  // About
+  aboutContentMaxWidth: deviceSensitive(800, 800, 600),
+  aboutSubtitleVariant: deviceSensitive('h5', 'h5', 'h6'),
+  aboutBodyTextVariant: deviceSensitive('body1', 'body1', 'body2'),
+  aboutAvatarSize: 120,
 
   // Manage Photos
   managePhotosSelectedColor: 'DodgerBlue',

@@ -8,11 +8,11 @@ type Props = {
   items: MenuItem[];
 };
 
-export const BrowserMenu: React.FunctionComponent<Props> = ({ items }) => {
+export const DesktopMenu: React.FunctionComponent<Props> = ({ items }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isActive = (menuLocation: string): boolean => location.pathname.endsWith(menuLocation);
+  const isActive = (menuLocation: string): boolean => location.pathname.includes(menuLocation);
 
   return (
     <Grid
@@ -31,7 +31,7 @@ export const BrowserMenu: React.FunctionComponent<Props> = ({ items }) => {
                   ? theme.menuActiveColor
                   : theme.menuInactiveColor
               }
-              variant="button"
+              variant={theme.menuTextVariant as any}
               align="center"
             >
               {item.label}

@@ -1,12 +1,13 @@
 import { MenuItem } from 'model/menu';
 import {
-  Box, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText,
+  Box, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
 import { theme } from 'style/theme';
 import { Burger } from 'components/Menu/Burger';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { isTablet } from 'react-device-detect';
 
 type Props = {
   items: MenuItem[];
@@ -15,13 +16,25 @@ type Props = {
 export const MobileMenu: React.FunctionComponent<Props> = ({ items }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const activeItem = items.find((item) => location.pathname.includes(item.onClickDestination));
+  const isActive = (menuLocation: string): boolean => location.pathname.includes(menuLocation);
 
   return (
     <>
+      <div style={{ textAlign: 'center', marginBottom: `${theme.primaryPadding}px` }}>
+        <Typography
+          color={theme.menuInactiveColor}
+          variant={theme.menuTextVariant as any}
+          align="center"
+        >
+          {activeItem.label.toUpperCase()}
+        </Typography>
+      </div>
       <Burger onClick={() => setOpen(!open)} />
       <Drawer open={open} onClose={() => setOpen(false)}>
         <Box
-          sx={{ width: theme.menuWidth }}
+          sx={{ width: theme.mobileMenuDrawerWidth }}
         >
           <IconButton
             sx={{
@@ -31,20 +44,27 @@ export const MobileMenu: React.FunctionComponent<Props> = ({ items }) => {
             }}
             onClick={() => setOpen(false)}
           >
-            <CloseIcon fontSize="large" />
+            <CloseIcon fontSize={isTablet ? 'large' : 'medium'} />
           </IconButton>
           <List style={{ marginTop: theme.primaryPadding }}>
             {items.map((item) => (
               <ListItem key={item.id} disablePadding>
-                <ListItemButton onClick={() => {
-                  navigate(item.onClickDestination);
-                  setOpen(false);
-                }}
+                <ListItemButton
+                  disabled={isActive(item.onClickDestination)}
+                  onClick={() => {
+                    navigate(item.onClickDestination);
+                    setOpen(false);
+                  }}
                 >
                   <ListItemIcon>
                     {item.icon}
                   </ListItemIcon>
-                  <ListItemText primary={item.label} />
+                  <ListItemText
+                    primary={item.label.toUpperCase()}
+                    primaryTypographyProps={{
+                      variant: theme.menuTextVariant as any,
+                    }}
+                  />
                 </ListItemButton>
               </ListItem>
             ))}
