@@ -56,7 +56,8 @@ lazy val commonApi = createProject("common-api", inFile = Some("common/api"))(Se
   dependencies.tapirOpenApiDocs,
   dependencies.tapirOpenApiCirceYaml,
   dependencies.tapirEnumeratum,
-  dependencies.akkaHttpCors
+  dependencies.akkaHttpCors,
+  dependencies.jbcrypt
 )).dependsOn(commonModel)
   .dependsOn(commonJson)
   .dependsOn(core)
@@ -146,6 +147,7 @@ lazy val dependencies = new {
   private val slickV        = "3.3.3"
   private val slickCatsV    = "0.10.4"
   private val mysqlV        = "8.0.29"
+  private val jbcryptV      = "0.4"
 
   val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
   val akkaStream            = "com.typesafe.akka"           %% "akka-stream"              % akkaV
@@ -165,4 +167,5 @@ lazy val dependencies = new {
   val slickCats             = "com.rms.miu"                 %% "slick-cats"               % slickCatsV
   val mysql                 = "mysql"                       %  "mysql-connector-java"     % mysqlV
   val scalaTest             = "org.scalatest"               %% "scalatest"                % scalaTestV
+  val jbcrypt               = "org.mindrot"                 %  "jbcrypt"                  % jbcryptV
 }

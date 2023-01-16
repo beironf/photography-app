@@ -4,17 +4,17 @@ import akka.http.scaladsl.server.Route
 import backend.common.api.model.ApiHttpErrorEndpoint._
 import backend.common.api.model.ApiHttpErrors.Unauthorized
 import backend.common.api.model.ApiHttpResponse.HttpResponse
-import backend.common.api.utils.{ApiHttpResponseLogger, ApiResponseConverter}
+import backend.common.api.utils.{ApiHttpResponseLogger, ApiResponseConverter, PasswordHashUtil}
 import sttp.capabilities.akka.AkkaStreams
 import sttp.tapir.server.akkahttp.AkkaHttpServerInterpreter
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.chaining._
 
-trait CommonApiRoute extends ApiHttpResponseLogger with ApiResponseConverter {
+trait CommonApiRoute extends ApiHttpResponseLogger with ApiResponseConverter with PasswordHashUtil {
   def route: Route
 
-  val Password: String = config.getString("admin.api.password")
+  val PasswordHash: String = config.getString("admin.api.password-hash")
   val interpreter: AkkaHttpServerInterpreter = AkkaHttpServerInterpreter()
 
   implicit class ResponseHandler[O](response: Future[HttpResponse[O]]) {
@@ -24,7 +24,7 @@ trait CommonApiRoute extends ApiHttpResponseLogger with ApiResponseConverter {
 
   private def authorize(token: AuthenticationToken)
                        (implicit executionContext: ExecutionContext): Future[HttpResponse[Unit]] = Future {
-    if (token.value == Password) Right((): Unit)
+    if (checkPassword(token.value, PasswordHash)) Right((): Unit)
     else Left(Unauthorized("Wrong password"))
   }
 
