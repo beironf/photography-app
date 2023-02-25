@@ -3,7 +3,6 @@ package backend.photo.api
 import akka.http.scaladsl.server.Route
 import backend.common.api.ApiDocsSupport
 import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
-import sttp.tapir.openapi.circe.yaml._
 
 object ApiDocs extends ApiDocsSupport {
   private val endpoints = ApiSpecs.endpoints
