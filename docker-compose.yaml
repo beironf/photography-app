@@ -13,3 +13,28 @@ services:
       - "4001:3306"
     volumes:
       - $PHOTO_APP_DIR/db/mysql_data:/var/lib/mysql
+
+  frontend:
+    build: ./frontend
+    container_name: photography-frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend:/app
+      - ./app/node_modules
+    stdin_open: true
+    tty: true
+
+  photo-api:
+    image: eu.gcr.io/beironf/photo-api-docker
+    container_name: photography-photo-api
+    platform: linux/x86_64
+    ports:
+      - '3001:3001'
+
+  image-api:
+    image: eu.gcr.io/beironf/image-api-docker
+    container_name: photography-image-api
+    platform: linux/x86_64
+    ports:
+      - '3002:3002'

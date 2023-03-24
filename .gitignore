@@ -18,6 +18,13 @@
 .env.test.local
 .env.production.local
 
+*.log
+
+# IntelliJ - incl. sub-dirs
+**/.idea/
+
+.bsp/
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

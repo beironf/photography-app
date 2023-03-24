@@ -5,7 +5,7 @@ import com.typesafe.config.{ConfigFactory, Config => TypesafeConfig}
 /**
  * Using typesafe config under the hood.
  * https://github.com/lightbend/config
- * Set the java property -Dconfig.resource=$myenv.conf or
+ * Set the java property -Dconfig.resource=myenv.conf or
  * Set the java property -Dconfig.file=my/file.conf
  */
 
