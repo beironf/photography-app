@@ -2,6 +2,7 @@ package backend.common.api
 
 import akka.http.scaladsl.server.Route
 import backend.core.application.DefaultService
+import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.ExecutionContext.Implicits
@@ -12,21 +13,25 @@ trait ApiApp extends ApiStarter with DefaultService {
   protected implicit lazy val executionContext: ExecutionContext = Implicits.global
 
   def start(name: String, route: Route,
-            dbToValidate: Option[JdbcProfile#Backend#Database] = None,
+            dbConfigToValidate: Option[DatabaseConfig[JdbcProfile]] = None,
             shutdown: Option[() => Future[_]] = None): Unit = {
     startApi(name, route, shutdown).onComplete {
       case Success(binding) =>
         logger.info(s"Bound to ${binding.localAddress}")
-        dbToValidate.foreach(testDatabaseConnection)
+        dbConfigToValidate.foreach(testDatabaseConnection)
 
       case Failure(exception) =>
         logger.error(s"Failed to bind $name, got exception", exception)
     }
   }
 
-  private def testDatabaseConnection(db: JdbcProfile#Backend#Database): Unit = {
-    logger.info("Testing the database connection ...")
-    Try(db.createSession.conn) match {
+  private def testDatabaseConnection(dbConfig: DatabaseConfig[JdbcProfile]): Unit = {
+    val dbHost = dbConfig.config.getString("host")
+    val dbPort = dbConfig.config.getInt("port")
+    val dbName = dbConfig.config.getString("name")
+    val dbUser = dbConfig.config.getString("user")
+    logger.info(s"Testing the connection to database=$dbHost:$dbPort/$dbName with user=$dbUser ...")
+    Try(dbConfig.db.createSession.conn) match {
       case Success(connection) =>
         logger.info("Connection to database is valid")
         connection.close()

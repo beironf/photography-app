@@ -20,5 +20,5 @@ object ImageApi extends App with ApiApp {
       apiRoutes.route
   }
 
-  start("image-api", route, dbToValidate = Some(DatabaseConnector.MainDBConfig.db), shutdown = None)
+  start("image-api", route, dbConfigToValidate = Some(DatabaseConnector.MainDBConfig), shutdown = None)
 }
