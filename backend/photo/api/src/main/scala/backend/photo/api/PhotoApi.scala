@@ -1,9 +1,10 @@
 package backend.photo.api
 
 import akka.http.scaladsl.model.StatusCodes.NoContent
-import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Directives.*
 import akka.http.scaladsl.server.Route
 import backend.common.api.ApiApp
+import backend.core.sqlstorage.DatabaseConnector
 
 object PhotoApi extends App with ApiApp {
 
@@ -20,5 +21,5 @@ object PhotoApi extends App with ApiApp {
       apiRoutes.route
   }
 
-  start("photo-api", route, shutdown = None)
+  start("photo-api", route, dbToValidate = Some(DatabaseConnector.MainDBConfig.db), shutdown = None)
 }

@@ -71,6 +71,7 @@ lazy val commonApi = createProject("common-api", inFile = Some("common/api"))(Se
 )).dependsOn(commonModel)
   .dependsOn(commonJson)
   .dependsOn(core)
+  .dependsOn(coreSqlStorage)
 
 
 // ---- Photo

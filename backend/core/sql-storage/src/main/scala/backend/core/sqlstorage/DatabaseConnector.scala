@@ -10,3 +10,7 @@ trait DatabaseConnector {
   val db: JdbcProfile#Backend#Database = dbConfig.db
   implicit val executionContext: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 }
+
+object DatabaseConnector {
+  val MainDBConfig: DatabaseConfig[JdbcProfile] = DatabaseConfig.forConfig[JdbcProfile]("database")
+}

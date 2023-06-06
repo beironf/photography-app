@@ -1,9 +1,10 @@
 package backend.image.api
 
 import akka.http.scaladsl.model.StatusCodes.NoContent
-import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Directives.*
 import akka.http.scaladsl.server.Route
 import backend.common.api.ApiApp
+import backend.core.sqlstorage.DatabaseConnector
 
 object ImageApi extends App with ApiApp {
 
@@ -19,5 +20,5 @@ object ImageApi extends App with ApiApp {
       apiRoutes.route
   }
 
-  start("image-api", route, shutdown = None)
+  start("image-api", route, dbToValidate = Some(DatabaseConnector.MainDBConfig.db), shutdown = None)
 }

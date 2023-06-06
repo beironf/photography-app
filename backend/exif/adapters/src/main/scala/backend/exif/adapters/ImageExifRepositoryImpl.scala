@@ -1,6 +1,7 @@
 package backend.exif.adapters
 
-import backend.exif.adapters.exifdb._
+import backend.core.sqlstorage.DatabaseConnector
+import backend.exif.adapters.exifdb.*
 import backend.exif.entities.ImageExif
 import backend.exif.ports.ImageExifRepository
 import slick.basic.DatabaseConfig
@@ -9,7 +10,7 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.Future
 
 object ImageExifRepositoryImpl {
-  private val dbConfig = DatabaseConfig.forConfig[JdbcProfile]("database")
+  private val dbConfig = DatabaseConnector.MainDBConfig
   def apply(): ImageExifRepository = new ImageExifRepositoryImpl(dbConfig)
 }
 

@@ -1,8 +1,9 @@
 package backend.photo.adapters
 
+import backend.core.sqlstorage.DatabaseConnector
 import backend.core.utils.OptionTExtensions
-import backend.photo.adapters.db._
-import backend.photo.entities._
+import backend.photo.adapters.db.*
+import backend.photo.entities.*
 import backend.photo.entities.meta.Category.Category
 import backend.photo.entities.meta.{Judgement, Location}
 import backend.photo.ports.PhotoRepository
@@ -14,7 +15,7 @@ import slick.lifted.AbstractTable
 import scala.concurrent.Future
 
 object PhotoRepositoryImpl {
-  private val dbConfig = DatabaseConfig.forConfig[JdbcProfile]("database")
+  private val dbConfig = DatabaseConnector.MainDBConfig
   def apply(): PhotoRepositoryImpl = new PhotoRepositoryImpl(dbConfig)
 }
 
