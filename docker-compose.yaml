@@ -11,6 +11,8 @@ services:
       MYSQL_DATABASE: photography_db
     ports:
       - "4001:3306"
+    expose:
+      - "4001"
     volumes:
       - $PHOTO_APP_DIR/db/mysql_data:/var/lib/mysql
 
@@ -26,6 +28,8 @@ services:
     tty: true
 
   photo-api:
+    depends_on: 
+      - db
     image: eu.gcr.io/beironf/photo-api-docker
     container_name: photography-photo-api
     platform: linux/x86_64
@@ -33,6 +37,8 @@ services:
       - '3001:3001'
 
   image-api:
+    depends_on: 
+      - db
     image: eu.gcr.io/beironf/image-api-docker
     container_name: photography-image-api
     platform: linux/x86_64

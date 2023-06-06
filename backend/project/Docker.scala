@@ -8,7 +8,7 @@ object PhotoApiDocker {
   val dockerSettings: Seq[Def.SettingsDefinition] = Seq(
     Docker / packageName := name.value + "-docker",
     dockerBaseImage := "openjdk:11-jdk",
-    dockerExposedPorts += 9001,
+    dockerExposedPorts += 3001,
     dockerEnvVars := Map("PHOTO_APP_DIR" -> "."),
     dockerRepository := Some("eu.gcr.io"), // TODO: ?
     dockerUsername := Some("beironf"), // TODO: ?
@@ -21,7 +21,7 @@ object ImageApiDocker {
   val dockerSettings: Seq[Def.SettingsDefinition] = Seq(
     Docker / packageName := name.value + "-docker",
     dockerBaseImage := "openjdk:11-jdk",
-    dockerExposedPorts += 9002,
+    dockerExposedPorts += 3002,
     dockerEnvVars := Map("PHOTO_APP_DIR" -> "."),
     dockerRepository := Some("eu.gcr.io"), // TODO: ?
     dockerUsername := Some("beironf"), // TODO: ?
