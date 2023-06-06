@@ -51,13 +51,19 @@ mysql -u root -h localhost -P 4001 -D photography_db --protocol=tcp
 
 ## Example Images
 
-### Photo Manager
-<img width="1728" alt="image" src="https://user-images.githubusercontent.com/17812202/181303835-c16d5b7c-7c68-488b-bb7e-22678c786ce1.png">
-<img width="1728" alt="image" src="https://user-images.githubusercontent.com/17812202/177271632-8ae1149c-5bf3-4c00-96bc-0970b67e9562.png">
+### Showroom/Gallery
+<p align="middle"/>
+  <img width="79%" alt="image" src="https://github.com/beironf/photography-app/assets/17812202/f78a62d3-8331-45ee-bc1f-8bb26e8d0c42">
+  <img width="20.3%" alt="image" src="https://github.com/beironf/photography-app/assets/17812202/c2cb5f5e-1097-47be-a349-2ce2203281a1">
+</p>
 
 ### Photo Viewer
 <p align="middle"/>
-  <img width="49.5%" alt="image" src="https://user-images.githubusercontent.com/17812202/181281578-9f2a06fa-87ea-41df-a70e-1d61fd4e8adf.png">
-  <img width="49.5%" alt="image" src="https://user-images.githubusercontent.com/17812202/181281240-923b8cca-83a7-4c3e-b979-699fa7cafd68.png">
+  <img width="49.5%" alt="image" src="https://github.com/beironf/photography-app/assets/17812202/86b33401-5ac9-43a0-8255-8b71f197e634">
+  <img width="49.5%" alt="image" src="https://github.com/beironf/photography-app/assets/17812202/a1b8ddc7-301c-438c-91ab-9428e1932a90">
 </p>
+
+### Photo Manager
+<img width="1728" alt="image" src="https://github.com/beironf/photography-app/assets/17812202/f2e5de8f-8d22-4885-9e25-75dc5683a38a">
+<img width="1728" alt="image" src="https://github.com/beironf/photography-app/assets/17812202/4aacdcdc-7bfb-483b-bd09-cf2498822d08">
 
