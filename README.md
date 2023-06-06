@@ -14,6 +14,10 @@ npx create-react-app frontend --typescript
 ```
 ./start-frontend.sh
 ```
+or
+```
+docker-compose up -d frontend
+```
 
 ## Backend APIs
 Scala app (built using sbt) using Akka HTTP and Tapir. The code architecture is inspired by the "hexagonal" (or "ports and adapters") architecture. Slick is used to connect to the DB.
