@@ -32,6 +32,8 @@ services:
     image: eu.gcr.io/beironf/photo-api-docker
     container_name: photography-photo-api
     platform: linux/x86_64
+    environment:
+      DATABASE_HOST: db
     ports:
       - '3001:3001'
 
@@ -41,5 +43,7 @@ services:
     image: eu.gcr.io/beironf/image-api-docker
     container_name: photography-image-api
     platform: linux/x86_64
+    environment:
+      DATABASE_HOST: db
     ports:
       - '3002:3002'
