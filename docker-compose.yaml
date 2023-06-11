@@ -38,7 +38,7 @@ services:
       - '3001:3001'
 
   image-api:
-    depends_on: 
+    depends_on:
       - db
     image: eu.gcr.io/beironf/image-api-docker
     container_name: photography-image-api
@@ -47,3 +47,7 @@ services:
       DATABASE_HOST: db
     ports:
       - '3002:3002'
+    volumes:
+      - $PHOTO_APP_DIR/storage/images:/opt/image-api/storage/images
+      - $PHOTO_APP_DIR/storage/thumbnails:/opt/image-api/storage/thumbnails
+      - $PHOTO_APP_DIR/storage/site-images:/opt/image-api/storage/site-images
