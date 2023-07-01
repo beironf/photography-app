@@ -6,12 +6,12 @@ import sbt.Keys._
 
 object PhotoApiDocker {
   val dockerSettings: Seq[Def.SettingsDefinition] = Seq(
-    Docker / packageName := name.value + "-docker",
+    Docker / packageName := name.value,
     dockerBaseImage := "openjdk:11-jdk",
     dockerExposedPorts += 3001,
     dockerEnvVars := Map("PHOTO_APP_DIR" -> "."),
-    dockerRepository := Some("eu.gcr.io"), // TODO: ?
-    dockerUsername := Some("beironf"), // TODO: ?
+    dockerRepository := Some("europe-west1-docker.pkg.dev"),
+    dockerUsername := Some("beiron-photography-app"),
     dockerUpdateLatest := isMainBuild,
     Docker / defaultLinuxInstallLocation := s"/opt/${name.value}"
   )
@@ -19,12 +19,12 @@ object PhotoApiDocker {
 
 object ImageApiDocker {
   val dockerSettings: Seq[Def.SettingsDefinition] = Seq(
-    Docker / packageName := name.value + "-docker",
+    Docker / packageName := name.value,
     dockerBaseImage := "openjdk:11-jdk",
     dockerExposedPorts += 3002,
     dockerEnvVars := Map("PHOTO_APP_DIR" -> "."),
-    dockerRepository := Some("eu.gcr.io"), // TODO: ?
-    dockerUsername := Some("beironf"), // TODO: ?
+    dockerRepository := Some("europe-west1-docker.pkg.dev"),
+    dockerUsername := Some("beiron-photography-app"),
     dockerUpdateLatest := isMainBuild,
     Docker / defaultLinuxInstallLocation := s"/opt/${name.value}"
   )
