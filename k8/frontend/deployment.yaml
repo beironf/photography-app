@@ -15,7 +15,7 @@ spec:
         app: frontend
     spec:
       containers:
-        - image: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/frontend:LATEST
-          name: frontend
+        - name: frontend
+          image: frontend-image
           ports:
             - containerPort: 3000
