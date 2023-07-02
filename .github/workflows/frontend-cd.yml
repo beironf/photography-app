@@ -24,7 +24,7 @@ env:
   DEPLOYMENT_NAME: frontend
   REPOSITORY: docker-artifacts
   IMAGE: frontend
-  DOCKERFILE_PATH: frontend/Dockerfile
+  DOCKERFILE_DIR: frontend
 
 jobs:
   setup-build-publish-deploy:
@@ -66,7 +66,7 @@ jobs:
             --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" \
-            $DOCKERFILE_PATH
+            $DOCKERFILE_DIR
 
       # Push the Docker image to Google Artifact Registry
       - name: Publish
