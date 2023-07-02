@@ -24,6 +24,7 @@ env:
   DEPLOYMENT_NAME: frontend
   REPOSITORY: docker-artifacts
   IMAGE: frontend
+  DOCKERFILE_PATH: frontend/Dockerfile
 
 jobs:
   setup-build-publish-deploy:
@@ -62,6 +63,7 @@ jobs:
       - name: Build
         run: |-
           docker build \
+            --file "$DOCKERFILE_PATH"
             --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" \
