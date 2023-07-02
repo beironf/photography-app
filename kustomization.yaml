@@ -7,4 +7,4 @@ resources:
 images:
   - name: "frontend-image"
     newName: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/frontend
-    newTag: master.YYYYMMDDTtttt.xxx
+    newTag: latest
