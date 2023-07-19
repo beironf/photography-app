@@ -73,3 +73,27 @@ The DB is hosted inside a Docker container and exposed on the port `4001`. For s
 ```
 mysql -u root -h localhost -P 4001 -D photography_db --protocol=tcp
 ```
+
+## Google Cloud
+
+#### Connect to Database
+```
+gcloud sql connect db --user=root
+USE photography_db;
+...
+```
+
+#### Creating Service Accounts - Workload Identity
+```
+// add a Google Service Account (GSA)
+gcloud iam service-accounts create <gsa-name>
+
+// add a Kubernetes Service Account (KSA)
+kubectl create serviceaccount --namespace <k8s-namespace> <ksa-name>
+
+// allow the KSA to use the GSA
+gcloud iam service-accounts add-iam-policy-binding --role roles/iam.workloadIdentityUser --member "serviceAccount:beiron-photography-app.svc.id.goog[<k8s-namespace>/<ksa-name>]" <gsa-name>@beiron-photography-app.iam.gserviceaccount.com
+
+// annotate the KSA with the GSA reference
+kubectl annotate serviceaccount --namespace <k8s-namespace> <ksa-name> iam.gke.io/gcp-service-account=<gsa-name>@beiron-photography-app.iam.gserviceaccount.com
+```
