@@ -4,7 +4,12 @@ resources:
   - k8/frontend/deployment.yaml
   - k8/frontend/ingress.yaml
   - k8/frontend/service.yaml
+  - k8/photo-api/deployment.yaml
+  - k8/photo-api/service.yaml
 images:
   - name: "frontend-image"
     newName: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/frontend
+    newTag: latest
+  - name: "photo-api-image"
+    newName: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/photo-api
     newTag: latest

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photo-api
+  labels:
+    app: photo-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: photo-api
+  template:
+    metadata:
+      labels:
+        app: photo-api
+    spec:
+      containers:
+        - name: photo-api
+          image: photo-api-image
+          ports:
+            - containerPort: 3001
+      serviceAccount: photo-api
