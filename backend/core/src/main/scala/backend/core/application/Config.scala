@@ -1,32 +1,24 @@
 package backend.core.application
 
-import com.typesafe.config.{ConfigFactory, Config => TypesafeConfig}
+import com.typesafe.config.{ConfigFactory, Config as TypesafeConfig}
 
 /**
  * Using typesafe config under the hood.
  * https://github.com/lightbend/config
- * Set the java property -Dconfig.resource=myenv.conf or
- * Set the java property -Dconfig.file=my/file.conf
+ * Set the java property -Dconfig.resource=production.conf to enable production conf
  */
 
 // the config is essentially singleton, and only needs to be read once.
 object Config {
-  val DEVELOPMENT = "development"
-  val PRODUCTION = "production"
+  private val PRODUCTION = "production"
 
-  def apply(env: String = DEVELOPMENT): TypesafeConfig = {
-    env match {
-      case DEVELOPMENT => developmentConfig
-      case PRODUCTION => productionConfig
-      case name => load(name)
-    }
-  }
+  private val isProduction = Option(System.getProperty("config.resource"))
+    .exists(_.contains(PRODUCTION))
 
-  def load(name: String): TypesafeConfig = {
-    val configFile = s"$name.conf"
-    ConfigFactory.load(configFile)
-  }
+  def apply(): TypesafeConfig =
+    if (isProduction) productionConfig
+    else developmentConfig
 
-  lazy val developmentConfig: TypesafeConfig = ConfigFactory.load("application.conf")
-  lazy val productionConfig: TypesafeConfig = ConfigFactory.load("production.conf")
+  private lazy val developmentConfig: TypesafeConfig = ConfigFactory.load("application.conf")
+  private lazy val productionConfig: TypesafeConfig = ConfigFactory.load("production.conf")
 }

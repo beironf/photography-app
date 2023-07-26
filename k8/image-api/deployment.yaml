@@ -19,4 +19,9 @@ spec:
           image: image-api-image
           ports:
             - containerPort: 3002
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Dconfig.resource=production.conf"
+            - name: DB_USER
+              value: image-api
       serviceAccount: image-api

@@ -11,9 +11,9 @@ import java.nio.file.{Files, Path, Paths}
 import scala.concurrent.{ExecutionContext, Future}
 
 object ImageRepositoryImpl extends DefaultService {
-  val IMAGE_PATH: Path = Paths.get(config.getString("file-storage.images.local.path"))
-  val THUMBNAIL_PATH: Path = Paths.get(config.getString("file-storage.thumbnails.local.path"))
-  val SITE_IMAGE_PATH: Path = Paths.get(config.getString("file-storage.site-images.local.path"))
+  val IMAGE_PATH: Path = Paths.get(config.getString("file-storage.images.development.path"))
+  val THUMBNAIL_PATH: Path = Paths.get(config.getString("file-storage.thumbnails.development.path"))
+  val SITE_IMAGE_PATH: Path = Paths.get(config.getString("file-storage.site-images.development.path"))
 
   def apply()(implicit executionContext: ExecutionContext): ImageRepositoryImpl =
     new ImageRepositoryImpl

@@ -13,8 +13,6 @@ ThisBuild / scalacOptions ++= Seq(
   "-Yrangepos"
 )
 
-ThisBuild / javaOptions += "-Dconfig.resource=application.conf"
-
 
 // ---------- Project Creator --------
 
