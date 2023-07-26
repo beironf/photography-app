@@ -10,8 +10,7 @@ object PhotoApiDocker {
     dockerBaseImage := "openjdk:11-jdk",
     dockerExposedPorts += 3001,
     dockerEnvVars := Map("PHOTO_APP_DIR" -> "."),
-    dockerRepository := Some("europe-west1-docker.pkg.dev"),
-    dockerUsername := Some("beiron-photography-app"),
+    dockerRepository := Some("europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts"),
     dockerUpdateLatest := isMainBuild,
     Docker / defaultLinuxInstallLocation := s"/opt/${name.value}"
   )
@@ -23,8 +22,7 @@ object ImageApiDocker {
     dockerBaseImage := "openjdk:11-jdk",
     dockerExposedPorts += 3002,
     dockerEnvVars := Map("PHOTO_APP_DIR" -> "."),
-    dockerRepository := Some("europe-west1-docker.pkg.dev"),
-    dockerUsername := Some("beiron-photography-app"),
+    dockerRepository := Some("europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts"),
     dockerUpdateLatest := isMainBuild,
     Docker / defaultLinuxInstallLocation := s"/opt/${name.value}"
   )
