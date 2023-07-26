@@ -60,7 +60,10 @@ jobs:
 
       # Build and publish the Docker image
       - name: Build and publish Docker image
-        run: sbt $DEPLOYMENT_NAME/docker:publish
+        run: |-
+          cd backend
+          sbt $DEPLOYMENT_NAME/docker:publish
+          cd ..
 
       # Set up kustomize
       - name: Set up Kustomize
