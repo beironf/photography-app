@@ -6,10 +6,15 @@ resources:
   - k8/frontend/service.yaml
   - k8/photo-api/deployment.yaml
   - k8/photo-api/service.yaml
+  - k8/image-api/deployment.yaml
+  - k8/image-api/service.yaml
 images:
   - name: "frontend-image"
     newName: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/frontend
     newTag: latest
   - name: "photo-api-image"
     newName: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/photo-api
+    newTag: latest
+  - name: "image-api-image"
+    newName: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/image-api
     newTag: latest
