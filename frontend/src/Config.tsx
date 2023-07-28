@@ -12,8 +12,8 @@ const DEVELOPMENT_CONFIG: EnvironmentConfig = {
 
 const PRODUCTION_CONFIG: EnvironmentConfig = {
   environment: 'production',
-  photoApi: 'http://photography.beiron.se/photo-api:3001',
-  imageApi: 'http://photography.beiron.se/image-api:3002',
+  photoApi: 'http://photography.beiron.se/photo-api',
+  imageApi: 'http://photography.beiron.se/image-api',
 };
 
 const host = window.location.hostname;
