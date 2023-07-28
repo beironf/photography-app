@@ -11,21 +11,21 @@ spec:
   - http:
       paths:
       - path: /()(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: frontend
             port:
               name: frontend-port
       - path: /(photo-api)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: photo-api
             port:
               name: photo-api-port
       - path: /(image-api)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: image-api
