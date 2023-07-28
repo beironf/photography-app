@@ -8,21 +8,21 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: /*
         pathType: ImplementationSpecific
         backend:
           service:
             name: frontend
             port:
               name: frontend-port
-      - path: /photo-api
+      - path: /photo-api/*
         pathType: ImplementationSpecific
         backend:
           service:
             name: photo-api
             port:
               name: photo-api-port
-      - path: /image-api
+      - path: /image-api/*
         pathType: ImplementationSpecific
         backend:
           service:
