@@ -5,27 +5,27 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: static-photography-app-ip
     nginx.ingress.kubernetes.io/use-regex: "true"
-    ingress.kubernetes.io/rewrite-target: /$2
+    ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
   - host: photography.beiron.se
     http:
       paths:
-      - path: (/)(.*)
+      - path: /(.*)
         pathType: Prefix
         backend:
           service:
             name: frontend
             port:
               name: frontend-port
-      - path: /photo-api(/|$)(.*)
+      - path: /photo-api/(.*)
         pathType: Prefix
         backend:
           service:
             name: photo-api
             port:
               name: photo-api-port
-      - path: /image-api(/|$)(.*)
+      - path: /image-api/(.*)
         pathType: Prefix
         backend:
           service:
