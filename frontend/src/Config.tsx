@@ -12,8 +12,8 @@ const DEVELOPMENT_CONFIG: EnvironmentConfig = {
 
 const PRODUCTION_CONFIG: EnvironmentConfig = {
   environment: 'production',
-  photoApi: 'http://photo-api:3001',
-  imageApi: 'http://image-api:3002',
+  photoApi: 'http://photo-api.default.svc.cluster.local:3001',
+  imageApi: 'http://image-api.default.svc.cluster.local:3002',
 };
 
 const host = window.location.hostname;
