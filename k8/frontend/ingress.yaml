@@ -5,8 +5,24 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: static-photography-app-ip
 spec:
-  defaultBackend:
-    service:
-      name: frontend
-      port:
-        name: http
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: frontend
+            port:
+              name: frontend-port
+      - path: /photo-api
+        backend:
+          service:
+            name: photo-api
+            port:
+              name: photo-api-port
+      - path: /image-api
+        backend:
+          service:
+            name: image-api
+            port:
+              name: image-api-port
