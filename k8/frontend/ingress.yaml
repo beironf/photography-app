@@ -7,5 +7,5 @@ metadata:
 spec:
   defaultBackend:
     service:
-      name: frontend
-      port: 8080
+      serviceName: frontend
+      servicePort: 8080

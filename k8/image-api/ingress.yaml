@@ -7,5 +7,5 @@ metadata:
 spec:
   defaultBackend:
     service:
-      name: image-api
-      port: 80
+      serviceName: image-api
+      servicePort: 80
