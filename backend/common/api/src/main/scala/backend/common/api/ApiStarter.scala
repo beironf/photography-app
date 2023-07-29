@@ -2,13 +2,15 @@ package backend.common.api
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.HttpMethods._
+import akka.http.scaladsl.model.HttpMethods.*
+import akka.http.scaladsl.model.StatusCodes.OK
+import akka.http.scaladsl.server.Directives.*
 import akka.http.scaladsl.server.{Route, RouteConcatenation}
 import backend.core.application.DefaultService
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
 import ch.megard.akka.http.cors.scaladsl.settings.CorsSettings
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.concurrent.{Await, Future}
 
 trait ApiStarter extends RouteConcatenation with DefaultService {
@@ -20,7 +22,7 @@ trait ApiStarter extends RouteConcatenation with DefaultService {
     logger.info(s"-------------- STARTING $name IN MODE=$environment --------------")
   }
 
-  def startApi(name: String, route: Route, shutdown: Option[() => Future[_]]): Future[Http.ServerBinding] = {
+  def startApi(name: String, route: Route, shutdown: Option[() => Future[?]]): Future[Http.ServerBinding] = {
 
     val domain: String = config.getString("domain")
     val port: Int = config.getInt(name + ".port")
@@ -32,8 +34,14 @@ trait ApiStarter extends RouteConcatenation with DefaultService {
       GET, POST, PATCH, PUT, DELETE, HEAD, OPTIONS
     ))
 
+    val healthCheckRoute: Route = path("health-check") {
+      get {
+        complete(OK)
+      }
+    }
+
     val bindingFuture = Http().newServerAt(domain, port).bind {
-      cors(corsSettings) { route }
+      cors(corsSettings) { healthCheckRoute ~ route }
     }
 
     sys.addShutdownHook {
