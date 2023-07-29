@@ -6,8 +6,9 @@ metadata:
     app: photo-api
 spec:
   ports:
-    - port: 3001
-      name: photo-api-port
+    - name: http
+      port: 80
       protocol: TCP
+      targetPort: photo-api-port
   selector:
     app: photo-api

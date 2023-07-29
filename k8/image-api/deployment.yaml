@@ -18,7 +18,8 @@ spec:
         - name: image-api
           image: image-api-image
           ports:
-            - containerPort: 3002
+            - name: image-api-port
+              containerPort: 3002
           env:
             - name: JAVA_TOOL_OPTIONS
               value: "-Dconfig.resource=production.conf"

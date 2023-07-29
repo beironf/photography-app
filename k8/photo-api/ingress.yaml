@@ -9,4 +9,4 @@ spec:
     service:
       name: photo-api
       port:
-        name: photo-api-port
+        name: http
