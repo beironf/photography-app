@@ -1,0 +1,12 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: image-api
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: static-image-api-ip
+spec:
+  defaultBackend:
+    service:
+      name: image-api
+      port:
+        name: image-api-port
