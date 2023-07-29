@@ -1,6 +1,6 @@
 package backend.image.api
 
-import akka.http.scaladsl.model.StatusCodes.NoContent
+import akka.http.scaladsl.model.StatusCodes.OK
 import akka.http.scaladsl.server.Directives.*
 import akka.http.scaladsl.server.Route
 import backend.common.api.ApiApp
@@ -11,7 +11,7 @@ object ImageApi extends App with ApiApp {
   private val apiRoutes = new ApiRoutes()
 
   val healthCheckRoute: Route = path("health-check") {
-    get { complete(NoContent) }
+    get { complete(OK) }
   }
 
   private val route = {
