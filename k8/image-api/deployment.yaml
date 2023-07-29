@@ -18,8 +18,7 @@ spec:
         - name: image-api
           image: image-api-image
           ports:
-            - name: image-api-port
-              containerPort: 3002
+            - containerPort: 3002
           env:
             - name: JAVA_TOOL_OPTIONS
               value: "-Dconfig.resource=production.conf"
@@ -28,13 +27,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /health-check
-              port: image-api-port
+              port: 3002
             initialDelaySeconds: 30
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health-check
-              port: image-api-port
+              port: 3002
             initialDelaySeconds: 20
             periodSeconds: 30
       serviceAccount: image-api

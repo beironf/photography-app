@@ -8,5 +8,4 @@ spec:
   defaultBackend:
     service:
       name: frontend
-      port:
-        name: frontend-port
+      port: 8080

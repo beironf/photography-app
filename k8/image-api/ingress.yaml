@@ -8,5 +8,4 @@ spec:
   defaultBackend:
     service:
       name: image-api
-      port:
-        name: http
+      port: 80

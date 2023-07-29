@@ -6,8 +6,8 @@ metadata:
     app: frontend
 spec:
   ports:
-    - port: 3000
-      name: frontend-port
+    - port: 8080
       protocol: TCP
+      targetPort: 3000
   selector:
     app: frontend

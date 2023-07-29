@@ -6,9 +6,8 @@ metadata:
     app: image-api
 spec:
   ports:
-    - name: http
-      port: 80
+    - port: 80
       protocol: TCP
-      targetPort: image-api-port
+      targetPort: 3002
   selector:
     app: image-api
