@@ -5,8 +5,14 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: static-photo-api-ip
 spec:
-  defaultBackend:
-    service:
-      name: photo-api
-      port:
-        number: 80
+  rules:
+  - host: photo.photography.beiron.se
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: photo-api
+            port:
+              number: 80
