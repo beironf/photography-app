@@ -25,4 +25,16 @@ spec:
               value: "-Dconfig.resource=production.conf"
             - name: DB_USER
               value: photo-api
+          livenessProbe:
+            httpGet:
+              path: /health-check
+              port: photo-api-port
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health-check
+              port: photo-api-port
+            initialDelaySeconds: 20
+            periodSeconds: 30
       serviceAccount: photo-api
