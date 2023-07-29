@@ -7,5 +7,6 @@ metadata:
 spec:
   defaultBackend:
     service:
-      serviceName: photo-api
-      servicePort: 80
+      name: photo-api
+      port:
+        number: 80
