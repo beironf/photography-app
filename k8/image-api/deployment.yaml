@@ -24,16 +24,4 @@ spec:
               value: "-Dconfig.resource=production.conf"
             - name: DB_USER
               value: image-api
-          livenessProbe:
-            httpGet:
-              path: /health-check
-              port: 3002
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /health-check
-              port: 3002
-            initialDelaySeconds: 20
-            periodSeconds: 30
       serviceAccount: image-api

@@ -34,7 +34,7 @@ trait ApiStarter extends RouteConcatenation with DefaultService {
       GET, POST, PATCH, PUT, DELETE, HEAD, OPTIONS
     ))
 
-    val healthCheckRoute: Route = path("health-check") {
+    val healthCheckRoute: Route = pathEndOrSingleSlash {
       get {
         complete(OK)
       }

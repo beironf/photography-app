@@ -12,7 +12,8 @@ import scala.util.{Failure, Success, Try}
 trait ApiApp extends ApiStarter with DefaultService {
   protected implicit lazy val executionContext: ExecutionContext = Implicits.global
 
-  def start(name: String, route: Route,
+  def start(name: String,
+            route: Route,
             dbConfigToValidate: Option[DatabaseConfig[JdbcProfile]] = None,
             shutdown: Option[() => Future[_]] = None): Unit = {
     startApi(name, route, shutdown).onComplete {
