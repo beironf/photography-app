@@ -1,17 +1,16 @@
 package backend.exif.adapters
 
-import backend.exif.entities._
+import backend.exif.entities.*
 import backend.exif.ports.ImageExifRepository
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 object InMemoryImageExifRepository {
-  def apply()(implicit executionContext: ExecutionContext): InMemoryImageExifRepository =
+  def apply(): InMemoryImageExifRepository =
     new InMemoryImageExifRepository()
 }
 
-class InMemoryImageExifRepository()
-                                 (implicit executionContext: ExecutionContext) extends ImageExifRepository {
+class InMemoryImageExifRepository() extends ImageExifRepository {
   var db: Map[String, ImageExif] = Map[String, ImageExif]()
 
   def getExif(imageId: String): Future[Option[ImageExif]] = Future.successful {

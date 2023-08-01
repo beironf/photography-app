@@ -1,22 +1,25 @@
 package backend.exif.adapters
 
-import backend.core.sqlstorage.DatabaseConnector
+import backend.core.sqlstorage.{DatabaseConnector, MaterializerDBIO}
 import backend.exif.adapters.exifdb.*
 import backend.exif.entities.ImageExif
 import backend.exif.ports.ImageExifRepository
-import slick.basic.DatabaseConfig
-import slick.jdbc.JdbcProfile
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 object ImageExifRepositoryImpl {
-  private val dbConfig = DatabaseConnector.MainDBConfig
-  def apply(): ImageExifRepository = new ImageExifRepositoryImpl(dbConfig)
+  private val dbConnector = DatabaseConnector.defaultConnector
+  implicit val executionContext: ExecutionContext = DatabaseConnector.executionContext
+  def apply(): ImageExifRepositoryImpl = new ImageExifRepositoryImpl(MaterializerDBIO(dbConnector), dbConnector)
 }
 
-class ImageExifRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends ImageExifRepository
-  with ImagesExifTable with ImplicitImageExifConverter {
-  import dbConfig.profile.api._
+class ImageExifRepositoryImpl(db: MaterializerDBIO,
+                              val databaseConnector: DatabaseConnector)
+                             (implicit executionContext: ExecutionContext)
+  extends ImageExifRepository
+    with ImagesExifTable
+    with ImplicitImageExifConverter {
+  import databaseConnector.profile.api.*
 
   def getExif(imageId: String): Future[Option[ImageExif]] = db.run {
     imagesExif.filter(_.imageId === imageId).result.headOption

@@ -1,6 +1,6 @@
 package backend.photo.adapters
 
-import backend.core.sqlstorage.DatabaseConnector
+import backend.core.sqlstorage.{DatabaseConnector, MaterializerDBIO}
 import backend.core.utils.OptionTExtensions
 import backend.photo.adapters.db.*
 import backend.photo.entities.*
@@ -8,24 +8,25 @@ import backend.photo.entities.meta.Category.Category
 import backend.photo.entities.meta.{Judgement, Location}
 import backend.photo.ports.PhotoRepository
 import com.rms.miu.slickcats.DBIOInstances.dbioInstance
-import slick.basic.DatabaseConfig
-import slick.jdbc.JdbcProfile
 import slick.lifted.AbstractTable
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 object PhotoRepositoryImpl {
-  private val dbConfig = DatabaseConnector.MainDBConfig
-  def apply(): PhotoRepositoryImpl = new PhotoRepositoryImpl(dbConfig)
+  private val dbConnector = DatabaseConnector.defaultConnector
+  implicit val executionContext: ExecutionContext = DatabaseConnector.executionContext
+  def apply(): PhotoRepositoryImpl = new PhotoRepositoryImpl(MaterializerDBIO(dbConnector), dbConnector)
 }
 
-class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends PhotoRepository
+class PhotoRepositoryImpl(db: MaterializerDBIO,
+                          val databaseConnector: DatabaseConnector)
+                         (implicit executionContext: ExecutionContext) extends PhotoRepository
   with PhotosTable
   with LocationsTable
   with JudgementsTable
   with ImplicitDbModelConverter
   with OptionTExtensions {
-  import dbConfig.profile.api._
+  import databaseConnector.profile.api.*
 
   def getPhoto(imageId: String): Future[Option[Photo]] = db.run {
     (for {
@@ -114,7 +115,7 @@ class PhotoRepositoryImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends Pho
     .update((judgement.rating, judgement.inShowroom))
 
 
-  private def get[T <: AbstractTable[_]](table: TableQuery[T],
+  private def get[T <: AbstractTable[?]](table: TableQuery[T],
                                          filterCondition: T => Rep[Boolean]): DBIO[Option[T#TableElementType]] =
     table.filter(filterCondition).result.headOption
 

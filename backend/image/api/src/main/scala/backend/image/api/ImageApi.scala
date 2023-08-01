@@ -9,5 +9,5 @@ object ImageApi extends App with ApiApp {
 
   private val route = ApiDocs.route ~ apiRoutes.route
 
-  start("image-api", route, dbConfigToValidate = Some(DatabaseConnector.MainDBConfig), shutdown = None)
+  start("image-api", route, dbConnectorToValidate = Some(DatabaseConnector.defaultConnector), shutdown = None)
 }

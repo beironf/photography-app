@@ -1,16 +1,16 @@
 package backend.photo.adapters.db
 
-import backend.core.sqlstorage.DatabaseConnector
+import backend.core.sqlstorage.StorageTableHelper
 import backend.photo.entities.meta.Metadata
 import backend.photo.entities.settings.CameraSettings
 import slick.jdbc.JdbcType
-import spray.json._
+import spray.json.*
 
 import java.sql.Timestamp
 
-trait PhotosTable extends DatabaseConnector with JsonProtocol {
+trait PhotosTable extends StorageTableHelper with JsonProtocol {
 
-  import dbConfig.profile.api._
+  import databaseConnector.profile.api.*
 
   implicit val jsValueDBFormat: JdbcType[JsValue] = MappedColumnType.base[JsValue, String](_.toString, _.parseJson)
   implicit val cameraSettingsDBFormat: JdbcType[CameraSettings] = MappedColumnType.base[CameraSettings, JsValue](_.toJson, _.convertTo[CameraSettings])

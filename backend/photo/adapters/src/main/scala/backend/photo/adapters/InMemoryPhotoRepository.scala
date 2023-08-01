@@ -6,6 +6,10 @@ import backend.photo.ports.PhotoRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
+object InMemoryPhotoRepository {
+  def apply()(implicit executionContext: ExecutionContext): InMemoryPhotoRepository =
+    new InMemoryPhotoRepository()
+}
 
 class InMemoryPhotoRepository()
                              (implicit executionContext: ExecutionContext) extends PhotoRepository {

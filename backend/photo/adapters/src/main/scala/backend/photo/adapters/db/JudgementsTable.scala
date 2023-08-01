@@ -1,9 +1,9 @@
 package backend.photo.adapters.db
 
-import backend.core.sqlstorage.DatabaseConnector
+import backend.core.sqlstorage.StorageTableHelper
 
-trait JudgementsTable extends DatabaseConnector {
-  import dbConfig.profile.api._
+trait JudgementsTable extends StorageTableHelper {
+  import databaseConnector.profile.api.*
 
   class Judgements(tag: Tag) extends Table[JudgementDb](tag, "judgements") {
 

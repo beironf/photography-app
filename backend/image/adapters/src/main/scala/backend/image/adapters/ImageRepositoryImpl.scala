@@ -3,7 +3,7 @@ package backend.image.adapters
 import akka.stream.scaladsl.FileIO
 import backend.core.application.DefaultService
 import backend.image.entities.ImageType.ImageType
-import backend.image.entities._
+import backend.image.entities.*
 import backend.image.ports.ImageRepository
 
 import java.io.IOException
@@ -11,9 +11,9 @@ import java.nio.file.{Files, Path, Paths}
 import scala.concurrent.{ExecutionContext, Future}
 
 object ImageRepositoryImpl extends DefaultService {
-  val IMAGE_PATH: Path = Paths.get(config.getString("file-storage.images.development.path"))
-  val THUMBNAIL_PATH: Path = Paths.get(config.getString("file-storage.thumbnails.development.path"))
-  val SITE_IMAGE_PATH: Path = Paths.get(config.getString("file-storage.site-images.development.path"))
+  private val IMAGE_PATH: Path = Paths.get(config.getString("file-storage.images.development.path"))
+  private val THUMBNAIL_PATH: Path = Paths.get(config.getString("file-storage.thumbnails.development.path"))
+  private val SITE_IMAGE_PATH: Path = Paths.get(config.getString("file-storage.site-images.development.path"))
 
   def apply()(implicit executionContext: ExecutionContext): ImageRepositoryImpl =
     new ImageRepositoryImpl
@@ -21,7 +21,7 @@ object ImageRepositoryImpl extends DefaultService {
 
 class ImageRepositoryImpl()
                          (implicit executionContext: ExecutionContext) extends ImageRepository with ImageIO {
-  import backend.image.adapters.ImageRepositoryImpl._
+  import backend.image.adapters.ImageRepositoryImpl.*
 
   dirExists(ImageType.FullSize)
   dirExists(ImageType.Thumbnail)

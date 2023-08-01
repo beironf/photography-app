@@ -1,12 +1,12 @@
 package backend.exif.adapters.exifdb
 
-import backend.core.sqlstorage.DatabaseConnector
+import backend.core.sqlstorage.StorageTableHelper
 
 import java.sql.Timestamp
 
-trait ImagesExifTable extends DatabaseConnector {
+trait ImagesExifTable extends StorageTableHelper {
 
-  import dbConfig.profile.api._
+  import databaseConnector.profile.api.*
 
   class ImagesExif(tag: Tag) extends Table[ImageExifDb](tag, "images_exif") {
 
