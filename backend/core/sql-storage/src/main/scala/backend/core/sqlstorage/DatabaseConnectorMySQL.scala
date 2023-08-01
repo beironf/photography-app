@@ -56,8 +56,8 @@ final class DatabaseConnectorMySQL(val dbConfig: Config) extends DatabaseConnect
       connProps.setProperty("sslmode", "disable")
       connProps.setProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory")
       connProps.setProperty("cloudSqlInstance", cloudSqlInstance)
-      //connProps.setProperty("enableIamAuth", "true")
-      connProps.setProperty("password", dbPassword)
+      connProps.setProperty("enableIamAuth", "true")
+      connProps.setProperty("password", "dummy")
 
       hikariConfig.setDataSourceProperties(connProps)
     } else {
