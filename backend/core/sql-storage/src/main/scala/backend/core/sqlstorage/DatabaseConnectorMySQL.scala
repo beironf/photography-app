@@ -54,7 +54,7 @@ final class DatabaseConnectorMySQL(val dbConfig: Config) extends DatabaseConnect
       val connProps = new Properties()
       connProps.setProperty("user", dbUser)
       connProps.setProperty("sslmode", "disable")
-      connProps.setProperty("socketFactory", "com.google.cloud.sql.postgres.SocketFactory")
+      connProps.setProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory")
       connProps.setProperty("cloudSqlInstance", cloudSqlInstance)
       connProps.setProperty("enableIamAuth", "true")
       connProps.setProperty("password", "dummy")
