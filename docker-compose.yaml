@@ -8,8 +8,9 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - PGPORT=4001
     ports:
-      - '4001:5432'
+      - '4001:4001'
     volumes:
       - $PHOTO_APP_DIR/photography-db/postgresql_data:/var/lib/postgresql/data
 
