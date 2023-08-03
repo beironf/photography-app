@@ -12,6 +12,7 @@ object Dependencies {
   private lazy val scrimageV     = "4.0.31"
   private lazy val slickV        = "3.3.3"
   private lazy val slickCatsV    = "0.10.4"
+  private lazy val hikariV       = "5.0.1"
   private lazy val slickPgV      = "0.20.2"
   private lazy val postgresqlV   = "42.6.0"
   private lazy val pgSocketV     = "1.11.1"
@@ -31,8 +32,8 @@ object Dependencies {
   lazy val tapirEnumeratum       = "com.softwaremill.sttp.tapir" %% "tapir-enumeratum"         % tapirV
   lazy val scrimage              = "com.sksamuel.scrimage"       %  "scrimage-core"            % scrimageV
   lazy val slick                 = "com.typesafe.slick"          %% "slick"                    % slickV
-  lazy val slickHikariCP         = "com.typesafe.slick"          %% "slick-hikaricp"           % slickV
   lazy val slickCats             = "com.rms.miu"                 %% "slick-cats"               % slickCatsV
+  lazy val hikariCp              = "com.zaxxer"                  %  "HikariCP"                 % hikariV
   lazy val postgresql            = "org.postgresql"              %  "postgresql"               % postgresqlV
   lazy val pgSocketFactory       = "com.google.cloud.sql"        %  "postgres-socket-factory"  % pgSocketV
   lazy val slickPg               = "com.github.tminglei"         %% "slick-pg"                 % slickPgV

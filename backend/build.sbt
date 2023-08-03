@@ -42,8 +42,8 @@ lazy val core = createProject("core")(Seq(
 
 lazy val coreSqlStorage = createProject("core-sql-storage", inFile = Some("core/sql-storage"))(Seq(
   slick,
-  slickHikariCP,
   slickCats,
+  hikariCp,
   postgresql,
   pgSocketFactory,
   slickPg,
