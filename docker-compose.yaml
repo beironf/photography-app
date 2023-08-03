@@ -27,7 +27,7 @@ services:
   photo-api:
     depends_on:
       - photography-db
-    image: eu.gcr.io/beironf/photo-api-docker
+    image: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/photo-api
     container_name: photography-photo-api
     platform: linux/x86_64
     environment:
@@ -38,7 +38,7 @@ services:
   image-api:
     depends_on:
       - photography-db
-    image: eu.gcr.io/beironf/image-api-docker
+    image: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/image-api
     container_name: photography-image-api
     platform: linux/x86_64
     environment:
