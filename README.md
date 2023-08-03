@@ -59,28 +59,26 @@ An API for uploading and fetching images. EXIF data will be stored before the im
 ./start-image-api.sh
 ```
 
-## MySQL Database with Docker
-Common webhotels usually have support for MySQL so I went for this even though it probably would have made more sense to run this app using for example MongoDB (or similar NoSQL).
+## PostgreSQL Database with Docker
+It would probably have made more sense to run this app using for example MongoDB (or similar NoSQL), but I went for a SQL database because it was more familiar.
 
 #### Initiate/Start:
-The DB is specified in the `docker-compose.yaml` file (services: `db`) where we create a MySQL-container (`photography-db`) with the database `photography_db` inside.
+The DB is specified in the `docker-compose.yaml` file (services: `photography-db`) where we create a PostgreSQL-container with the database `photography_db` inside.
 ```
-docker-compose up -d db
+docker-compose up -d photography-db
 ```
 
 #### Connect:
-The DB is hosted inside a Docker container and exposed on the port `4001`. For some reason the `--protocol=tcp` was needed when using "localhost" (`127.0.0.1` works without whis flag).
+The DB is hosted inside a Docker container and exposed on the port `4001`.
 ```
-mysql -u root -h localhost -P 4001 -D photography_db --protocol=tcp
+psql -h localhost -p 4001 -U postgres photography_db
 ```
 
 ## Google Cloud
 
 #### Connect to Database
 ```
-gcloud sql connect db --user=root
-USE photography_db;
-...
+gcloud sql connect photography-db --user=postgres --database=photography_db
 ```
 
 #### Creating Service Accounts - Workload Identity
@@ -96,4 +94,10 @@ gcloud iam service-accounts add-iam-policy-binding --role roles/iam.workloadIden
 
 // annotate the KSA with the GSA reference
 kubectl annotate serviceaccount --namespace <k8s-namespace> <ksa-name> iam.gke.io/gcp-service-account=<gsa-name>@beiron-photography-app.iam.gserviceaccount.com
+```
+
+#### Grant access in DB
+```
+GRANT pg_read_all_data TO <db-user>;
+GRANT pg_write_all_data TO <db-user>;
 ```
