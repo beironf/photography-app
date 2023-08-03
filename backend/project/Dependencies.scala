@@ -12,7 +12,7 @@ object Dependencies {
   private lazy val scrimageV     = "4.0.31"
   private lazy val slickV        = "3.3.3"
   private lazy val slickCatsV    = "0.10.4"
-  private lazy val mysqlV        = "8.0.29"
+  private lazy val slickPgV      = "0.20.2"
   private lazy val jbcryptV      = "0.4"
 
   lazy val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
@@ -31,7 +31,8 @@ object Dependencies {
   lazy val slick                 = "com.typesafe.slick"          %% "slick"                    % slickV
   lazy val slickHikariCP         = "com.typesafe.slick"          %% "slick-hikaricp"           % slickV
   lazy val slickCats             = "com.rms.miu"                 %% "slick-cats"               % slickCatsV
-  lazy val mysql                 = "mysql"                       %  "mysql-connector-java"     % mysqlV
+  lazy val slickPg               = "com.github.tminglei"         %% "slick-pg"                 % slickPgV
+  lazy val slickPgSprayJson      = "com.github.tminglei"         %% "slick-pg_spray-json"      % slickPgV
   lazy val scalaTest             = "org.scalatest"               %% "scalatest"                % scalaTestV
   lazy val jbcrypt               = "org.mindrot"                 %  "jbcrypt"                  % jbcryptV
 }

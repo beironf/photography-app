@@ -44,7 +44,8 @@ lazy val coreSqlStorage = createProject("core-sql-storage", inFile = Some("core/
   slick,
   slickHikariCP,
   slickCats,
-  mysql
+  slickPg,
+  slickPgSprayJson
 )).dependsOn(core)
 
 
