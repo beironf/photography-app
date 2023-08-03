@@ -23,5 +23,5 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-Dconfig.resource=production.conf"
             - name: DB_USER
-              value: image-api
+              value: image-api@beiron-photography-app.iam
       serviceAccount: image-api
