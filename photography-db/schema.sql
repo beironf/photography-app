@@ -31,7 +31,7 @@ CREATE TABLE photos (
     title           TEXT NOT NULL,
     description     TEXT,
     photographer    VARCHAR(255) NOT NULL,
-    `group`         VARCHAR(255),
+    "group"         VARCHAR(255),
     locations_id    INTEGER NOT NULL REFERENCES locations (id),
     taken           TIMESTAMP NOT NULL,
     camera          VARCHAR(255) NOT NULL,

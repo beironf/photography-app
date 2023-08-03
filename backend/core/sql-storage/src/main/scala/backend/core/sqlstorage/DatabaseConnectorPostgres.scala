@@ -4,19 +4,19 @@ import backend.core.application.DefaultService
 import com.typesafe.config.Config
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import slick.jdbc.{JdbcProfile, MySQLProfile}
+import slick.jdbc.{JdbcProfile, PostgresProfile}
 import slick.util.AsyncExecutor
 
 import java.util.Properties
 
-object DatabaseConnectorMySQL extends DefaultService {
+object DatabaseConnectorPostgres extends DefaultService {
   private def defaultConfig: Config = config.getConfig("database")
 
-  def apply(dbConfig: Config = defaultConfig): DatabaseConnectorMySQL = new DatabaseConnectorMySQL(dbConfig)
+  def apply(dbConfig: Config = defaultConfig): DatabaseConnectorPostgres = new DatabaseConnectorPostgres(dbConfig)
 }
 
-final class DatabaseConnectorMySQL(val dbConfig: Config) extends DatabaseConnector with DefaultService {
-  val profile: JdbcProfile = MySQLProfile
+final class DatabaseConnectorPostgres(val dbConfig: Config) extends DatabaseConnector with DefaultService {
+  val profile: JdbcProfile = PostgresProfile
 
   val dbUser: String = dbConfig.getString("user")
 
@@ -38,7 +38,7 @@ final class DatabaseConnectorMySQL(val dbConfig: Config) extends DatabaseConnect
     } else {
       s"$dbHost:$dbPort"
     }
-    s"jdbc:mysql://$host/$dbName"
+    s"jdbc:postgresql://$host/$dbName"
   }
 
   private lazy val hikariDataSource: HikariDataSource = {
@@ -54,7 +54,7 @@ final class DatabaseConnectorMySQL(val dbConfig: Config) extends DatabaseConnect
       val connProps = new Properties()
       connProps.setProperty("user", dbUser)
       connProps.setProperty("sslmode", "disable")
-      connProps.setProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory")
+      connProps.setProperty("socketFactory", "com.google.cloud.sql.postgres.SocketFactory")
       connProps.setProperty("cloudSqlInstance", cloudSqlInstance)
       connProps.setProperty("enableIamAuth", "true")
       connProps.setProperty("password", "dummy")

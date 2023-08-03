@@ -19,5 +19,5 @@ trait DatabaseConnector {
 object DatabaseConnector {
   implicit val executionContext: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
-  lazy val defaultConnector: DatabaseConnectorMySQL = DatabaseConnectorMySQL()
+  lazy val defaultConnector: DatabaseConnectorPostgres = DatabaseConnectorPostgres()
 }

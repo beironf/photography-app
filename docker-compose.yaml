@@ -2,18 +2,16 @@ version: '3'
 
 services:
 
-  db:
-    image: mysql:8.0
+  photography-db:
+    image: postgres:14
     container_name: photography-db
-    platform: linux/x86_64
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-      MYSQL_DATABASE: photography_db
-      MYSQL_TCP_PORT: 4001
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     ports:
-      - '4001:4001'
+      - '4001:5432'
     volumes:
-      - $PHOTO_APP_DIR/db/mysql_data:/var/lib/mysql
+      - $PHOTO_APP_DIR/photography-db/postgresql_data:/var/lib/postgresql/data
 
   frontend:
     build: ./frontend
@@ -27,24 +25,24 @@ services:
     tty: true
 
   photo-api:
-    depends_on: 
-      - db
+    depends_on:
+      - photography-db
     image: eu.gcr.io/beironf/photo-api-docker
     container_name: photography-photo-api
     platform: linux/x86_64
     environment:
-      DATABASE_HOST: db
+      DB_HOST: photography-db
     ports:
       - '3001:3001'
 
   image-api:
     depends_on:
-      - db
+      - photography-db
     image: eu.gcr.io/beironf/image-api-docker
     container_name: photography-image-api
     platform: linux/x86_64
     environment:
-      DATABASE_HOST: db
+      DB_HOST: photography-db
     ports:
       - '3002:3002'
     volumes:
