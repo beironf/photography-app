@@ -8,4 +8,6 @@ import scala.concurrent.Future
 
 trait ImageIO {
   type ImageStream = Source[ByteString, Future[IOResult]]
+
+  case class UploadResult(bytes: Long = 0)
 }

@@ -48,7 +48,6 @@ final class DatabaseConnectorPostgres(val dbConfig: Config) extends DatabaseConn
     hikariConfig.setMaximumPoolSize(maxPoolSize)
     hikariConfig.setMinimumIdle(minIdleSize)
 
-
     if (isProduction) {
       val cloudSqlInstance = dbHost
       val connProps = new Properties()

@@ -17,6 +17,7 @@ object Dependencies {
   private lazy val postgresqlV   = "42.6.0"
   private lazy val pgSocketV     = "1.11.1"
   private lazy val jbcryptV      = "0.4"
+  private lazy val googleCloudV  = "2.25.0"
 
   lazy val scalaLogging          = "com.typesafe.scala-logging"  %% "scala-logging"            % scalaLoggingV
   lazy val akkaStream            = "com.typesafe.akka"           %% "akka-stream"              % akkaV
@@ -40,4 +41,5 @@ object Dependencies {
   lazy val slickPgSprayJson      = "com.github.tminglei"         %% "slick-pg_spray-json"      % slickPgV
   lazy val scalaTest             = "org.scalatest"               %% "scalatest"                % scalaTestV
   lazy val jbcrypt               = "org.mindrot"                 %  "jbcrypt"                  % jbcryptV
+  lazy val googleCloudStorage    = "com.google.cloud"            %  "google-cloud-storage"     % googleCloudV
 }

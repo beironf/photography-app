@@ -141,8 +141,9 @@ lazy val imageEntities = createProject("image-entities", inFile = Some("image/en
 lazy val imagePorts = createProject("image-ports", inFile = Some("image/ports"))()
   .dependsOn(imageEntities)
 
-lazy val imageAdapters = createProject("image-adapters", inFile = Some("image/adapters"))()
-  .dependsOn(imagePorts)
+lazy val imageAdapters = createProject("image-adapters", inFile = Some("image/adapters"))(Seq(
+  googleCloudStorage
+)).dependsOn(imagePorts)
   .dependsOn(coreSqlStorage)
 
 lazy val imageInteractors = createProject("image-interactors", inFile = Some("image/interactors"))()

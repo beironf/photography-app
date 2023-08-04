@@ -1,19 +1,23 @@
 package backend.image.api
 
-import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Directives.*
 import akka.http.scaladsl.server.Route
 import backend.common.api.CommonApiRoute
+import backend.core.application.DefaultService
 import backend.exif.adapters.ImageExifRepositoryImpl
 import backend.exif.interactors.ImageExifService
-import backend.image.adapters.ImageRepositoryImpl
-import backend.image.api.ApiSpecs._
+import backend.image.adapters.{ImageRepositoryGCS, ImageRepositoryImpl}
+import backend.image.api.ApiSpecs.*
 import backend.image.interactors.ImageService
 
 import scala.concurrent.ExecutionContext
 
-class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApiRoute {
+class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApiRoute with DefaultService {
 
-  private val imageRepository = ImageRepositoryImpl()
+  private val isProduction = config.getString("environment.name") == "production"
+  private val imageRepository =
+    if (isProduction) ImageRepositoryGCS()
+    else ImageRepositoryImpl()
   private val imageExifRepository = ImageExifRepositoryImpl()
   private val imageService = new ImageService(imageRepository)
   private val imageExifService = new ImageExifService(imageExifRepository)

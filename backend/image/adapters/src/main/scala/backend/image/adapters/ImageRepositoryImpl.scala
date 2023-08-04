@@ -11,9 +11,9 @@ import java.nio.file.{Files, Path, Paths}
 import scala.concurrent.{ExecutionContext, Future}
 
 object ImageRepositoryImpl extends DefaultService {
-  private val IMAGE_PATH: Path = Paths.get(config.getString("file-storage.images.development.path"))
-  private val THUMBNAIL_PATH: Path = Paths.get(config.getString("file-storage.thumbnails.development.path"))
-  private val SITE_IMAGE_PATH: Path = Paths.get(config.getString("file-storage.site-images.development.path"))
+  private val ImagesPath: Path = Paths.get(config.getString("file-storage.images.dir"))
+  private val ThumbnailsPath: Path = Paths.get(config.getString("file-storage.thumbnails.dir"))
+  private val SiteImagesPath: Path = Paths.get(config.getString("file-storage.site-images.dir"))
 
   def apply()(implicit executionContext: ExecutionContext): ImageRepositoryImpl =
     new ImageRepositoryImpl
@@ -27,7 +27,7 @@ class ImageRepositoryImpl()
   dirExists(ImageType.Thumbnail)
 
   def listImageIds: Future[Seq[String]] = Future(
-    IMAGE_PATH.toFile.listFiles
+    ImagesPath.toFile.listFiles
       .filter(f => f.isFile)
       .map(_.getName)
       .filter(_.endsWith(".jpg"))
@@ -88,9 +88,9 @@ class ImageRepositoryImpl()
 
   private def getDirPath(`type`: ImageType): Path =
     `type` match {
-      case ImageType.FullSize => IMAGE_PATH
-      case ImageType.Thumbnail => THUMBNAIL_PATH
-      case ImageType.Site => SITE_IMAGE_PATH
+      case ImageType.FullSize => ImagesPath
+      case ImageType.Thumbnail => ThumbnailsPath
+      case ImageType.Site => SiteImagesPath
     }
 
 }
