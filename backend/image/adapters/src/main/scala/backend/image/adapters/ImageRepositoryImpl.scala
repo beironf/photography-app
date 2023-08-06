@@ -23,9 +23,6 @@ class ImageRepositoryImpl()
                          (implicit executionContext: ExecutionContext) extends ImageRepository with ImageIO {
   import backend.image.adapters.ImageRepositoryImpl.*
 
-  dirExists(ImageType.FullSize)
-  dirExists(ImageType.Thumbnail)
-
   def listImageIds: Future[Seq[String]] = Future(
     ImagesPath.toFile.listFiles
       .filter(f => f.isFile)
@@ -79,6 +76,12 @@ class ImageRepositoryImpl()
         false
       }
     }
+
+  def necessaryPathsExist(): Unit = {
+    dirExists(ImageType.FullSize)
+    dirExists(ImageType.Thumbnail)
+    dirExists(ImageType.Site)
+  }
 
   private def dirExists(`type`: ImageType): Unit =
     if (!getDirPath(`type`).toFile.exists())

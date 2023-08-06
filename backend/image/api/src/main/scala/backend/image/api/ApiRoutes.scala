@@ -15,9 +15,11 @@ import scala.concurrent.ExecutionContext
 class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApiRoute with DefaultService {
 
   private val isProduction = config.getString("environment.name") == "production"
-  private val imageRepository =
-    if (isProduction) ImageRepositoryGCS()
-    else ImageRepositoryImpl()
+  private val imageRepository = if (isProduction) ImageRepositoryGCS() else {
+    val localImageRepository = ImageRepositoryImpl()
+    localImageRepository.necessaryPathsExist()
+    localImageRepository
+  }
   private val imageExifRepository = ImageExifRepositoryImpl()
   private val imageService = new ImageService(imageRepository)
   private val imageExifService = new ImageExifService(imageExifRepository)
