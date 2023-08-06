@@ -23,7 +23,7 @@ export const DesktopMenu: React.FunctionComponent<Props> = ({ items }) => {
       marginBottom={`${theme.primaryPadding}px`}
     >
       {items.map((item) => (
-        <Grid item id={`menu-item-${item.id}`}>
+        <Grid item id={`menu-item-${item.id}`} key={`menu-item-${item.id}`}>
           <Button onClick={() => navigate(item.onClickDestination)}>
             <Typography
               color={
