@@ -6,8 +6,7 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: static-image-api-ip
 spec:
   rules:
-  - host: image.photography.beiron.se
-    http:
+  - http:
       paths:
       - path: /
         pathType: Prefix
