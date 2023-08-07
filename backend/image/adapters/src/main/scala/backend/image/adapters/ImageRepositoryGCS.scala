@@ -64,7 +64,7 @@ class ImageRepositoryGCS()
     getFileStream(toFileId(fileName, SiteImageDirectory))
 
   private def listBlobNames(directory: String): Future[Seq[String]] = Future {
-    storage.list(BucketName, BlobListOption.currentDirectory, BlobListOption.prefix(directory))
+    storage.list(BucketName, BlobListOption.currentDirectory, BlobListOption.prefix(s"$directory/"))
       .iterateAll().asScala.map(_.getName).toSeq
   }
 
