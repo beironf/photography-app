@@ -28,7 +28,7 @@ export const MobileMenu: React.FunctionComponent<Props> = ({ items }) => {
           variant={theme.menuTextVariant as any}
           align="center"
         >
-          {activeItem.label.toUpperCase()}
+          {(activeItem?.label ?? 'Unknown Menu Item').toUpperCase()}
         </Typography>
       </div>
       <Burger onClick={() => setOpen(!open)} />
