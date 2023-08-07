@@ -78,6 +78,7 @@ class ImageRepositoryImpl()
     }
 
   def necessaryPathsExist(): Unit = {
+    logger.info("Checking directories for local storage")
     dirExists(ImageType.FullSize)
     dirExists(ImageType.Thumbnail)
     dirExists(ImageType.Site)
