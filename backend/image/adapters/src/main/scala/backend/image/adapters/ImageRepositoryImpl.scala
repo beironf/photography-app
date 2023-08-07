@@ -20,7 +20,7 @@ object ImageRepositoryImpl extends DefaultService {
 }
 
 class ImageRepositoryImpl()
-                         (implicit executionContext: ExecutionContext) extends ImageRepository with ImageIO {
+                         (implicit executionContext: ExecutionContext) extends ImageRepository with ImageIO with DefaultService {
   import backend.image.adapters.ImageRepositoryImpl.*
 
   def listImageIds: Future[Seq[String]] = Future(
