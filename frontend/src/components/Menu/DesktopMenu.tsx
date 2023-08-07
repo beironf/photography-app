@@ -17,13 +17,18 @@ export const DesktopMenu: React.FunctionComponent<Props> = ({ items }) => {
   return (
     <Grid
       container
+      key="desktop-menu"
       columnGap={`${theme.primaryPadding}px`}
       justifyContent="center"
       alignItems="center"
       marginBottom={`${theme.primaryPadding}px`}
     >
       {items.map((item) => (
-        <Grid item id={`menu-item-${item.id}`} key={`menu-item-${item.id}`}>
+        <Grid
+          item
+          id={`desktop-menu-item-${item.id}`}
+          key={`desktop-menu-item-${item.id}`}
+        >
           <Button onClick={() => navigate(item.onClickDestination)}>
             <Typography
               color={

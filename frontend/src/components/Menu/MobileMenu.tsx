@@ -48,7 +48,7 @@ export const MobileMenu: React.FunctionComponent<Props> = ({ items }) => {
           </IconButton>
           <List style={{ marginTop: theme.primaryPadding }}>
             {items.map((item) => (
-              <ListItem key={item.id} disablePadding>
+              <ListItem key={`mobile-menu-item-${item.id}`} disablePadding>
                 <ListItemButton
                   disabled={isActive(item.onClickDestination)}
                   onClick={() => {
