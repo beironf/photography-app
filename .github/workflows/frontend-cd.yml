@@ -25,6 +25,7 @@ env:
   REPOSITORY: docker-artifacts
   IMAGE: frontend
   DOCKERFILE_DIR: frontend
+  K8_DIR: k8/frontend
 
 jobs:
   setup-build-publish-deploy:
@@ -83,8 +84,9 @@ jobs:
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
         run: |-
-          # replacing the image name in the k8s template
-          ./kustomize edit set image $DEPLOYMENT_NAME-image=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
-          ./kustomize build . | kubectl apply -f -
+          cd $K8_DIR
+          ../../kustomize edit set image $DEPLOYMENT_NAME-image=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
+          ../../kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get services -o wide
+          cd ../..
