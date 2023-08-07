@@ -1,6 +1,16 @@
-import { Avatar, Typography } from '@mui/material';
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  Grid,
+} from '@mui/material';
 import { ImageApi } from 'api/ImageApi';
 import React from 'react';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import CameraIcon from '@mui/icons-material/Camera';
 import { theme } from 'style/theme';
 
 export const About: React.FunctionComponent = () => {
@@ -64,13 +74,63 @@ export const About: React.FunctionComponent = () => {
         style={{ padding: `0 ${theme.primaryPadding}px ${theme.primaryPadding}px` }}
         textAlign="center"
       >
-        I have previously owned two Canon cameras; EOS 600D and 5D Mark II. Combined with large
+        I have previously used Canon cameras; Most recently the 5D Mark II. Combined with large
         lenses this was quite cumbersome when traveling. I noticed that I started taking more
-        photos when switching to my current Fujifilm x100f with a fixed 23mm lens because it was
-        way smaller and easier to bring. It&apos;s a bit limiting without a proper zoom lens, but
-        for most cases it works really well and challenges me to find creative compositions.
-        <br />
-        <br />
+        photos when switching to a more lightweight system. Currently I only shoot with
+        Fujifilm&apos;s prime lenses because of their low light capabilities and weight.
+        Sometimes it&apos;s a bit limiting without a proper zoom lens, but for most cases
+        it works really well and challenges me to find creative compositions.
+      </Typography>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{
+          padding: `0 ${theme.primaryPadding}px ${theme.primaryPadding}px`,
+        }}
+      >
+        <Grid item>
+          <List dense>
+            <ListItem disablePadding>
+              <ListItemIcon>
+                <PhotoCameraIcon />
+              </ListItemIcon>
+              <ListItemText primary="Fujifilm X-T4" />
+            </ListItem>
+            <ListItem disablePadding style={{ paddingLeft: 16 }}>
+              <ListItemIcon>
+                <CameraIcon />
+              </ListItemIcon>
+              <ListItemText primary="Fujinon XF 16mm f/1.4 R WR" />
+            </ListItem>
+            <ListItem disablePadding style={{ paddingLeft: 16 }}>
+              <ListItemIcon>
+                <CameraIcon />
+              </ListItemIcon>
+              <ListItemText primary="Fujinon XF 90mm f/2 R LM WR" />
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemIcon>
+                <PhotoCameraIcon />
+              </ListItemIcon>
+              <ListItemText primary="Fujifilm X100F" />
+            </ListItem>
+            <ListItem disablePadding style={{ paddingLeft: 16 }}>
+              <ListItemIcon>
+                <CameraIcon />
+              </ListItemIcon>
+              <ListItemText primary="Fujinon XF 23mm f/2 (fixed)" />
+            </ListItem>
+          </List>
+        </Grid>
+      </Grid>
+      <Typography
+        variant={theme.aboutBodyTextVariant as any}
+        style={{ padding: `0 ${theme.primaryPadding}px ${theme.primaryPadding}px` }}
+        textAlign="center"
+      >
         I also bought a complementary DJI Mini 3 drone before my trip to Australia to capture new
         types of views from the sky.
       </Typography>
