@@ -20,7 +20,7 @@ object ImageRepositoryImpl extends DefaultService {
 }
 
 class ImageRepositoryImpl()
-                         (implicit executionContext: ExecutionContext) extends ImageRepository with ImageIO with DefaultService {
+                         (implicit executionContext: ExecutionContext) extends ImageRepository with ImageIO {
   import backend.image.adapters.ImageRepositoryImpl.*
 
   def listImageIds: Future[Seq[String]] = Future(
@@ -78,7 +78,6 @@ class ImageRepositoryImpl()
     }
 
   def necessaryPathsExist(): Unit = {
-    logger.info("Checking directories for local storage")
     dirExists(ImageType.FullSize)
     dirExists(ImageType.Thumbnail)
     dirExists(ImageType.Site)

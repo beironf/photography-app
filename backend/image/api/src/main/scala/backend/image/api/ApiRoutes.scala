@@ -14,13 +14,10 @@ import scala.concurrent.ExecutionContext
 
 class ApiRoutes()(implicit executionContext: ExecutionContext) extends CommonApiRoute with DefaultService {
 
-  logger.info(s"-------> environment: ${config.getString("environment.name")}")
   private val isProduction = config.getString("environment.name") == "production"
   private val imageRepository = if (isProduction) {
-    logger.info("Using production storage repository")
     ImageRepositoryGCS()
   } else {
-    logger.info("Using local storage repository")
     val localImageRepository = ImageRepositoryImpl()
     localImageRepository.necessaryPathsExist()
     localImageRepository
