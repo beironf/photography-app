@@ -1,6 +1,6 @@
 package backend.photo.adapters.db
 
-import backend.core.sqlstorage.MyPostgresTableHelper
+import backend.core.sqlstorage.postgres.PostgresTableHelper
 import backend.photo.entities.meta.Metadata
 import backend.photo.entities.settings.CameraSettings
 import slick.jdbc.JdbcType
@@ -8,7 +8,7 @@ import spray.json.*
 
 import java.sql.Timestamp
 
-trait PhotosTable extends MyPostgresTableHelper with JsonProtocol {
+trait PhotosTable extends PostgresTableHelper with JsonProtocol {
 
   import databaseConnector.profile.api.*
 

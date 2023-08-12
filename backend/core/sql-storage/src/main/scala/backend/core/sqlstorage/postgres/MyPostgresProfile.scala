@@ -1,4 +1,4 @@
-package backend.core.sqlstorage
+package backend.core.sqlstorage.postgres
 
 import com.github.tminglei.slickpg.*
 import com.github.tminglei.slickpg.str.PgStringSupport

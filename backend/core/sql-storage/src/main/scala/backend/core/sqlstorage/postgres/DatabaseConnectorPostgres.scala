@@ -1,9 +1,9 @@
-package backend.core.sqlstorage
+package backend.core.sqlstorage.postgres
 
 import backend.core.application.DefaultService
+import backend.core.sqlstorage.DatabaseConnector
 import com.typesafe.config.Config
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
+import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
 import slick.util.AsyncExecutor
 
 import java.util.Properties

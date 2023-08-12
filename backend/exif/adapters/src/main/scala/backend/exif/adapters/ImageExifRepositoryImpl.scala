@@ -1,6 +1,7 @@
 package backend.exif.adapters
 
-import backend.core.sqlstorage.{DatabaseConnector, MaterializerDBIO}
+import backend.core.sqlstorage.DatabaseConnector
+import backend.core.sqlstorage.postgres.PostgresMaterializerDBIO
 import backend.exif.adapters.exifdb.*
 import backend.exif.entities.ImageExif
 import backend.exif.ports.ImageExifRepository
@@ -8,12 +9,12 @@ import backend.exif.ports.ImageExifRepository
 import scala.concurrent.{ExecutionContext, Future}
 
 object ImageExifRepositoryImpl {
-  private val dbConnector = DatabaseConnector.defaultConnector
+  private val dbConnector = DatabaseConnector.defaultPostgresConnector
   implicit val executionContext: ExecutionContext = DatabaseConnector.executionContext
-  def apply(): ImageExifRepositoryImpl = new ImageExifRepositoryImpl(MaterializerDBIO(dbConnector), dbConnector)
+  def apply(): ImageExifRepositoryImpl = new ImageExifRepositoryImpl(PostgresMaterializerDBIO(dbConnector), dbConnector)
 }
 
-class ImageExifRepositoryImpl(db: MaterializerDBIO,
+class ImageExifRepositoryImpl(db: PostgresMaterializerDBIO,
                               val databaseConnector: DatabaseConnector)
                              (implicit executionContext: ExecutionContext)
   extends ImageExifRepository

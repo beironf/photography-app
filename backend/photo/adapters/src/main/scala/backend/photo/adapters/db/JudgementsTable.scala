@@ -1,8 +1,8 @@
 package backend.photo.adapters.db
 
-import backend.core.sqlstorage.MyPostgresTableHelper
+import backend.core.sqlstorage.postgres.PostgresTableHelper
 
-trait JudgementsTable extends MyPostgresTableHelper {
+trait JudgementsTable extends PostgresTableHelper {
   import databaseConnector.profile.api.*
 
   class Judgements(tag: Tag) extends Table[JudgementDb](tag, "judgements") {

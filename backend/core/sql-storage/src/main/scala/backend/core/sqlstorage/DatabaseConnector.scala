@@ -1,5 +1,6 @@
 package backend.core.sqlstorage
 
+import backend.core.sqlstorage.postgres.DatabaseConnectorPostgres
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.ExecutionContext
@@ -19,5 +20,5 @@ trait DatabaseConnector {
 object DatabaseConnector {
   implicit val executionContext: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
-  lazy val defaultConnector: DatabaseConnectorPostgres = DatabaseConnectorPostgres()
+  lazy val defaultPostgresConnector: DatabaseConnectorPostgres = DatabaseConnectorPostgres()
 }

@@ -1,10 +1,9 @@
 package backend.exif.adapters.exifdb
 
-import backend.core.sqlstorage.MyPostgresTableHelper
-
+import backend.core.sqlstorage.postgres.PostgresTableHelper
 import java.sql.Timestamp
 
-trait ImagesExifTable extends MyPostgresTableHelper {
+trait ImagesExifTable extends PostgresTableHelper {
 
   import databaseConnector.profile.api.*
 

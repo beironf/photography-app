@@ -1,6 +1,7 @@
 package backend.photo.adapters
 
-import backend.core.sqlstorage.{DatabaseConnector, MaterializerDBIO}
+import backend.core.sqlstorage.DatabaseConnector
+import backend.core.sqlstorage.postgres.PostgresMaterializerDBIO
 import backend.core.utils.OptionTExtensions
 import backend.photo.adapters.db.*
 import backend.photo.entities.*
@@ -13,12 +14,12 @@ import slick.lifted.AbstractTable
 import scala.concurrent.{ExecutionContext, Future}
 
 object PhotoRepositoryImpl {
-  private val dbConnector = DatabaseConnector.defaultConnector
+  private val dbConnector = DatabaseConnector.defaultPostgresConnector
   implicit val executionContext: ExecutionContext = DatabaseConnector.executionContext
-  def apply(): PhotoRepositoryImpl = new PhotoRepositoryImpl(MaterializerDBIO(dbConnector), dbConnector)
+  def apply(): PhotoRepositoryImpl = new PhotoRepositoryImpl(PostgresMaterializerDBIO(dbConnector), dbConnector)
 }
 
-class PhotoRepositoryImpl(db: MaterializerDBIO,
+class PhotoRepositoryImpl(db: PostgresMaterializerDBIO,
                           val databaseConnector: DatabaseConnector)
                          (implicit executionContext: ExecutionContext) extends PhotoRepository
   with PhotosTable
