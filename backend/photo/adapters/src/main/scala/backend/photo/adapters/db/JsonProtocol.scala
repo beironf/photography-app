@@ -3,7 +3,7 @@ package backend.photo.adapters.db
 import backend.common.json.JsonSupport
 import backend.photo.entities.meta.CameraTechnique.CameraTechnique
 import backend.photo.entities.meta.Category.Category
-import backend.photo.entities.meta._
+import backend.photo.entities.meta.*
 import backend.photo.entities.settings.CameraSettings
 import spray.json.RootJsonFormat
 

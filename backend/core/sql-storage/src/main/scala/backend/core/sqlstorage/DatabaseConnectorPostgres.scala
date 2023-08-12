@@ -4,7 +4,6 @@ import backend.core.application.DefaultService
 import com.typesafe.config.Config
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import slick.jdbc.JdbcProfile
 import slick.util.AsyncExecutor
 
 import java.util.Properties
@@ -16,7 +15,7 @@ object DatabaseConnectorPostgres extends DefaultService {
 }
 
 final class DatabaseConnectorPostgres(val dbConfig: Config) extends DatabaseConnector with DefaultService {
-  val profile: JdbcProfile = MyPostgresProfile
+  val profile: MyPostgresProfile = MyPostgresProfile
 
   val dbUser: String = dbConfig.getString("user")
 

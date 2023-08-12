@@ -7,7 +7,7 @@ object MaterializerDBIO {
     new MaterializerDBIO(databaseConnector)
 }
 
-class MaterializerDBIO(val databaseConnector: DatabaseConnector) extends StorageTableHelper {
+class MaterializerDBIO(val databaseConnector: DatabaseConnector) extends MyPostgresTableHelper {
 
   import databaseConnector.*
   import databaseConnector.profile.api.*

@@ -1,6 +1,6 @@
 package backend.photo.adapters.db
 
-import backend.core.sqlstorage.StorageTableHelper
+import backend.core.sqlstorage.MyPostgresTableHelper
 import backend.photo.entities.meta.Metadata
 import backend.photo.entities.settings.CameraSettings
 import slick.jdbc.JdbcType
@@ -8,11 +8,10 @@ import spray.json.*
 
 import java.sql.Timestamp
 
-trait PhotosTable extends StorageTableHelper with JsonProtocol {
+trait PhotosTable extends MyPostgresTableHelper with JsonProtocol {
 
   import databaseConnector.profile.api.*
 
-  implicit val jsValueDBFormat: JdbcType[JsValue] = MappedColumnType.base[JsValue, String](_.toString, _.parseJson)
   implicit val cameraSettingsDBFormat: JdbcType[CameraSettings] = MappedColumnType.base[CameraSettings, JsValue](_.toJson, _.convertTo[CameraSettings])
   implicit val metadataDBFormat: JdbcType[Metadata] = MappedColumnType.base[Metadata, JsValue](_.toJson, _.convertTo[Metadata])
 
