@@ -1,7 +1,7 @@
 package backend.photo.adapters
 
 import backend.core.sqlstorage.DatabaseConnector
-import backend.core.sqlstorage.postgres.PostgresMaterializerDBIO
+import backend.core.sqlstorage.postgres.{DatabaseConnectorPostgres, PostgresMaterializerDBIO}
 import backend.core.utils.OptionTExtensions
 import backend.photo.adapters.db.*
 import backend.photo.entities.*
@@ -20,7 +20,7 @@ object PhotoRepositoryImpl {
 }
 
 class PhotoRepositoryImpl(db: PostgresMaterializerDBIO,
-                          val databaseConnector: DatabaseConnector)
+                          val databaseConnector: DatabaseConnectorPostgres)
                          (implicit executionContext: ExecutionContext) extends PhotoRepository
   with PhotosTable
   with LocationsTable

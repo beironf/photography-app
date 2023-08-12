@@ -1,7 +1,7 @@
 package backend.exif.adapters
 
 import backend.core.sqlstorage.DatabaseConnector
-import backend.core.sqlstorage.postgres.PostgresMaterializerDBIO
+import backend.core.sqlstorage.postgres.{DatabaseConnectorPostgres, PostgresMaterializerDBIO}
 import backend.exif.adapters.exifdb.*
 import backend.exif.entities.ImageExif
 import backend.exif.ports.ImageExifRepository
@@ -15,7 +15,7 @@ object ImageExifRepositoryImpl {
 }
 
 class ImageExifRepositoryImpl(db: PostgresMaterializerDBIO,
-                              val databaseConnector: DatabaseConnector)
+                              val databaseConnector: DatabaseConnectorPostgres)
                              (implicit executionContext: ExecutionContext)
   extends ImageExifRepository
     with ImagesExifTable
