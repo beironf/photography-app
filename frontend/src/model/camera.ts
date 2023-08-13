@@ -6,6 +6,7 @@ export enum Camera {
   CANON_EOS_600D = 'Canon EOS 600D',
   FUJI_X100F = 'Fujifilm X100F',
   DJI_MINI_3 = 'DJI Mini 3',
+  FUJI_X_T4 = 'Fujifilm X-T4'
 }
 
 export const toCamera = (s?: string): Camera | undefined => {
@@ -19,6 +20,8 @@ export const toCamera = (s?: string): Camera | undefined => {
     return Camera.FUJI_X100F;
   } if (s.includes('FC3582')) {
     return Camera.DJI_MINI_3;
+  } if (s.includes('X-T4')) {
+    return Camera.FUJI_X_T4;
   }
   return undefined;
 };
@@ -30,6 +33,8 @@ export enum Lens {
   SIGMA_10_20_EX_DC_HSM = 'Sigma 10-20mm f/4-5.6 EX DC HSM',
   FUJINON_35 = 'Fujinon 35mm f:2',
   DJI_MINI_3 = 'DJI 6.7mm f/1.7',
+  FUJINON_16 = 'Fujinon 16mm f/1.4 R WR',
+  FUJINON_90 = 'Fujinon 90mm f/2 R LM WR',
 }
 
 export const toLens = (s?: string, isX100F: boolean = false): Lens | undefined => {
@@ -47,6 +52,10 @@ export const toLens = (s?: string, isX100F: boolean = false): Lens | undefined =
     return Lens.CANON_70_300;
   } if (s.includes('6.7 mm f/1.7')) {
     return Lens.DJI_MINI_3;
+  } if (s.includes('XF16mmF1.4 R WR')) {
+    return Lens.FUJINON_16;
+  } if (s.includes('XF90mmF2 R LM WR')) {
+    return Lens.FUJINON_90;
   }
   return undefined;
 };

@@ -19,6 +19,7 @@ trait ImplicitEnumConversion {
       case CanonEOS600D => Camera.CanonEOS600D
       case CanonEOS5DMarkII => Camera.CanonEOS5DMarkII
       case FujifilmX100F => Camera.FujifilmX100F
+      case FujifilmXT4 => Camera.FujifilmXT4
       case DJIMini3 => Camera.DJIMini3
     }
   }
@@ -28,6 +29,7 @@ trait ImplicitEnumConversion {
       case Camera.CanonEOS600D => CanonEOS600D
       case Camera.CanonEOS5DMarkII => CanonEOS5DMarkII
       case Camera.FujifilmX100F => FujifilmX100F
+      case Camera.FujifilmXT4 => FujifilmXT4
       case Camera.DJIMini3 => DJIMini3
     }
   }
@@ -39,6 +41,8 @@ trait ImplicitEnumConversion {
       case Canon70_300 => Lens.Canon70_300
       case Canon24_70L => Lens.Canon24_70L
       case Fujinon35 => Lens.Fujinon35
+      case Fujinon16 => Lens.Fujinon16
+      case Fujinon90 => Lens.Fujinon90
       case DJI6_7F1_7 => Lens.DJI6_7F1_7
     }
   }
@@ -50,6 +54,8 @@ trait ImplicitEnumConversion {
       case Lens.Canon70_300 => Canon70_300
       case Lens.Canon24_70L => Canon24_70L
       case Lens.Fujinon35 => Fujinon35
+      case Lens.Fujinon16 => Fujinon16
+      case Lens.Fujinon90 => Fujinon90
       case Lens.DJI6_7F1_7 => DJI6_7F1_7
     }
   }
