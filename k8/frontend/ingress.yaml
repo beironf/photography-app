@@ -5,6 +5,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: static-photography-app-ip
 spec:
+  tls:
+  - secretName: frontend-cert
   rules:
   - host: photography.beiron.se
     http:
