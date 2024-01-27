@@ -4,6 +4,7 @@ import akka.stream.scaladsl.StreamConverters
 import backend.core.application.DefaultService
 import backend.image.adapters.model.FileId
 import backend.image.ports.ImageRepository
+import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.WriteChannel
 import com.google.cloud.storage.Storage.BlobListOption
 import com.google.cloud.storage.{Blob, BlobId, BlobInfo, StorageOptions}
@@ -32,7 +33,10 @@ class ImageRepositoryFirebase()
 
   private def toBlobId(fileId: FileId) = BlobId.of(fileId.bucket, fileId.path)
 
-  private lazy val storage = StorageOptions.getDefaultInstance.getService
+  private lazy val storage = StorageOptions.newBuilder
+    .setCredentials(GoogleCredentials.getApplicationDefault)
+    .build
+    .getService
 
   def listImageIds: Future[Seq[String]] =
     listBlobNames(ImageDirectory)
