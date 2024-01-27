@@ -14,6 +14,8 @@ trait DatabaseConnector {
 
   val dbUser: String
 
+  val dbPassword: String
+
   def close(): Unit
 }
 

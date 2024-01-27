@@ -12,7 +12,6 @@ import ch.megard.akka.http.cors.scaladsl.settings.CorsSettings
 
 import scala.concurrent.duration.*
 import scala.concurrent.{Await, Future}
-import scala.util.Properties
 
 trait ApiStarter extends RouteConcatenation with DefaultService {
 
@@ -24,9 +23,8 @@ trait ApiStarter extends RouteConcatenation with DefaultService {
   }
 
   def startApi(name: String, route: Route, shutdown: Option[() => Future[?]]): Future[Http.ServerBinding] = {
-
     val domain: String = config.getString("domain")
-    val port: Int = Properties.envOrElse("PORT", config.getInt(name + ".local-port").toString).toInt
+    val port: Int = config.getInt(name + ".port")
 
     logConfig(name)
     logger.info(s"$name starting on $domain:$port")

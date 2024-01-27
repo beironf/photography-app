@@ -6,8 +6,6 @@ import com.typesafe.config.Config
 import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
 import slick.util.AsyncExecutor
 
-import java.util.Properties
-
 object DatabaseConnectorPostgres extends DefaultService {
   private def defaultConfig: Config = config.getConfig("database")
 
@@ -17,52 +15,22 @@ object DatabaseConnectorPostgres extends DefaultService {
 final class DatabaseConnectorPostgres(val dbConfig: Config) extends DatabaseConnector with DefaultService {
   val profile: MyPostgresProfile = MyPostgresProfile
 
+  val jdbcUrl: String = dbConfig.getString("url")
   val dbUser: String = dbConfig.getString("user")
-
-  private val dbName = dbConfig.getString("name")
-  private val dbPassword = dbConfig.getString("password")
-  private val dbHost = dbConfig.getString("host")
-  private val dbPort = dbConfig.getInt("port")
+  val dbPassword: String = dbConfig.getString("password")
 
   private val maxPoolSize: Int = dbConfig.getInt(s"max-pool-size")
   private val minIdleSize: Int = dbConfig.getInt(s"min-idle-size")
   private val connectionTimeout = dbConfig.getDuration("connection-timeout")
 
-  private val env = config.getString("environment.name")
-  private val isProduction = env == "production"
-
-  val jdbcUrl: String = {
-    val host = if (isProduction) {
-      ""
-    } else {
-      s"$dbHost:$dbPort"
-    }
-    s"jdbc:postgresql://$host/$dbName"
-  }
-
   private lazy val hikariDataSource: HikariDataSource = {
     val hikariConfig = new HikariConfig()
-    hikariConfig.setJdbcUrl(jdbcUrl)
+    hikariConfig.setJdbcUrl(jdbcUrl.split('?').head) // remove user and password from url
+    hikariConfig.setUsername(dbUser)
+    hikariConfig.setPassword(dbPassword)
     hikariConfig.setConnectionTimeout(connectionTimeout.toMillis)
     hikariConfig.setMaximumPoolSize(maxPoolSize)
     hikariConfig.setMinimumIdle(minIdleSize)
-
-    if (isProduction) {
-      val cloudSqlInstance = dbHost
-      val connProps = new Properties()
-      connProps.setProperty("user", dbUser)
-      connProps.setProperty("sslmode", "disable")
-      connProps.setProperty("socketFactory", "com.google.cloud.sql.postgres.SocketFactory")
-      connProps.setProperty("cloudSqlInstance", cloudSqlInstance)
-      connProps.setProperty("enableIamAuth", "true")
-      connProps.setProperty("password", "dummy")
-
-      hikariConfig.setDataSourceProperties(connProps)
-    } else {
-      hikariConfig.setUsername(dbUser)
-      hikariConfig.setPassword(dbPassword)
-    }
-
     new HikariDataSource(hikariConfig)
   }
 
@@ -74,7 +42,6 @@ final class DatabaseConnectorPostgres(val dbConfig: Config) extends DatabaseConn
       queueSize = 1000,
       maxConnections = maxPoolSize
     )
-
     profile.api.Database.forDataSource(hikariDataSource,
       maxConnections = Some(maxPoolSize),
       executor = executor
