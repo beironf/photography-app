@@ -16,10 +16,11 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 object ImageRepositoryFirebase extends DefaultService {
-  private val BucketName: String = config.getString("firebase.storage.bucket_name")
-  private val ImageDirectory: String = config.getString("file-storage.images.dir")
-  private val ThumbnailDirectory: String = config.getString("file-storage.thumbnails.dir")
-  private val SiteImageDirectory: String = config.getString("file-storage.site-images.dir")
+  private val FirebaseCredentials = config.getString("firebase.credentials")
+  private val BucketName = config.getString("firebase.storage.bucket_name")
+  private val ImageDirectory = config.getString("file-storage.images.dir")
+  private val ThumbnailDirectory = config.getString("file-storage.thumbnails.dir")
+  private val SiteImageDirectory = config.getString("file-storage.site-images.dir")
 
   def apply()(implicit executionContext: ExecutionContext): ImageRepositoryFirebase =
     new ImageRepositoryFirebase()
@@ -33,8 +34,9 @@ class ImageRepositoryFirebase()
 
   private def toBlobId(fileId: FileId) = BlobId.of(fileId.bucket, fileId.path)
 
+  private val credentialsStream = new ByteArrayInputStream(FirebaseCredentials.getBytes)
   private lazy val storage = StorageOptions.newBuilder
-    .setCredentials(GoogleCredentials.getApplicationDefault)
+    .setCredentials(GoogleCredentials.fromStream(credentialsStream))
     .build
     .getService
 
