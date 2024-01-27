@@ -28,7 +28,7 @@ def createProject(id: String, inFile: Option[String] = None)
 // ---------- Domains ----------------
 
 lazy val backend = createProject("backend", inFile = Some("."))()
-  .aggregate(photoApi, imageApi)
+  .aggregate(api)
 
 
 // ---- Core
@@ -79,16 +79,6 @@ lazy val commonApi = createProject("common-api", inFile = Some("common/api"))(Se
 
 lazy val photo = createProject("photo")()
 
-lazy val photoApi = createProject("photo-api", inFile = Some("photo/api"))()
-  .settings(Compile / mainClass := Some("backend.photo.api.PhotoApi"))
-  .settings(PhotoApiDocker.dockerSettings: _*)
-  .enablePlugins(JavaAppPackaging, DockerPlugin)
-  .dependsOn(commonApi)
-  .dependsOn(photoInteractors)
-  .dependsOn(photoAdapters)
-  .dependsOn(exifInteractors)
-  .dependsOn(exifAdapters)
-
 lazy val photoEntities = createProject("photo-entities", inFile = Some("photo/entities"))()
 
 lazy val photoPorts = createProject("photo-ports", inFile = Some("photo/ports"))()
@@ -124,16 +114,6 @@ lazy val exifInteractors = createProject("exif-interactors", inFile = Some("exif
 
 lazy val image = createProject("image")()
 
-lazy val imageApi = createProject("image-api", inFile = Some("image/api"))(Seq(scrimage))
-  .settings(Compile / mainClass := Some("backend.image.api.ImageApi"))
-  .settings(ImageApiDocker.dockerSettings: _*)
-  .enablePlugins(JavaAppPackaging, DockerPlugin)
-  .dependsOn(commonApi)
-  .dependsOn(imageInteractors)
-  .dependsOn(imageAdapters)
-  .dependsOn(exifInteractors)
-  .dependsOn(exifAdapters)
-
 lazy val imageEntities = createProject("image-entities", inFile = Some("image/entities"))(Seq(
   akkaStream
 ))
@@ -148,3 +128,17 @@ lazy val imageAdapters = createProject("image-adapters", inFile = Some("image/ad
 
 lazy val imageInteractors = createProject("image-interactors", inFile = Some("image/interactors"))()
   .dependsOn(imagePorts)
+
+// ---- API
+
+lazy val api = createProject("api", inFile = Some("api"))(Seq(scrimage))
+  .settings(Compile / mainClass := Some("backend.api.Api"))
+  .settings(ApiDocker.dockerSettings: _*)
+  .enablePlugins(JavaAppPackaging, DockerPlugin)
+  .dependsOn(commonApi)
+  .dependsOn(photoInteractors)
+  .dependsOn(photoAdapters)
+  .dependsOn(imageInteractors)
+  .dependsOn(imageAdapters)
+  .dependsOn(exifInteractors)
+  .dependsOn(exifAdapters)

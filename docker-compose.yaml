@@ -25,22 +25,11 @@ services:
     stdin_open: true
     tty: true
 
-  photo-api:
+  api:
     depends_on:
       - photography-db
-    image: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/photo-api
-    container_name: photography-photo-api
-    platform: linux/x86_64
-    environment:
-      DB_HOST: photography-db
-    ports:
-      - '3001:3001'
-
-  image-api:
-    depends_on:
-      - photography-db
-    image: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/image-api
-    container_name: photography-image-api
+    image: europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts/api
+    container_name: photography-api
     platform: linux/x86_64
     environment:
       DB_HOST: photography-db
