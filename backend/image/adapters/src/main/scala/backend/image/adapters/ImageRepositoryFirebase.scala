@@ -6,7 +6,7 @@ import backend.image.adapters.model.FileId
 import backend.image.ports.ImageRepository
 import com.google.cloud.WriteChannel
 import com.google.cloud.storage.Storage.BlobListOption
-import com.google.cloud.storage.{Blob, BlobId, BlobInfo, Storage, StorageOptions}
+import com.google.cloud.storage.{Blob, BlobId, BlobInfo, StorageOptions}
 
 import java.io.{ByteArrayInputStream, InputStream}
 import java.nio.channels.Channels
@@ -14,30 +14,25 @@ import scala.jdk.CollectionConverters.*
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-object ImageRepositoryGCS extends DefaultService {
-  private val ProjectId: String = config.getString("gcp.project_id")
-  private val BucketName: String = config.getString("gcs.bucket_name")
+object ImageRepositoryFirebase extends DefaultService {
+  private val BucketName: String = config.getString("firebase.storage.bucket_name")
   private val ImageDirectory: String = config.getString("file-storage.images.dir")
   private val ThumbnailDirectory: String = config.getString("file-storage.thumbnails.dir")
   private val SiteImageDirectory: String = config.getString("file-storage.site-images.dir")
 
-  def apply()(implicit executionContext: ExecutionContext): ImageRepositoryGCS =
-    new ImageRepositoryGCS()
+  def apply()(implicit executionContext: ExecutionContext): ImageRepositoryFirebase =
+    new ImageRepositoryFirebase()
 }
 
-class ImageRepositoryGCS()
-                        (implicit executionContext: ExecutionContext) extends ImageRepository with DefaultService {
-  import ImageRepositoryGCS.*
+class ImageRepositoryFirebase()
+                             (implicit executionContext: ExecutionContext) extends ImageRepository with DefaultService {
+  import ImageRepositoryFirebase.*
 
   private def toFileId(fileName: String, directory: String) = FileId(BucketName, s"$directory/$fileName")
 
   private def toBlobId(fileId: FileId) = BlobId.of(fileId.bucket, fileId.path)
 
-  private lazy val storage: Storage = {
-    val builder = StorageOptions.newBuilder
-      .setProjectId(ProjectId)
-    builder.build().getService
-  }
+  private lazy val storage = StorageOptions.getDefaultInstance.getService
 
   def listImageIds: Future[Seq[String]] =
     listBlobNames(ImageDirectory)
