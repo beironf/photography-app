@@ -1,19 +1,16 @@
 type EnvironmentConfig = {
   environment: string;
-  photoApi: string;
-  imageApi: string;
+  api: string;
 };
 
 const DEVELOPMENT_CONFIG: EnvironmentConfig = {
   environment: 'development',
-  photoApi: 'http://localhost:3001',
-  imageApi: 'http://localhost:3002',
+  api: 'http://localhost:3001',
 };
 
 const PRODUCTION_CONFIG: EnvironmentConfig = {
   environment: 'production',
-  photoApi: 'http://photo.photography.beiron.se',
-  imageApi: 'http://image.photography.beiron.se',
+  api: 'http://api.photography.beiron.se',
 };
 
 const host = window.location.hostname;

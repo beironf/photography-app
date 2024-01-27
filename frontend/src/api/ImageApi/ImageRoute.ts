@@ -5,10 +5,10 @@ import { AxiosResponse } from 'axios';
 
 // tslint:disable-next-line:no-namespace
 export namespace ImageRoute {
-  const api = new BaseApi(`${Config.imageApi}/v1/images/`);
+  const api = new BaseApi(`${Config.api}/v1/images/`);
 
   export function getImageUrl(filename: string): string {
-    return `${Config.imageApi}/v1/images/${filename}`;
+    return `${Config.api}/v1/images/${filename}`;
   }
 
   export function listImages(): Promise<ImageDto[]> {
