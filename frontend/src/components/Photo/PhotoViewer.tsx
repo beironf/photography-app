@@ -1,9 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { ImageApi } from 'api/ImageApi';
 import { Photo } from 'model/photo';
-import {
-  CircularProgress, Dialog, IconButton,
-} from '@mui/material';
+import { CircularProgress, Dialog, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -117,7 +115,9 @@ export const PhotoViewer: React.FunctionComponent<props> = ({
           <InfoOutlinedIcon />
         </IconButton>
       )}
-      {selectedPhoto !== undefined && !!loading && (<CircularProgress sx={{ margin: 'auto' }} />)}
+      {selectedPhoto !== undefined && !!loading && (
+        <CircularProgress sx={{ margin: 'auto' }} />
+      )}
       {selectedPhoto !== undefined && (
         <img
           onLoad={onLoaded !== undefined ? () => onLoaded() : undefined}

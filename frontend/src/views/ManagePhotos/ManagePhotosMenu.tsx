@@ -1,6 +1,9 @@
 import {
   CircularProgress,
-  Divider, FormControlLabel, Switch, Typography,
+  Divider,
+  FormControlLabel,
+  Switch,
+  Typography,
 } from '@mui/material';
 import { ImageUploader } from 'components/Image/ImageUploader';
 import { NonIdealState } from 'components/NonIdealState';
@@ -14,14 +17,19 @@ type props = {
 };
 
 export const ManagePhotosMenu: React.FunctionComponent<props> = ({
-  onlyUnfinished, setOnlyUnfinished, setImageUploaded,
+  onlyUnfinished,
+  setOnlyUnfinished,
+  setImageUploaded,
 }) => {
   const [imageIsUploading, setImageIsUploading] = useState(false);
 
   return (
     <>
       {imageIsUploading && (
-        <NonIdealState description="Uploading image" icon={<CircularProgress />} />
+        <NonIdealState
+          description="Uploading image"
+          icon={<CircularProgress />}
+        />
       )}
       {!imageIsUploading && (
         <>
@@ -32,17 +40,18 @@ export const ManagePhotosMenu: React.FunctionComponent<props> = ({
             }}
             onImageUploading={() => setImageIsUploading(true)}
           />
-          <Divider variant="middle" sx={{ width: '50%', margin: `${theme.primaryPadding}px 0` }} />
-          <Typography variant="h6">
-            Select an image to edit.
-          </Typography>
+          <Divider
+            variant="middle"
+            sx={{ width: '50%', margin: `${theme.primaryPadding}px 0` }}
+          />
+          <Typography variant="h6">Select an image to edit.</Typography>
           <FormControlLabel
-            control={(
+            control={
               <Switch
                 checked={onlyUnfinished}
                 onChange={(event) => setOnlyUnfinished(event.target.checked)}
               />
-            )}
+            }
             label="Only Unfinished"
           />
         </>

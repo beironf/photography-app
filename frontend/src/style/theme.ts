@@ -3,15 +3,23 @@ import { isMobile, isTablet } from 'react-device-detect';
 
 const mode: PaletteMode = 'light';
 
-const deviceSensitive = (desktopVal: any, tabletVal: any, mobileVal: any): any => {
-  if (isTablet) { return tabletVal; }
-  if (isMobile) { return mobileVal; }
+const deviceSensitive = (
+  desktopVal: any,
+  tabletVal: any,
+  mobileVal: any,
+): any => {
+  if (isTablet) {
+    return tabletVal;
+  }
+  if (isMobile) {
+    return mobileVal;
+  }
   return desktopVal;
 };
 
 export const theme = {
   mode,
-  modeContrastColor: (mode === 'light') ? 'black' : 'white',
+  modeContrastColor: mode === 'light' ? 'black' : 'white',
 
   primaryPadding: 20,
   secondaryPadding: 12,

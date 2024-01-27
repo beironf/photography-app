@@ -6,21 +6,26 @@ export enum Camera {
   CANON_EOS_600D = 'Canon EOS 600D',
   FUJI_X100F = 'Fujifilm X100F',
   DJI_MINI_3 = 'DJI Mini 3',
-  FUJI_X_T4 = 'Fujifilm X-T4'
+  FUJI_X_T4 = 'Fujifilm X-T4',
 }
 
 export const toCamera = (s?: string): Camera | undefined => {
   if (s === undefined) {
     return undefined;
-  } if (s.includes('EOS 5D Mark II')) {
+  }
+  if (s.includes('EOS 5D Mark II')) {
     return Camera.CANON_EOS_5D_MARK_II;
-  } if (s.includes('EOS 600D')) {
+  }
+  if (s.includes('EOS 600D')) {
     return Camera.CANON_EOS_600D;
-  } if (s.includes('X100F')) {
+  }
+  if (s.includes('X100F')) {
     return Camera.FUJI_X100F;
-  } if (s.includes('FC3582')) {
+  }
+  if (s.includes('FC3582')) {
     return Camera.DJI_MINI_3;
-  } if (s.includes('X-T4')) {
+  }
+  if (s.includes('X-T4')) {
     return Camera.FUJI_X_T4;
   }
   return undefined;
@@ -37,24 +42,35 @@ export enum Lens {
   FUJINON_90 = 'Fujinon 90mm f/2 R LM WR',
 }
 
-export const toLens = (s?: string, isX100F: boolean = false): Lens | undefined => {
+export const toLens = (
+  s?: string,
+  isX100F: boolean = false,
+): Lens | undefined => {
   if (isX100F) {
     return Lens.FUJINON_35;
-  } if (s === undefined) {
+  }
+  if (s === undefined) {
     return undefined;
-  } if (s.includes('EF24-70mm f/2.8L USM')) {
+  }
+  if (s.includes('EF24-70mm f/2.8L USM')) {
     return Lens.CANON_24_70_L;
-  } if (s.includes('EF50mm f/1.8 II')) {
+  }
+  if (s.includes('EF50mm f/1.8 II')) {
     return Lens.CANON_50;
-  } if (s.includes('10-20mm')) {
+  }
+  if (s.includes('10-20mm')) {
     return Lens.SIGMA_10_20_EX_DC_HSM;
-  } if (s.includes('EF70-300mm f/4-5.6 IS USM')) {
+  }
+  if (s.includes('EF70-300mm f/4-5.6 IS USM')) {
     return Lens.CANON_70_300;
-  } if (s.includes('6.7 mm f/1.7')) {
+  }
+  if (s.includes('6.7 mm f/1.7')) {
     return Lens.DJI_MINI_3;
-  } if (s.includes('XF16mmF1.4 R WR')) {
+  }
+  if (s.includes('XF16mmF1.4 R WR')) {
     return Lens.FUJINON_16;
-  } if (s.includes('XF90mmF2 R LM WR')) {
+  }
+  if (s.includes('XF90mmF2 R LM WR')) {
     return Lens.FUJINON_90;
   }
   return undefined;

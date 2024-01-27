@@ -3,7 +3,10 @@ import { InputTextField } from 'components/Inputs/InputTextField';
 import { MultiSelectField } from 'components/Inputs/MultiSelectField';
 import { SelectField } from 'components/Inputs/SelectField';
 import {
-  CameraTechnique, PhotoCategory, toCameraTechnique, toCategory,
+  CameraTechnique,
+  PhotoCategory,
+  toCameraTechnique,
+  toCategory,
 } from 'model/metadata';
 import React from 'react';
 
@@ -19,7 +22,14 @@ type Props = {
 };
 
 export const BasePhotoForm: React.FunctionComponent<Props> = ({
-  title, category, group, cameraTechniques, setTitle, setCategory, setGroup, setCameraTechniques,
+  title,
+  category,
+  group,
+  cameraTechniques,
+  setTitle,
+  setCategory,
+  setGroup,
+  setCameraTechniques,
 }) => (
   <>
     <Grid item>
@@ -36,10 +46,10 @@ export const BasePhotoForm: React.FunctionComponent<Props> = ({
       <SelectField
         id="category"
         label="Category"
-        options={
-          Object.values(PhotoCategory)
-            .map((c) => ({ value: c, label: c }))
-        }
+        options={Object.values(PhotoCategory).map((c) => ({
+          value: c,
+          label: c,
+        }))}
         value={category}
         onChange={(s) => setCategory(toCategory(s as string))}
         required
@@ -66,12 +76,14 @@ export const BasePhotoForm: React.FunctionComponent<Props> = ({
       <MultiSelectField
         id="camera-techniques"
         label="Camera Techniques"
-        options={
-              Object.values(CameraTechnique)
-                .map((cT) => ({ value: cT, label: cT }))
-            }
+        options={Object.values(CameraTechnique).map((cT) => ({
+          value: cT,
+          label: cT,
+        }))}
         values={cameraTechniques.map((cT) => cT.toString())}
-        onChange={(ss) => setCameraTechniques(ss.map((s) => toCameraTechnique(s)))}
+        onChange={(ss) =>
+          setCameraTechniques(ss.map((s) => toCameraTechnique(s)))
+        }
       />
     </Grid>
   </>

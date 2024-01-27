@@ -25,13 +25,14 @@ export const PageHeader: React.FunctionComponent<Props> = ({ hidden }) => {
       onKeyUp={() => navigate('/')}
       tabIndex={0}
     >
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        right: `calc(100% + ${theme.secondaryPadding}px`,
-        whiteSpace: 'nowrap',
-      }}
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          right: `calc(100% + ${theme.secondaryPadding}px`,
+          whiteSpace: 'nowrap',
+        }}
       >
         <Typography variant={theme.headerTextVariant as any} align="center">
           Fredrik Beiron
@@ -42,13 +43,14 @@ export const PageHeader: React.FunctionComponent<Props> = ({ hidden }) => {
         alt="Icon"
         width="100%"
       />
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        left: `calc(100% + ${theme.secondaryPadding}px`,
-        whiteSpace: 'nowrap',
-      }}
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          left: `calc(100% + ${theme.secondaryPadding}px`,
+          whiteSpace: 'nowrap',
+        }}
       >
         <Typography variant={theme.headerTextVariant as any} align="center">
           Photography

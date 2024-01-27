@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { ImageApi } from 'api/ImageApi';
 import ImageIcon from '@mui/icons-material/Image';
-import {
-  Button, Input,
-} from '@mui/material';
+import { Button, Input } from '@mui/material';
 import { theme } from 'style/theme';
 import { usePasswordContext } from 'contexts/PasswordContext';
 
@@ -26,7 +24,9 @@ export const ImageUploader: React.FunctionComponent<props> = ({
     if (fileInput && fileInput.files[0]) {
       const file = fileInput.files[0];
       formData.append('image', file);
-      ImageApi.ImageRoute.uploadImage(formData, password, () => onImageUploaded(file.name));
+      ImageApi.ImageRoute.uploadImage(formData, password, () =>
+        onImageUploaded(file.name),
+      );
       onImageUploading();
     }
   }, [fileName, password, onImageUploaded, onImageUploading]);

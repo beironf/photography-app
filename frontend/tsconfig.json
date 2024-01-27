@@ -1,8 +1,8 @@
 {
-    "compilerOptions": {
-        "baseUrl": "src",
-        "jsx": "react",
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true
-    }
+  "compilerOptions": {
+    "baseUrl": "src",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+  },
 }

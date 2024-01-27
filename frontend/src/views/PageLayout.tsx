@@ -34,7 +34,10 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-export const PageLayout: React.FunctionComponent<props> = ({ body, footer }) => {
+export const PageLayout: React.FunctionComponent<props> = ({
+  body,
+  footer,
+}) => {
   const location = useLocation();
   const pageHeaderShouldBeHidden = location.pathname.includes('admin');
   const pageMenuShouldBeHidden = location.pathname.includes('admin');

@@ -1,6 +1,4 @@
-import {
-  CircularProgress, IconButton,
-} from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import DangerousIcon from '@mui/icons-material/Dangerous';
@@ -8,9 +6,7 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { PhotoApi } from 'api/PhotoApi';
 import { NonIdealState } from 'components/NonIdealState';
 import { usePromise } from 'hooks';
-import React, {
-  useCallback, useEffect, useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { PhotoCategory } from 'model/metadata';
 import { theme } from 'style/theme';
 import { PhotoGalleryWithViewer } from 'components/Photo/PhotoGalleryWithViewer';
@@ -27,7 +23,9 @@ export const Gallery: React.FunctionComponent = () => {
     [categoryFilter, groupFilter, ratingFilter],
   );
   const {
-    trigger: reloadPhotos, data: photosWithRatio, error: listPhotosError,
+    trigger: reloadPhotos,
+    data: photosWithRatio,
+    error: listPhotosError,
     loading: listPhotosLoading,
   } = usePromise(listPhotos);
 
@@ -67,8 +65,12 @@ export const Gallery: React.FunctionComponent = () => {
         setGroup={(g) => setGroupFilter(g)}
         setRating={(r) => setRatingFilter(r)}
       />
-      {listPhotosLoading
-        && <NonIdealState description="Loading photo metadata" icon={<CircularProgress />} />}
+      {listPhotosLoading && (
+        <NonIdealState
+          description="Loading photo metadata"
+          icon={<CircularProgress />}
+        />
+      )}
       {listPhotosError && (
         <NonIdealState
           description="Failed to fetch photos"

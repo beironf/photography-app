@@ -8,12 +8,12 @@ type Props = {
   setTags: (_: string[]) => void;
 };
 
-export const TagsForm: React.FunctionComponent<Props> = ({
-  tags,
-  setTags,
-}) => {
+export const TagsForm: React.FunctionComponent<Props> = ({ tags, setTags }) => {
   const toTags = (tagString: string): string[] => {
-    const ts = tagString.toLowerCase().split(' ').map((_) => _.trim());
+    const ts = tagString
+      .toLowerCase()
+      .split(' ')
+      .map((_) => _.trim());
     return [...Array.from(new Set(ts))];
   };
 
@@ -41,16 +41,20 @@ export const TagsForm: React.FunctionComponent<Props> = ({
         error={tags.find((_) => _.trim() === '') !== undefined}
       />
       <div>
-        {tags && tags.map((tag) => (
-          <Chip
-            key={`tag-${tag}`}
-            label={tag}
-            color="secondary"
-            size="small"
-            sx={{ marginLeft: '2px', marginTop: `${theme.primaryPadding / 2}px` }}
-            onClick={() => removeTag(tag)}
-          />
-        ))}
+        {tags &&
+          tags.map((tag) => (
+            <Chip
+              key={`tag-${tag}`}
+              label={tag}
+              color="secondary"
+              size="small"
+              sx={{
+                marginLeft: '2px',
+                marginTop: `${theme.primaryPadding / 2}px`,
+              }}
+              onClick={() => removeTag(tag)}
+            />
+          ))}
       </div>
     </Grid>
   );

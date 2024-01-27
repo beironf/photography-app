@@ -23,7 +23,9 @@ export const ImageRenderer: React.FunctionComponent<props> = ({
   const [isHovering, setIsHovering] = useState(false);
 
   const opacity = selected || noImageSelected || isHovering ? 1 : 0.7;
-  const border = selected ? `2px solid ${selectionColor ?? theme.modeContrastColor}` : undefined;
+  const border = selected
+    ? `2px solid ${selectionColor ?? theme.modeContrastColor}`
+    : undefined;
 
   return (
     <Button

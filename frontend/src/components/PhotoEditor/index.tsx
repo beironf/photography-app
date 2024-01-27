@@ -7,7 +7,10 @@ import { usePromise } from 'hooks';
 import { CircularProgress, Divider, Grid } from '@mui/material';
 
 import { getExif } from 'util/exif-util';
-import { convertStateToPhotoContent, stateIsComplete } from 'util/photo-editor-utils';
+import {
+  convertStateToPhotoContent,
+  stateIsComplete,
+} from 'util/photo-editor-utils';
 import { PhotoApi } from 'api/PhotoApi';
 
 import { throttle } from 'lodash';
@@ -40,32 +43,34 @@ type Props = {
 };
 
 const throttledUpdatePhoto = throttle(
-  (
-    imageId: string,
-    update: UpdatePhoto,
-    passwordToken: string,
-  ) => PhotoApi.updatePhoto(imageId, update, passwordToken),
+  (imageId: string, update: UpdatePhoto, passwordToken: string) =>
+    PhotoApi.updatePhoto(imageId, update, passwordToken),
   2000,
 );
 
 const throttledAddPhoto = throttle(
-  (
-    photo: Photo,
-    passwordToken: string,
-    callback: () => void,
-  ) => PhotoApi.addPhoto(photo, passwordToken, callback),
+  (photo: Photo, passwordToken: string, callback: () => void) =>
+    PhotoApi.addPhoto(photo, passwordToken, callback),
   5000,
 );
 
-export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhoto }) => {
+export const PhotoEditor: React.FunctionComponent<Props> = ({
+  imageId,
+  onNewPhoto,
+}) => {
   const [state, setState] = useState<PhotoEditorState>(initialState);
   const [exif, setExif] = useState<Exif>(initialExif);
   const [addingPhoto, setAddingPhoto] = useState(false);
   const { password } = usePasswordContext();
 
-  const getPhotoCallback = useCallback(() => PhotoApi.getPhoto(imageId), [imageId]);
+  const getPhotoCallback = useCallback(
+    () => PhotoApi.getPhoto(imageId),
+    [imageId],
+  );
   const {
-    trigger: getPhoto, data: photo, loading: getPhotoLoading,
+    trigger: getPhoto,
+    data: photo,
+    loading: getPhotoLoading,
   } = usePromise(getPhotoCallback);
 
   // Fetch exif and photo info on image change
@@ -98,7 +103,10 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
         inShowroom: photo.judgement.inShowroom,
         location: photo.location.name,
         country: photo.location.country,
-        coordinates: [photo.location.coordinates.latitude, photo.location.coordinates.longitude],
+        coordinates: [
+          photo.location.coordinates.latitude,
+          photo.location.coordinates.longitude,
+        ],
       }));
     }
   }, [photo]);
@@ -125,7 +133,9 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
       {!getPhotoLoading && (
         <MapInput
           coordinates={state.coordinates}
-          setCoordinates={(coordinates) => setState((prev) => ({ ...prev, coordinates }))}
+          setCoordinates={(coordinates) =>
+            setState((prev) => ({ ...prev, coordinates }))
+          }
         />
       )}
       {getPhotoLoading && <CircularProgress />}
@@ -135,7 +145,9 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
             location={state.location}
             country={state.country}
             coordinates={state.coordinates}
-            setLocation={(location) => setState((prev) => ({ ...prev, location }))}
+            setLocation={(location) =>
+              setState((prev) => ({ ...prev, location }))
+            }
             setCountry={(country) => setState((prev) => ({ ...prev, country }))}
           />
 
@@ -149,11 +161,13 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
             group={state.group}
             cameraTechniques={state.cameraTechniques}
             setTitle={(title) => setState((prev) => ({ ...prev, title }))}
-            setCategory={(category) => setState((prev) => ({ ...prev, category }))}
+            setCategory={(category) =>
+              setState((prev) => ({ ...prev, category }))
+            }
             setGroup={(group) => setState((prev) => ({ ...prev, group }))}
-            setCameraTechniques={(cameraTechniques) => setState(
-              (prev) => ({ ...prev, cameraTechniques }),
-            )}
+            setCameraTechniques={(cameraTechniques) =>
+              setState((prev) => ({ ...prev, cameraTechniques }))
+            }
           />
 
           <Grid item xs={12}>
@@ -173,9 +187,15 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
             }}
             setCamera={(camera) => setState((prev) => ({ ...prev, camera }))}
             setLens={(lens) => setState((prev) => ({ ...prev, lens }))}
-            setFocalLength={(focalLength) => setState((prev) => ({ ...prev, focalLength }))}
-            setAperture={(aperture) => setState((prev) => ({ ...prev, aperture }))}
-            setExposureTime={(exposureTime) => setState((prev) => ({ ...prev, exposureTime }))}
+            setFocalLength={(focalLength) =>
+              setState((prev) => ({ ...prev, focalLength }))
+            }
+            setAperture={(aperture) =>
+              setState((prev) => ({ ...prev, aperture }))
+            }
+            setExposureTime={(exposureTime) =>
+              setState((prev) => ({ ...prev, exposureTime }))
+            }
             setIso={(iso) => setState((prev) => ({ ...prev, iso }))}
             setDate={(date) => setState((prev) => ({ ...prev, date }))}
           />
@@ -187,15 +207,16 @@ export const PhotoEditor: React.FunctionComponent<Props> = ({ imageId, onNewPhot
           <JudgementForm
             rating={state.rating}
             inShowroom={state.inShowroom}
-            setRating={(rating) => setState(
-              (prev) => ({ ...prev, rating }),
-            )}
-            setInShowroom={(inShowroom) => setState(
-              (prev) => ({ ...prev, inShowroom }),
-            )}
+            setRating={(rating) => setState((prev) => ({ ...prev, rating }))}
+            setInShowroom={(inShowroom) =>
+              setState((prev) => ({ ...prev, inShowroom }))
+            }
           />
 
-          <TagsForm tags={state.tags} setTags={(tags) => setState((prev) => ({ ...prev, tags }))} />
+          <TagsForm
+            tags={state.tags}
+            setTags={(tags) => setState((prev) => ({ ...prev, tags }))}
+          />
         </Grid>
       )}
     </div>

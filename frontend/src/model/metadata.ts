@@ -14,19 +14,26 @@ export enum PhotoCategory {
 export const toCategory = (s?: string): PhotoCategory | undefined => {
   if (s === undefined) {
     return undefined;
-  } if (s.includes('Abstract')) {
+  }
+  if (s.includes('Abstract')) {
     return PhotoCategory.ABSTRACT;
-  } if (s.includes('Animal')) {
+  }
+  if (s.includes('Animal')) {
     return PhotoCategory.ANIMAL;
-  } if (s.includes('City & Architecture')) {
+  }
+  if (s.includes('City & Architecture')) {
     return PhotoCategory.CITY_AND_ARCHITECTURE;
-  } if (s.includes('Landscape')) {
+  }
+  if (s.includes('Landscape')) {
     return PhotoCategory.LANDSCAPE;
-  } if (s.includes('Nature')) {
+  }
+  if (s.includes('Nature')) {
     return PhotoCategory.NATURE;
-  } if (s.includes('Night')) {
+  }
+  if (s.includes('Night')) {
     return PhotoCategory.NIGHT;
-  } if (s.includes('People')) {
+  }
+  if (s.includes('People')) {
     return PhotoCategory.PEOPLE;
   }
   return undefined;
@@ -45,19 +52,26 @@ export enum CameraTechnique {
 export const toCameraTechnique = (s?: string): CameraTechnique | undefined => {
   if (s === undefined) {
     return undefined;
-  } if (s.includes('Long Exposure')) {
+  }
+  if (s.includes('Long Exposure')) {
     return CameraTechnique.LONG_EXPOSURE;
-  } if (s.includes('Panorama')) {
+  }
+  if (s.includes('Panorama')) {
     return CameraTechnique.PANORAMA;
-  } if (s.includes('Aerial')) {
+  }
+  if (s.includes('Aerial')) {
     return CameraTechnique.AERIAL;
-  } if (s.includes('Macro')) {
+  }
+  if (s.includes('Macro')) {
     return CameraTechnique.MACRO;
-  } if (s.includes('Zooming')) {
+  }
+  if (s.includes('Zooming')) {
     return CameraTechnique.ZOOMING;
-  } if (s.includes('Filters')) {
+  }
+  if (s.includes('Filters')) {
     return CameraTechnique.FILTERS;
-  } if (s.includes('Multiple Focus Points')) {
+  }
+  if (s.includes('Multiple Focus Points')) {
     return CameraTechnique.MULTIPLE_FOCUS_POINTS;
   }
   return undefined;

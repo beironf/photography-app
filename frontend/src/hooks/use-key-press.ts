@@ -1,6 +1,4 @@
-import {
-  useCallback, useEffect, useLayoutEffect, useRef,
-} from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 export const ARROW_LEFT = 'ArrowLeft';
 export const ARROW_UP = 'ArrowUp';
@@ -31,7 +29,7 @@ export const useKeyPress = (
     const targetNode = node ?? document;
     targetNode.addEventListener('keydown', handleKeyPress);
 
-    return () => targetNode
-        && targetNode.removeEventListener('keydown', handleKeyPress);
+    return () =>
+      targetNode && targetNode.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress, node]);
 };

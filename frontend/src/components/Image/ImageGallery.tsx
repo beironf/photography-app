@@ -28,9 +28,11 @@ export const ImageGallery: React.FunctionComponent<props> = ({
         alt: id,
       }))}
       renderImage={renderImage}
-      onClick={onImageClick !== undefined
-        ? (_, { photo: { key } }) => onImageClick(key)
-        : undefined}
+      onClick={
+        onImageClick !== undefined
+          ? (_, { photo: { key } }) => onImageClick(key)
+          : undefined
+      }
       targetRowHeight={targetRowHeight}
     />
   </div>

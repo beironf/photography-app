@@ -16,7 +16,17 @@ type Props = {
 };
 
 export const InputTextField: React.FunctionComponent<Props> = ({
-  id, label, onChange, value, helperText, disabled, required, error, variant, fullWidth, minWidth,
+  id,
+  label,
+  onChange,
+  value,
+  helperText,
+  disabled,
+  required,
+  error,
+  variant,
+  fullWidth,
+  minWidth,
 }) => (
   <TextField
     id={id}
@@ -26,7 +36,7 @@ export const InputTextField: React.FunctionComponent<Props> = ({
     required={required}
     onChange={(e) => onChange(e.target.value)}
     disabled={disabled}
-    helperText={(value === undefined || value === '') ? helperText : undefined}
+    helperText={value === undefined || value === '' ? helperText : undefined}
     InputLabelProps={{ shrink: true }}
     size="small"
     fullWidth={fullWidth}

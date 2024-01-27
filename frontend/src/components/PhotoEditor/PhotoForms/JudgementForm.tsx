@@ -1,6 +1,4 @@
-import {
-  FormControlLabel, Grid, Switch,
-} from '@mui/material';
+import { FormControlLabel, Grid, Switch } from '@mui/material';
 import { NumberRatingField } from 'components/Inputs/NumberRatingField';
 import React from 'react';
 
@@ -19,16 +17,21 @@ export const JudgementForm: React.FunctionComponent<Props> = ({
 }) => (
   <>
     <Grid item>
-      <NumberRatingField id="rating" label="Rating" rating={rating} setRating={setRating} />
+      <NumberRatingField
+        id="rating"
+        label="Rating"
+        rating={rating}
+        setRating={setRating}
+      />
     </Grid>
     <Grid item>
       <FormControlLabel
-        control={(
+        control={
           <Switch
             checked={inShowroom}
             onChange={(event) => setInShowroom(event.target.checked)}
           />
-        )}
+        }
         label="In Showroom"
       />
     </Grid>

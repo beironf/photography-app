@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  TileLayer, MapContainer, useMap,
-} from 'react-leaflet';
+import { TileLayer, MapContainer, useMap } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import { theme } from 'style/theme';
 import { LocationMarker } from './LocationMarker';
@@ -12,7 +10,9 @@ type Props = {
   height?: number;
 };
 
-const MapUseEffect: React.FunctionComponent<{coordinates?: number[]}> = ({ coordinates }) => {
+const MapUseEffect: React.FunctionComponent<{ coordinates?: number[] }> = ({
+  coordinates,
+}) => {
   const map = useMap();
 
   useEffect(() => {
@@ -26,14 +26,18 @@ const MapUseEffect: React.FunctionComponent<{coordinates?: number[]}> = ({ coord
 };
 
 export const MapInput: React.FunctionComponent<Props> = ({
-  coordinates, setCoordinates, height,
+  coordinates,
+  setCoordinates,
+  height,
 }) => (
   <MapContainer
     style={{
       height: height ?? 370,
       margin: `${-theme.primaryPadding}px ${-theme.primaryPadding}px ${theme.primaryPadding}px`,
     }}
-    center={coordinates !== undefined ? coordinates as LatLngExpression : [50, 10]}
+    center={
+      coordinates !== undefined ? (coordinates as LatLngExpression) : [50, 10]
+    }
     zoom={coordinates !== undefined ? 10 : 3}
     zoomControl={false}
     maxZoom={17}
@@ -44,7 +48,7 @@ export const MapInput: React.FunctionComponent<Props> = ({
       url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
     />
     <LocationMarker
-      location={coordinates ? coordinates as LatLngExpression : undefined}
+      location={coordinates ? (coordinates as LatLngExpression) : undefined}
       setLocation={(latLng) => setCoordinates([latLng.lat, latLng.lng])}
     />
     <MapUseEffect coordinates={coordinates} />

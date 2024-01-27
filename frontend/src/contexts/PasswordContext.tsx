@@ -1,5 +1,10 @@
 import React, {
-  createContext, useContext, useState, FC, useMemo, PropsWithChildren,
+  createContext,
+  useContext,
+  useState,
+  FC,
+  useMemo,
+  PropsWithChildren,
 } from 'react';
 
 const LOCAL_STORAGE_PASSWORD_KEY = 'photography_app_admin_password';
@@ -14,7 +19,9 @@ const PasswordContext = createContext<PasswordContextType>({
   setPassword: (_) => 1,
 });
 
-export const PasswordContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
+export const PasswordContextProvider: FC<PropsWithChildren<{}>> = ({
+  children,
+}) => {
   const [password, setPassword] = useState<string>(
     window.localStorage.getItem(LOCAL_STORAGE_PASSWORD_KEY) ?? '',
   );
@@ -36,4 +43,5 @@ export const PasswordContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   );
 };
 
-export const usePasswordContext = (): PasswordContextType => useContext(PasswordContext);
+export const usePasswordContext = (): PasswordContextType =>
+  useContext(PasswordContext);

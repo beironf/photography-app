@@ -3,8 +3,9 @@ import { AxiosPromise, AxiosResponse } from 'axios';
 
 const isAxiosResponse = (
   variableToCheck: any,
-): variableToCheck is AxiosResponse => (variableToCheck as AxiosResponse)?.status !== undefined
-  && (variableToCheck as AxiosResponse)?.request !== undefined;
+): variableToCheck is AxiosResponse =>
+  (variableToCheck as AxiosResponse)?.status !== undefined &&
+  (variableToCheck as AxiosResponse)?.request !== undefined;
 
 type UsePromiseResponse<TData> = {
   data: TData;
@@ -15,7 +16,7 @@ type UsePromiseResponse<TData> = {
   errorMessage?: string;
   reset: () => void;
   setData: (_: React.SetStateAction<TData>) => void;
-}
+};
 
 export function usePromise<TData>(
   promise: () => Promise<TData> | AxiosPromise<TData>,
@@ -65,9 +66,9 @@ export function usePromise<TData>(
           if (!didCancel) {
             setErrorCode(requestError?.response?.status);
             setErrorMessage(
-              requestError?.response?.data?.message
-                ?? requestError?.message
-                ?? 'Unhandled error occurred',
+              requestError?.response?.data?.message ??
+                requestError?.message ??
+                'Unhandled error occurred',
             );
             setError(true);
           }

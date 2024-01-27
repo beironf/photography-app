@@ -37,14 +37,8 @@ export const DataFetcher = <TData extends {}>({
   notFoundIndicator,
   loadingIndicator,
 }: IProps<TData>): JSX.Element => {
-  const {
-    loading,
-    data,
-    error,
-    trigger,
-    errorCode,
-    setData,
-  } = usePromise(apiMethod);
+  const { loading, data, error, trigger, errorCode, setData } =
+    usePromise(apiMethod);
   const [dependencyList, setDependencyList] = useState(undefined);
 
   useEffect(() => {
@@ -54,7 +48,8 @@ export const DataFetcher = <TData extends {}>({
   const renderError = (): any => {
     if (errorIndicator && errorCode !== 404 && notFoundIndicator) {
       return errorIndicator;
-    } if (errorCode === 404 && notFoundIndicator) {
+    }
+    if (errorCode === 404 && notFoundIndicator) {
       return notFoundIndicator;
     }
 
@@ -67,8 +62,8 @@ export const DataFetcher = <TData extends {}>({
 
   return (
     <>
-      {loading
-        && (loadingIndicator || (
+      {loading &&
+        (loadingIndicator || (
           <Container>
             <Grid container justifyContent="center">
               <Grid item>
@@ -78,8 +73,8 @@ export const DataFetcher = <TData extends {}>({
           </Container>
         ))}
       {error && renderError()}
-      {data !== undefined
-        && children(
+      {data !== undefined &&
+        children(
           data,
           (dependencies: any) => setDependencyList(dependencies),
           setData,

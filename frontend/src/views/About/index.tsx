@@ -41,7 +41,9 @@ export const About: React.FunctionComponent = () => {
       />
       <Typography
         variant={theme.aboutBodyTextVariant as any}
-        style={{ padding: `0 ${theme.primaryPadding}px ${theme.primaryPadding}px` }}
+        style={{
+          padding: `0 ${theme.primaryPadding}px ${theme.primaryPadding}px`,
+        }}
         textAlign="center"
       >
         Hi! My name is Fredrik. I&apos;m
@@ -51,14 +53,17 @@ export const About: React.FunctionComponent = () => {
         Welcome to my photography site.
         <br />
         <br />
-        Photography is one of my main hobbies in life, especially landscape photography.
-        I get most inspired by the views and landscapes I don&apos;t see everyday.
-        That&apos;s why I love to shoot when going on trips to new places. The nature is
-        a central part that I&apos;m drawn to and to be able to remember certain moments
-        far later by looking at an image is very powerful.
+        Photography is one of my main hobbies in life, especially landscape
+        photography. I get most inspired by the views and landscapes I
+        don&apos;t see everyday. That&apos;s why I love to shoot when going on
+        trips to new places. The nature is a central part that I&apos;m drawn to
+        and to be able to remember certain moments far later by looking at an
+        image is very powerful.
       </Typography>
       <img
-        src={ImageApi.SiteImageRoute.getSiteImageUrl('portrait_photographer.jpg')}
+        src={ImageApi.SiteImageRoute.getSiteImageUrl(
+          'portrait_photographer.jpg',
+        )}
         alt="Photographer Portrait"
         style={{ width: '100%', marginBottom: `${theme.primaryPadding}px` }}
       />
@@ -71,14 +76,17 @@ export const About: React.FunctionComponent = () => {
       </Typography>
       <Typography
         variant={theme.aboutBodyTextVariant as any}
-        style={{ padding: `0 ${theme.primaryPadding}px ${theme.primaryPadding}px` }}
+        style={{
+          padding: `0 ${theme.primaryPadding}px ${theme.primaryPadding}px`,
+        }}
         textAlign="center"
       >
-        I have previously used Canon cameras; Most recently the 5D Mark II. Combined with large
-        lenses this was quite cumbersome when traveling. I noticed that I started taking more
-        photos when switching to a more lightweight system. Currently I only shoot with
-        Fujifilm&apos;s prime lenses because of their low light capabilities and weight.
-        Sometimes it&apos;s a bit limiting without a proper zoom lens, but for most cases
+        I have previously used Canon cameras; Most recently the 5D Mark II.
+        Combined with large lenses this was quite cumbersome when traveling. I
+        noticed that I started taking more photos when switching to a more
+        lightweight system. Currently I only shoot with Fujifilm&apos;s prime
+        lenses because of their low light capabilities and weight. Sometimes
+        it&apos;s a bit limiting without a proper zoom lens, but for most cases
         it works really well and challenges me to find creative compositions.
       </Typography>
       <Grid
@@ -128,11 +136,13 @@ export const About: React.FunctionComponent = () => {
       </Grid>
       <Typography
         variant={theme.aboutBodyTextVariant as any}
-        style={{ padding: `0 ${theme.primaryPadding}px ${theme.primaryPadding}px` }}
+        style={{
+          padding: `0 ${theme.primaryPadding}px ${theme.primaryPadding}px`,
+        }}
         textAlign="center"
       >
-        I also bought a complementary DJI Mini 3 drone before my trip to Australia to capture new
-        types of views from the sky.
+        I also bought a complementary DJI Mini 3 drone before my trip to
+        Australia to capture new types of views from the sky.
       </Typography>
       <img
         src={ImageApi.SiteImageRoute.getSiteImageUrl('drone_remote.jpg')}
@@ -154,25 +164,26 @@ export const About: React.FunctionComponent = () => {
         }}
         textAlign="center"
       >
-        Most of my previous attempts to build a website from scratch have been educational
-        but not led to any real usage. It&apos;s been a hobby for many years because it allows
-        me to be creative and produce something instead of only consuming content which
-        is so common these days.
+        Most of my previous attempts to build a website from scratch have been
+        educational but not led to any real usage. It&apos;s been a hobby for
+        many years because it allows me to be creative and produce something
+        instead of only consuming content which is so common these days.
         <br />
         <br />
-        The idea of joining two of my main hobbies, photography and coding,
-        has also been around for some time. It was first after I&apos;ve worked professionally
-        as a software developer for a few years that I completed that vision.
+        The idea of joining two of my main hobbies, photography and coding, has
+        also been around for some time. It was first after I&apos;ve worked
+        professionally as a software developer for a few years that I completed
+        that vision.
         <br />
         <br />
-        I know there are a lot of services out there that can help you put up your own
-        photography website very easily. That would be the best choice if I just wanted a website,
-        but then I would miss out on the journey of building it and also the flexibility
-        to make it work exactly as I want.
+        I know there are a lot of services out there that can help you put up
+        your own photography website very easily. That would be the best choice
+        if I just wanted a website, but then I would miss out on the journey of
+        building it and also the flexibility to make it work exactly as I want.
         <br />
         <br />
-        The goal is that this will be an ongoing project and that more views and features
-        will be added to allow me showing the best of my photography!
+        The goal is that this will be an ongoing project and that more views and
+        features will be added to allow me showing the best of my photography!
       </Typography>
     </div>
   );

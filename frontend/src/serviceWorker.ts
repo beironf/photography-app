@@ -13,11 +13,12 @@
 // opt-in, read https://bit.ly/CRA-PWA
 
 const isLocalhost = Boolean(
-  window.location.hostname === 'localhost'
-  || window.location.hostname === '[::1]' // [::1] is the IPv6 localhost address.
-  || window.location.hostname.match( // 127.0.0.1/8 is considered localhost for IPv4.
-    /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/,
-  ),
+  window.location.hostname === 'localhost' ||
+    window.location.hostname === '[::1]' || // [::1] is the IPv6 localhost address.
+    window.location.hostname.match(
+      // 127.0.0.1/8 is considered localhost for IPv4.
+      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/,
+    ),
 );
 
 type Config = {
@@ -43,8 +44,8 @@ function registerValidSW(swUrl: string, config?: Config): void {
               // content until all client tabs are closed.
               // eslint-disable-next-line no-console
               console.log(
-                'New content is available and will be used when all '
-                  + 'tabs for this page are closed. See https://bit.ly/CRA-PWA.',
+                'New content is available and will be used when all ' +
+                  'tabs for this page are closed. See https://bit.ly/CRA-PWA.',
               );
 
               // Execute callback
@@ -80,8 +81,8 @@ function checkValidServiceWorker(swUrl: string, config?: Config): void {
       // Ensure service worker exists, and that we really are getting a JS file.
       const contentType = response.headers.get('content-type');
       if (
-        response.status === 404
-        || (contentType != null && contentType.indexOf('javascript') === -1)
+        response.status === 404 ||
+        (contentType != null && contentType.indexOf('javascript') === -1)
       ) {
         // No service worker found. Probably a different app. Reload the page.
         navigator.serviceWorker.ready.then((registration) => {
@@ -128,8 +129,8 @@ export function register(config?: Config): void {
         navigator.serviceWorker.ready.then(() => {
           // eslint-disable-next-line no-console
           console.log(
-            'This web app is being served cache-first by a service '
-              + 'worker. To learn more, visit https://bit.ly/CRA-PWA',
+            'This web app is being served cache-first by a service ' +
+              'worker. To learn more, visit https://bit.ly/CRA-PWA',
           );
         });
       } else {

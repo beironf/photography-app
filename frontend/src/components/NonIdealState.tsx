@@ -21,7 +21,11 @@ export const NonIdealState: React.FC<INonIdealStateProps> = ({
     if (icon === null || icon === undefined) {
       return null;
     }
-    return <Grid item style={{ marginTop: theme.primaryPadding }}>{icon}</Grid>;
+    return (
+      <Grid item style={{ marginTop: theme.primaryPadding }}>
+        {icon}
+      </Grid>
+    );
   };
 
   return (
@@ -35,8 +39,7 @@ export const NonIdealState: React.FC<INonIdealStateProps> = ({
       {maybeRenderVisual()}
       {title && (
         <Grid item>
-          <Typography variant="h6">{title}</Typography>
-          {' '}
+          <Typography variant="h6">{title}</Typography>{' '}
         </Grid>
       )}
       {description && <Grid item>{description}</Grid>}

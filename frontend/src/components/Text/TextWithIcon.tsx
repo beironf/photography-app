@@ -19,12 +19,13 @@ export const TextWithIcon: React.FunctionComponent<props> = ({
   noValue,
   textColor,
 }) => (
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: `${marginBottom ?? 2}px`,
-    flexDirection: align === 'right' ? 'row-reverse' : 'row',
-  }}
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      marginBottom: `${marginBottom ?? 2}px`,
+      flexDirection: align === 'right' ? 'row-reverse' : 'row',
+    }}
   >
     {icon}
     {texts.map((text, i) => (
@@ -33,12 +34,14 @@ export const TextWithIcon: React.FunctionComponent<props> = ({
         variant="body2"
         style={{
           color: textColor ?? theme.modeContrastColor,
-          marginLeft: align !== 'right'
-            ? `${(i === 0) ? theme.body2IconMargin : theme.body2Margin}px`
-            : undefined,
-          marginRight: align === 'right'
-            ? `${(i === 0) ? theme.body2IconMargin : theme.body2Margin}px`
-            : undefined,
+          marginLeft:
+            align !== 'right'
+              ? `${i === 0 ? theme.body2IconMargin : theme.body2Margin}px`
+              : undefined,
+          marginRight:
+            align === 'right'
+              ? `${i === 0 ? theme.body2IconMargin : theme.body2Margin}px`
+              : undefined,
           opacity: noValue === true ? 0.5 : 1,
         }}
       >

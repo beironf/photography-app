@@ -24,20 +24,21 @@ export const PhotoGallery: React.FunctionComponent<Props> = ({
 }) => (
   <div style={{ padding: `0 ${sideMargin ?? 0}px ${bottomMargin ?? 0}px` }}>
     <Gallery
-      photos={Object.values(photosWithRatio)
-        .map(({
-          photo: { title, imageId }, width, height,
-        }) => ({
+      photos={Object.values(photosWithRatio).map(
+        ({ photo: { title, imageId }, width, height }) => ({
           key: imageId,
           src: ImageApi.ThumbnailRoute.getThumbnailUrl(imageId),
           width,
           height,
           alt: title,
-        }))}
+        }),
+      )}
       renderImage={renderPhoto}
-      onClick={onPhotoClick !== undefined
-        ? (_, { photo: { key } }) => onPhotoClick(key)
-        : undefined}
+      onClick={
+        onPhotoClick !== undefined
+          ? (_, { photo: { key } }) => onPhotoClick(key)
+          : undefined
+      }
       targetRowHeight={targetRowHeight}
       columns={columns}
       direction={columns !== undefined ? 'column' : 'row'}

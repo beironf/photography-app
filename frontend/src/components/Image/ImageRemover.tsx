@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
-  Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@mui/material';
 import { theme } from 'style/theme';
 import { ImageApi } from 'api/ImageApi';
@@ -12,23 +17,27 @@ type props = {
   onImageRemoved: (_: string) => void;
 };
 
-export const ImageRemover: React.FunctionComponent<props> = ({ imageId, onImageRemoved }) => {
+export const ImageRemover: React.FunctionComponent<props> = ({
+  imageId,
+  onImageRemoved,
+}) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const { password } = usePasswordContext();
 
   const removeImage = (): void => {
-    ImageApi.ImageRoute.removeImage(imageId, password)
-      .then((_: any) => {
-        onImageRemoved(imageId);
-      });
+    ImageApi.ImageRoute.removeImage(imageId, password).then((_: any) => {
+      onImageRemoved(imageId);
+    });
   };
 
   return (
     <>
-
       <Button
         style={{
-          position: 'fixed', zIndex: 500, top: theme.primaryPadding, right: theme.primaryPadding,
+          position: 'fixed',
+          zIndex: 500,
+          top: theme.primaryPadding,
+          right: theme.primaryPadding,
         }}
         startIcon={<DeleteIcon />}
         variant="contained"
@@ -39,13 +48,8 @@ export const ImageRemover: React.FunctionComponent<props> = ({ imageId, onImageR
         Remove
       </Button>
       {showConfirm && (
-        <Dialog
-          open={showConfirm}
-          onClose={() => setShowConfirm(false)}
-        >
-          <DialogTitle>
-            Remove Image?
-          </DialogTitle>
+        <Dialog open={showConfirm} onClose={() => setShowConfirm(false)}>
+          <DialogTitle>Remove Image?</DialogTitle>
           <DialogContent>
             <DialogContentText>
               {`Image with file name ${imageId} will be removed.`}
@@ -53,7 +57,9 @@ export const ImageRemover: React.FunctionComponent<props> = ({ imageId, onImageR
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setShowConfirm(false)}>Cancel</Button>
-            <Button onClick={removeImage} autoFocus>Remove</Button>
+            <Button onClick={removeImage} autoFocus>
+              Remove
+            </Button>
           </DialogActions>
         </Dialog>
       )}

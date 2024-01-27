@@ -10,16 +10,18 @@ type Props = {
   setCountry: (_: string) => void;
 };
 
-const round = (x: number, decimals: number): number => (
-  Math.round(x * 10 ** decimals) / 10 ** decimals
-);
+const round = (x: number, decimals: number): number =>
+  Math.round(x * 10 ** decimals) / 10 ** decimals;
 
-const formatCoordinates = (coord: number[]): string => (
-  `Lat: ${round(coord[0], 3)}, Long: ${round(coord[1], 3)}`
-);
+const formatCoordinates = (coord: number[]): string =>
+  `Lat: ${round(coord[0], 3)}, Long: ${round(coord[1], 3)}`;
 
 export const LocationForm: React.FunctionComponent<Props> = ({
-  location, country, coordinates, setLocation, setCountry,
+  location,
+  country,
+  coordinates,
+  setLocation,
+  setCountry,
 }) => (
   <>
     <Grid item>
@@ -49,8 +51,14 @@ export const LocationForm: React.FunctionComponent<Props> = ({
         id="coordinates"
         label="Coordinates"
         onChange={() => 1}
-        value={coordinates !== undefined ? formatCoordinates(coordinates) : undefined}
-        helperText={coordinates === undefined ? 'Click on the map to set coordinates' : undefined}
+        value={
+          coordinates !== undefined ? formatCoordinates(coordinates) : undefined
+        }
+        helperText={
+          coordinates === undefined
+            ? 'Click on the map to set coordinates'
+            : undefined
+        }
         required
         disabled
         variant="standard"

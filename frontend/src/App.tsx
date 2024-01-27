@@ -3,9 +3,7 @@ import '@fontsource/raleway';
 import { PageLayout } from 'views/PageLayout';
 import React from 'react';
 import { ManagePhotos } from 'views/ManagePhotos';
-import {
-  BrowserRouter, Routes, Route, Navigate,
-} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Gallery } from 'views/Gallery';
 import { Showroom } from 'views/Showroom';
 import { PasswordContextProvider } from 'contexts/PasswordContext';
@@ -39,11 +37,11 @@ const App: React.FC = () => {
       <Route path="/about" element={<About />} />
       <Route
         path="/admin"
-        element={(
+        element={
           <PasswordRestricted>
             <ManagePhotos />
           </PasswordRestricted>
-        )}
+        }
       />
       <Route path="*" element={<Navigate replace to="/showroom" />} />
     </Routes>
@@ -53,9 +51,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={darkTheme}>
       <BrowserRouter>
         <PasswordContextProvider>
-          <PageLayout
-            body={body}
-          />
+          <PageLayout body={body} />
         </PasswordContextProvider>
       </BrowserRouter>
     </ThemeProvider>

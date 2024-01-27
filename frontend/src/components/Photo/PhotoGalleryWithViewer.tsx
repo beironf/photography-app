@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useRef, useMemo, useState,
-} from 'react';
+import React, { useCallback, useRef, useMemo, useState } from 'react';
 import { PhotoGallery } from 'components/Photo/PhotoGallery';
 import { PhotoViewer } from 'components/Photo/PhotoViewer';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -32,27 +30,38 @@ export const PhotoGalleryWithViewer: React.FunctionComponent<Props> = ({
   const [imageIsLoading, setImageIsLoading] = useState(false);
 
   const { imageId } = params;
-  const photos = useMemo(() => (photosWithRatio ?? []).map((_) => _.photo), [photosWithRatio]);
+  const photos = useMemo(
+    () => (photosWithRatio ?? []).map((_) => _.photo),
+    [photosWithRatio],
+  );
 
   const selectedIndex = photos.findIndex((_) => _.imageId === imageId);
-  const selectedPhoto = selectedIndex !== -1 ? photos[selectedIndex] : undefined;
+  const selectedPhoto =
+    selectedIndex !== -1 ? photos[selectedIndex] : undefined;
 
-  const setImageId = useCallback((id?: string) => {
-    if (id !== undefined) {
-      navigate(`${urlPath}/${id}`);
-      setImageIsLoading(true);
-    } else navigate(`${urlPath}`);
-  }, [navigate, urlPath]);
+  const setImageId = useCallback(
+    (id?: string) => {
+      if (id !== undefined) {
+        navigate(`${urlPath}/${id}`);
+        setImageIsLoading(true);
+      } else navigate(`${urlPath}`);
+    },
+    [navigate, urlPath],
+  );
 
-  const goTo = useCallback((direction: 'next' | 'prev') => {
-    if (!imageIsLoading) {
-      const newIndex = direction === 'next'
-        ? nextIndex(selectedIndex, photos.length)
-        : prevIndex(selectedIndex, photos.length);
-      if (newIndex === -1) setImageId(undefined);
-      else setImageId(photos[newIndex].imageId);
-    }
-  }, [photos, selectedIndex, imageIsLoading, setImageId]);
+  const goTo = useCallback(
+    (direction: 'next' | 'prev') => {
+      if (!imageIsLoading) {
+        const newIndex =
+          direction === 'next'
+            ? nextIndex(selectedIndex, photos.length)
+            : prevIndex(selectedIndex, photos.length);
+        if (newIndex === -1) setImageId(undefined);
+        else setImageId(photos[newIndex].imageId);
+      }
+    },
+    [photos, selectedIndex, imageIsLoading, setImageId],
+  );
 
   useKeyPress([ARROW_RIGHT], (_) => goTo('next'), ref.current);
   useKeyPress([ARROW_LEFT], (_) => goTo('prev'), ref.current);

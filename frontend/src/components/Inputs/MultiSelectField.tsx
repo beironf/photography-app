@@ -1,5 +1,9 @@
 import {
-  FormControl, InputLabel, MenuItem, OutlinedInput, Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
 } from '@mui/material';
 import React from 'react';
 
@@ -17,11 +21,17 @@ type Props = {
 };
 
 export const MultiSelectField: React.FunctionComponent<Props> = ({
-  id, label, options, values, onChange,
+  id,
+  label,
+  options,
+  values,
+  onChange,
 }) => (
   <div>
     <FormControl>
-      <InputLabel id={`label-${id}`} shrink>{label}</InputLabel>
+      <InputLabel id={`label-${id}`} shrink>
+        {label}
+      </InputLabel>
       <Select
         labelId={`label-${id}`}
         label={label}
@@ -34,10 +44,7 @@ export const MultiSelectField: React.FunctionComponent<Props> = ({
         style={{ minWidth: 250 }}
       >
         {options.map((option) => (
-          <MenuItem
-            key={option.value}
-            value={option.value}
-          >
+          <MenuItem key={option.value} value={option.value}>
             {option.label}
           </MenuItem>
         ))}

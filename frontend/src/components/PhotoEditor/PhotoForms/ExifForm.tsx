@@ -3,9 +3,7 @@ import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { InputTextField } from 'components/Inputs/InputTextField';
 import { SelectField } from 'components/Inputs/SelectField';
-import {
-  Camera, Lens, toCamera, toLens,
-} from 'model/camera';
+import { Camera, Lens, toCamera, toLens } from 'model/camera';
 import { Exif } from 'model/exif';
 import React, { useEffect } from 'react';
 
@@ -36,9 +34,7 @@ const formatIso = (i: number): string => `ISO ${i}`;
 
 export const ExifForm: React.FunctionComponent<Props> = ({
   exif,
-  value: {
-    camera, lens, focalLength, aperture, exposureTime, iso, date,
-  },
+  value: { camera, lens, focalLength, aperture, exposureTime, iso, date },
   setCamera,
   setLens,
   setFocalLength,
@@ -51,12 +47,14 @@ export const ExifForm: React.FunctionComponent<Props> = ({
   useEffect(() => {
     if (exif.camera !== undefined) setCamera(exif.camera);
     if (exif.lens !== undefined) setLens(exif.lens);
-    if (exif.focalLength !== undefined) setFocalLength(formatFocalLength(exif.focalLength));
+    if (exif.focalLength !== undefined)
+      setFocalLength(formatFocalLength(exif.focalLength));
     if (exif.fNumber !== undefined) setAperture(formatAperture(exif.fNumber));
-    if (exif.exposureTime !== undefined) setExposureTime(formatExposureTime(exif.exposureTime));
+    if (exif.exposureTime !== undefined)
+      setExposureTime(formatExposureTime(exif.exposureTime));
     if (exif.iso !== undefined) setIso(formatIso(exif.iso));
     if (exif.date !== undefined) setDate(exif.date);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exif]);
 
   return (
@@ -68,8 +66,10 @@ export const ExifForm: React.FunctionComponent<Props> = ({
           onChange={(s) => setCamera(toCamera(s))}
           disabled={exif.camera !== undefined}
           required
-          options={Object.values(Object.values(Camera))
-            .map((cam) => ({ value: cam.toString(), label: cam.toString() }))}
+          options={Object.values(Object.values(Camera)).map((cam) => ({
+            value: cam.toString(),
+            label: cam.toString(),
+          }))}
           value={camera !== undefined ? camera.toString() : undefined}
         />
       </Grid>
@@ -81,8 +81,10 @@ export const ExifForm: React.FunctionComponent<Props> = ({
           onChange={(s) => setLens(toLens(s))}
           disabled={exif.lens !== undefined}
           required
-          options={Object.values(Object.values(Lens))
-            .map((l) => ({ value: l.toString(), label: l.toString() }))}
+          options={Object.values(Object.values(Lens)).map((l) => ({
+            value: l.toString(),
+            label: l.toString(),
+          }))}
           value={lens !== undefined ? lens.toString() : undefined}
         />
       </Grid>

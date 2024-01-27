@@ -1,6 +1,14 @@
 import { MenuItem } from 'model/menu';
 import {
-  Box, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography,
+  Box,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
@@ -17,12 +25,20 @@ export const MobileMenu: React.FunctionComponent<Props> = ({ items }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const activeItem = items.find((item) => location.pathname.includes(item.onClickDestination));
-  const isActive = (menuLocation: string): boolean => location.pathname.includes(menuLocation);
+  const activeItem = items.find((item) =>
+    location.pathname.includes(item.onClickDestination),
+  );
+  const isActive = (menuLocation: string): boolean =>
+    location.pathname.includes(menuLocation);
 
   return (
     <>
-      <div style={{ textAlign: 'center', marginBottom: `${theme.primaryPadding}px` }}>
+      <div
+        style={{
+          textAlign: 'center',
+          marginBottom: `${theme.primaryPadding}px`,
+        }}
+      >
         <Typography
           color={theme.menuInactiveColor}
           variant={theme.menuTextVariant as any}
@@ -33,9 +49,7 @@ export const MobileMenu: React.FunctionComponent<Props> = ({ items }) => {
       </div>
       <Burger onClick={() => setOpen(!open)} />
       <Drawer open={open} onClose={() => setOpen(false)}>
-        <Box
-          sx={{ width: theme.mobileMenuDrawerWidth }}
-        >
+        <Box sx={{ width: theme.mobileMenuDrawerWidth }}>
           <IconButton
             sx={{
               left: theme.primaryPadding - 8,
@@ -56,9 +70,7 @@ export const MobileMenu: React.FunctionComponent<Props> = ({ items }) => {
                     setOpen(false);
                   }}
                 >
-                  <ListItemIcon>
-                    {item.icon}
-                  </ListItemIcon>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText
                     primary={item.label.toUpperCase()}
                     primaryTypographyProps={{

@@ -12,7 +12,8 @@ export const DesktopMenu: React.FunctionComponent<Props> = ({ items }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isActive = (menuLocation: string): boolean => location.pathname.includes(menuLocation);
+  const isActive = (menuLocation: string): boolean =>
+    location.pathname.includes(menuLocation);
 
   return (
     <Grid

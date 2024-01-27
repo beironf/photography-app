@@ -27,13 +27,13 @@ export const GalleryFilters: React.FunctionComponent<props> = ({
   setGroup,
   setRating,
 }) => {
-  const listPhotoGroups = useCallback(
-    () => PhotoApi.listPhotoGroups(),
-    [],
-  );
+  const listPhotoGroups = useCallback(() => PhotoApi.listPhotoGroups(), []);
 
   return (
-    <DataFetcher apiMethod={listPhotoGroups} errorText="Groups could not be found">
+    <DataFetcher
+      apiMethod={listPhotoGroups}
+      errorText="Groups could not be found"
+    >
       {(groups) => (
         <Grid
           container
@@ -54,10 +54,10 @@ export const GalleryFilters: React.FunctionComponent<props> = ({
             <SelectField
               id="category-filter"
               label="Category"
-              options={
-                Object.values(PhotoCategory)
-                  .map((c) => ({ value: c, label: c }))
-              }
+              options={Object.values(PhotoCategory).map((c) => ({
+                value: c,
+                label: c,
+              }))}
               value={category}
               onChange={(s) => setCategory(toCategory(s as string))}
             />

@@ -18,7 +18,14 @@ type Props = {
 };
 
 export const SelectField: React.FunctionComponent<Props> = ({
-  id, label, options, onChange, value, helperText, required, disabled,
+  id,
+  label,
+  options,
+  onChange,
+  value,
+  helperText,
+  required,
+  disabled,
 }) => (
   <TextField
     id={id}
@@ -28,7 +35,7 @@ export const SelectField: React.FunctionComponent<Props> = ({
     required={required}
     onChange={(e) => onChange(e.target.value)}
     disabled={disabled}
-    helperText={(value === undefined || value === '') ? helperText : undefined}
+    helperText={value === undefined || value === '' ? helperText : undefined}
     select
     InputLabelProps={{ shrink: true }}
     size="small"

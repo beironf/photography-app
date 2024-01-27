@@ -4,9 +4,7 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { PhotoApi } from 'api/PhotoApi';
 import { NonIdealState } from 'components/NonIdealState';
 import { usePromise } from 'hooks';
-import React, {
-  useCallback, useEffect,
-} from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { theme } from 'style/theme';
 import { PhotoGalleryWithViewer } from 'components/Photo/PhotoGalleryWithViewer';
 
@@ -16,7 +14,9 @@ export const Showroom: React.FunctionComponent = () => {
     [],
   );
   const {
-    trigger: reloadPhotos, data: photosWithRatio, error: listPhotosError,
+    trigger: reloadPhotos,
+    data: photosWithRatio,
+    error: listPhotosError,
     loading: listPhotosLoading,
   } = usePromise(listPhotos);
 
@@ -27,8 +27,12 @@ export const Showroom: React.FunctionComponent = () => {
 
   return (
     <>
-      {listPhotosLoading
-        && <NonIdealState description="Loading photo metadata" icon={<CircularProgress />} />}
+      {listPhotosLoading && (
+        <NonIdealState
+          description="Loading photo metadata"
+          icon={<CircularProgress />}
+        />
+      )}
       {listPhotosError && (
         <NonIdealState
           description="Failed to fetch photos"
@@ -49,7 +53,6 @@ export const Showroom: React.FunctionComponent = () => {
           bottomMargin={theme.primaryPadding}
           targetRowHeight={theme.showroomTargetRowHeight}
           columns={theme.showroomColumns}
-
         />
       )}
     </>

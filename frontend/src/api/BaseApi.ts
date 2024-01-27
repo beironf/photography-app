@@ -9,7 +9,8 @@ const queryStringConfig: qs.IStringifyOptions = {
   },
 };
 
-const paramsSerializer = (queryParams: any): string => qs.stringify(queryParams, queryStringConfig);
+const paramsSerializer = (queryParams: any): string =>
+  qs.stringify(queryParams, queryStringConfig);
 
 export class BaseApi {
   private apiUrl: string;
@@ -29,7 +30,12 @@ export class BaseApi {
     });
   }
 
-  public post(path: string, data?: any, params?: any, headers?: any): Promise<AxiosResponse> {
+  public post(
+    path: string,
+    data?: any,
+    params?: any,
+    headers?: any,
+  ): Promise<AxiosResponse> {
     return axios.post(this.urlFor(path), data, {
       params,
       paramsSerializer,
@@ -37,7 +43,12 @@ export class BaseApi {
     });
   }
 
-  public delete(path: string, params?: any, data?: any, headers?: any): Promise<AxiosResponse> {
+  public delete(
+    path: string,
+    params?: any,
+    data?: any,
+    headers?: any,
+  ): Promise<AxiosResponse> {
     return axios.delete(this.urlFor(path), {
       params,
       paramsSerializer,
@@ -74,7 +85,11 @@ export class BaseApi {
       .then((response: any) => BaseApi.mapResponse<T>(response, isEnveloped));
   }
 
-  public patchData<T>(path: string, data?: any, isEnveloped = true): Promise<T> {
+  public patchData<T>(
+    path: string,
+    data?: any,
+    isEnveloped = true,
+  ): Promise<T> {
     return axios
       .patch(this.urlFor(path), data)
       .then((response: any) => BaseApi.mapResponse<T>(response, isEnveloped));

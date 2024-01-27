@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Photo } from 'model/photo';
-import {
-  Drawer, Grid, IconButton, Typography,
-} from '@mui/material';
+import { Drawer, Grid, IconButton, Typography } from '@mui/material';
 import PlaceIcon from '@mui/icons-material/Place';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
@@ -90,16 +88,29 @@ export const PhotoInfoDrawer: React.FunctionComponent<props> = ({
         <Grid
           item
           xs={6}
-          style={{ borderRight: dividerBorder, padding: `${theme.secondaryPadding}px` }}
+          style={{
+            borderRight: dividerBorder,
+            padding: `${theme.secondaryPadding}px`,
+          }}
         >
           <TextWithIcon
-            icon={<CategoryIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
+            icon={
+              <CategoryIcon
+                htmlColor={theme.photoViewerIconColor}
+                fontSize="small"
+              />
+            }
             texts={[photo.metadata.category]}
             textColor={theme.photoViewerTextColor}
             align="right"
           />
           <TextWithIcon
-            icon={<CollectionsIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
+            icon={
+              <CollectionsIcon
+                htmlColor={theme.photoViewerIconColor}
+                fontSize="small"
+              />
+            }
             texts={[photo.group ?? 'Not in a collection']}
             textColor={theme.photoViewerTextColor}
             marginBottom={theme.secondaryPadding}
@@ -108,19 +119,33 @@ export const PhotoInfoDrawer: React.FunctionComponent<props> = ({
           />
 
           <TextWithIcon
-            icon={<PhotoFilterIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
-            texts={(photo.metadata.cameraTechniques ?? []).length > 0
-              ? [photo.metadata.cameraTechniques.join(', ')]
-              : ['No special techniques used']}
+            icon={
+              <PhotoFilterIcon
+                htmlColor={theme.photoViewerIconColor}
+                fontSize="small"
+              />
+            }
+            texts={
+              (photo.metadata.cameraTechniques ?? []).length > 0
+                ? [photo.metadata.cameraTechniques.join(', ')]
+                : ['No special techniques used']
+            }
             textColor={theme.photoViewerTextColor}
             align="right"
             noValue={(photo.metadata.cameraTechniques ?? []).length === 0}
           />
           <TextWithIcon
-            icon={<SellIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
-            texts={(photo.metadata.tags ?? []).length > 0
-              ? [photo.metadata.tags.join(', ')]
-              : ['No tags']}
+            icon={
+              <SellIcon
+                htmlColor={theme.photoViewerIconColor}
+                fontSize="small"
+              />
+            }
+            texts={
+              (photo.metadata.tags ?? []).length > 0
+                ? [photo.metadata.tags.join(', ')]
+                : ['No tags']
+            }
             textColor={theme.photoViewerTextColor}
             align="right"
             noValue={(photo.metadata.tags ?? []).length === 0}
@@ -129,32 +154,60 @@ export const PhotoInfoDrawer: React.FunctionComponent<props> = ({
         <Grid
           item
           xs={6}
-          style={{ borderLeft: dividerBorder, padding: `${theme.secondaryPadding}px` }}
+          style={{
+            borderLeft: dividerBorder,
+            padding: `${theme.secondaryPadding}px`,
+          }}
         >
           <TextWithIcon
-            icon={<PlaceIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
+            icon={
+              <PlaceIcon
+                htmlColor={theme.photoViewerIconColor}
+                fontSize="small"
+              />
+            }
             texts={[`${photo.location.name}, ${photo.location.country}`]}
             textColor={theme.photoViewerTextColor}
           />
           <TextWithIcon
-            icon={<ScheduleIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
+            icon={
+              <ScheduleIcon
+                htmlColor={theme.photoViewerIconColor}
+                fontSize="small"
+              />
+            }
             texts={[formatDate(photo.taken)]}
             textColor={theme.photoViewerTextColor}
             marginBottom={theme.secondaryPadding}
           />
 
           <TextWithIcon
-            icon={<PhotoCameraIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
+            icon={
+              <PhotoCameraIcon
+                htmlColor={theme.photoViewerIconColor}
+                fontSize="small"
+              />
+            }
             texts={[photo.gear.camera]}
             textColor={theme.photoViewerTextColor}
           />
           <TextWithIcon
-            icon={<CameraIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
+            icon={
+              <CameraIcon
+                htmlColor={theme.photoViewerIconColor}
+                fontSize="small"
+              />
+            }
             texts={[photo.gear.lens]}
             textColor={theme.photoViewerTextColor}
           />
           <TextWithIcon
-            icon={<TuneIcon htmlColor={theme.photoViewerIconColor} fontSize="small" />}
+            icon={
+              <TuneIcon
+                htmlColor={theme.photoViewerIconColor}
+                fontSize="small"
+              />
+            }
             texts={[
               photo.cameraSettings.focalLength,
               photo.cameraSettings.aperture,
