@@ -1,0 +1,1 @@
+web: backend/target/universal/stage/bin/api -Dconfig.resource=production.conf
