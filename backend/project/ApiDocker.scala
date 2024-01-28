@@ -10,7 +10,7 @@ object ApiDocker {
     dockerBaseImage := "openjdk:11-jdk",
     dockerExposedPorts += 3001,
     dockerEnvVars := Map("PHOTO_APP_DIR" -> "."),
-    dockerRepository := Some("europe-west1-docker.pkg.dev/beiron-photography-app/docker-artifacts"),
+    dockerRepository := Some("beironf/photography-app"),
     dockerUpdateLatest := isMainBuild,
     Docker / defaultLinuxInstallLocation := s"/opt/${name.value}"
   )
