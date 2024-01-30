@@ -3,7 +3,7 @@ import BuildSettings._
 
 ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / organization := "com.beironf"
-ThisBuild / version := s"$gitHash"
+ThisBuild / version := "1.0.0"//s"$gitHash"
 
 ThisBuild / scalacOptions ++= Seq(
   "-Xsource:3",
