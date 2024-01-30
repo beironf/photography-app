@@ -11,7 +11,7 @@ object ApiDocker {
     dockerExposedPorts += 3001,
     dockerEnvVars := Map("PHOTO_APP_DIR" -> "."),
     dockerRepository := Some("beironf/photography-app"),
-    dockerUpdateLatest := isMainBuild,
+    dockerUpdateLatest := true, // isMainBuild,
     Docker / defaultLinuxInstallLocation := s"/opt/${name.value}"
   )
 }
