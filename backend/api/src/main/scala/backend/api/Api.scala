@@ -4,7 +4,7 @@ import backend.common.api.ApiApp
 import backend.core.sqlstorage.DatabaseConnector
 import backend.exif.adapters.ImageExifRepositoryImpl
 import backend.exif.interactors.ImageExifService
-import backend.image.adapters.{ImageRepositoryFirebase, ImageRepositoryImpl}
+import backend.image.adapters.{ImageRepositoryFirebase, ImageRepositoryLocal}
 import backend.image.interactors.ImageService
 import backend.photo.adapters.PhotoRepositoryImpl
 import backend.photo.interactors.PhotoService
@@ -20,7 +20,7 @@ object Api extends App with ApiApp {
     ImageRepositoryFirebase()
   } else {
     logger.info("Using local storage repository")
-    val localImageRepository = ImageRepositoryImpl()
+    val localImageRepository = ImageRepositoryLocal()
     localImageRepository.necessaryPathsExist()
     localImageRepository
   }

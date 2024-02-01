@@ -10,18 +10,17 @@ import java.io.IOException
 import java.nio.file.{Files, Path, Paths}
 import scala.concurrent.{ExecutionContext, Future}
 
-object ImageRepositoryImpl extends DefaultService {
+object ImageRepositoryLocal extends DefaultService {
   private val ImagesPath: Path = Paths.get(config.getString("file-storage.images.dir"))
   private val ThumbnailsPath: Path = Paths.get(config.getString("file-storage.thumbnails.dir"))
   private val SiteImagesPath: Path = Paths.get(config.getString("file-storage.site-images.dir"))
 
-  def apply()(implicit executionContext: ExecutionContext): ImageRepositoryImpl =
-    new ImageRepositoryImpl
+  def apply()(implicit executionContext: ExecutionContext): ImageRepositoryLocal = new ImageRepositoryLocal()
 }
 
-class ImageRepositoryImpl()
-                         (implicit executionContext: ExecutionContext) extends ImageRepository with ImageIO {
-  import backend.image.adapters.ImageRepositoryImpl.*
+class ImageRepositoryLocal()
+                          (implicit executionContext: ExecutionContext) extends ImageRepository with ImageIO {
+  import backend.image.adapters.ImageRepositoryLocal.*
 
   def listImageIds: Future[Seq[String]] = Future(
     ImagesPath.toFile.listFiles
