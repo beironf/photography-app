@@ -10,7 +10,7 @@ const DEVELOPMENT_CONFIG: EnvironmentConfig = {
 
 const PRODUCTION_CONFIG: EnvironmentConfig = {
   environment: 'production',
-  api: 'http://api.photography.beiron.se',
+  api: 'https://api.photography.beiron.se',
 };
 
 const host = window.location.hostname;
