@@ -66,7 +66,10 @@ class ImageRepositoryFirebase()
 
   private def listBlobNames(directory: String): Future[Seq[String]] = Future {
     storage.list(BucketName, BlobListOption.currentDirectory, BlobListOption.prefix(s"$directory/"))
-      .iterateAll().asScala.map(_.getName.split("/").last).toSeq
+      .iterateAll().asScala
+      .map(_.getName.split("/").last)
+      .filter(_.endsWith(".jpg"))
+      .toSeq
   }
 
   private def getFileStream(fileId: FileId): Future[Option[ImageStream]] = Future {
