@@ -10,17 +10,33 @@ import backend.common.model.CommonExceptions.BadRequestException
 import backend.image.entities.ImageIO
 import backend.image.interactors.ImageService
 import backend.exif.interactors.ImageExifService
+import backend.exif.ports.ImageExifRepository
+import backend.image.ports.ImageRepository
 import backend.photo.interactors.PhotoService
+import backend.photo.ports.PhotoRepository
 import sttp.capabilities.akka.AkkaStreams
 
 import java.io.File
 import java.time.Instant
 import scala.concurrent.{ExecutionContext, Future}
 
+object ApiService {
+  def apply(photoRepository: PhotoRepository,
+            imageRepository: ImageRepository,
+            exifRepository: ImageExifRepository)
+           (implicit executionContext: ExecutionContext): ApiService = {
+    val validator = new Validator(photoRepository, imageRepository)
+    val photoService = new PhotoService(photoRepository)
+    val imageService = new ImageService(imageRepository)
+    val exifService = new ImageExifService(exifRepository)
+    new ApiService(photoService, imageService, exifService, validator)
+  }
+}
+
 class ApiService(photoService: PhotoService,
                  imageService: ImageService,
                  exifService: ImageExifService,
-                 validator: ApiServiceValidator)
+                 validator: Validator)
                 (implicit executionContext: ExecutionContext) extends ApiServiceSupport
   with ImageIO
   with ImplicitDtoConversion {

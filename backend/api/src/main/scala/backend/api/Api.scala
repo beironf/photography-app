@@ -3,14 +3,10 @@ package backend.api
 import backend.common.api.ApiApp
 import backend.core.sqlstorage.DatabaseConnector
 import backend.exif.adapters.ImageExifRepositoryImpl
-import backend.exif.interactors.ImageExifService
 import backend.image.adapters.{ImageRepositoryFirebase, ImageRepositoryLocal}
-import backend.image.interactors.ImageService
 import backend.photo.adapters.PhotoRepositoryImpl
-import backend.photo.interactors.PhotoService
 
 object Api extends App with ApiApp {
-
   private val isProduction = config.getString("environment.name") == "production"
 
   private val photoRepository = PhotoRepositoryImpl()
@@ -25,12 +21,7 @@ object Api extends App with ApiApp {
     localImageRepository
   }
 
-  private val photoService = new PhotoService(photoRepository)
-  private val imageService = new ImageService(imageRepository)
-  private val exifService = new ImageExifService(exifRepository)
-  private val apiServiceValidator = new ApiServiceValidator(photoRepository, imageRepository)
-
-  private val apiService = new ApiService(photoService, imageService, exifService, apiServiceValidator)
+  private val apiService = ApiService(photoRepository, imageRepository, exifRepository)
 
   private val apiRoutes = new ApiRoutes(apiService)
 

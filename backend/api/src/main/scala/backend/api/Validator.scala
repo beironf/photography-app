@@ -9,9 +9,9 @@ import sttp.tapir.TapirFile
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ApiServiceValidator(photoRepository: PhotoRepository,
-                          imageRepository: ImageRepository)
-                         (implicit executionContext: ExecutionContext) {
+class Validator(photoRepository: PhotoRepository,
+                imageRepository: ImageRepository)
+               (implicit executionContext: ExecutionContext) {
 
   def photoExists(imageId: String): Future[Either[HttpError, Photo]] =
     photoRepository.getPhoto(imageId).map {
