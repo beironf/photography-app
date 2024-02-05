@@ -1,11 +1,11 @@
 package backend.common.api.utils
 
-import backend.common.api.model.ApiHttpErrors._
-import backend.common.api.model.ApiHttpErrors.JsonProtocol._
+import backend.common.api.model.ApiHttpErrors.*
+import backend.common.api.model.ApiHttpErrors.JsonProtocol.*
 import sttp.model.StatusCode
-import sttp.tapir._
-import sttp.tapir.generic.auto._
-import sttp.tapir.json.spray._
+import sttp.tapir.*
+import sttp.tapir.generic.auto.*
+import sttp.tapir.json.spray.*
 
 object ApiHttpErrorsHandler {
   val commonErrorsOut: EndpointOutput.OneOf[HttpError, HttpError] = {

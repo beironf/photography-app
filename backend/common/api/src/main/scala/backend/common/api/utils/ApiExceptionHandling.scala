@@ -1,7 +1,6 @@
 package backend.common.api.utils
 
-import backend.common.api.model.ApiHttpErrors._
-import backend.common.model.CommonExceptions._
+import backend.common.api.model.ApiHttpErrors.*
 
 trait ApiExceptionHandling extends ApiHttpResponseLogger {
 
@@ -13,17 +12,10 @@ trait ApiExceptionHandling extends ApiHttpResponseLogger {
         logCustomException(exception)
         customExceptionConverter(exception)
       } else {
-        logCommonException(exception)
-        commonExceptionConverter(exception)
+        logUnhandledException(exception)
+        InternalServerError()
       }
     }
-  }
-
-  private def commonExceptionConverter(exception: Exception): HttpError = exception match {
-    case e: NotFoundException => NotFound(e.msg)
-    case e: BadRequestException => BadRequest(e.msg)
-    case e: ForbiddenException => Forbidden(e.msg)
-    case _ => InternalServerError()
   }
 
 }

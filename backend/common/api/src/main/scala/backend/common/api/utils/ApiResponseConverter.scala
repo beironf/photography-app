@@ -1,7 +1,7 @@
 package backend.common.api.utils
 
-import backend.common.api.model.ApiHttpErrors._
-import backend.common.api.model.ApiHttpResponse._
+import backend.common.api.model.ApiHttpErrors.*
+import backend.common.api.model.ApiHttpResponse.*
 import backend.common.api.model.Enveloped
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -31,18 +31,6 @@ trait ApiResponseConverter extends ApiExceptionHandling {
       }.recover {
         case e: Exception => Left(e.toHttpError(customExceptionConverter))
       }
-  }
-
-  implicit class FromFuture[R](response: Future[R]) {
-    def toHttpResponse(implicit executionContext: ExecutionContext): Future[HttpResponse[R]] =
-      response
-        .map(Right(_))
-        .toHttpResponse()
-
-    def toEnvelopedHttpResponse(implicit executionContext: ExecutionContext): Future[EnvelopedHttpResponse[R]] =
-      response
-        .map(Right(_))
-        .toEnvelopedHttpResponse()
   }
 
 }

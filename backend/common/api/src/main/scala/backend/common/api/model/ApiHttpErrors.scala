@@ -1,6 +1,6 @@
 package backend.common.api.model
 
-import spray.json.DefaultJsonProtocol._
+import spray.json.DefaultJsonProtocol.*
 import spray.json.RootJsonFormat
 
 object ApiHttpErrors {

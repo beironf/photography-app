@@ -55,8 +55,6 @@ lazy val coreSqlStorage = createProject("core-sql-storage", inFile = Some("core/
 
 lazy val common = createProject("common")()
 
-lazy val commonModel = createProject("common-model", inFile = Some("common/model"))()
-
 lazy val commonJson = createProject("common-json", inFile = Some("common/json"))(Seq(
   tapirJsonSpray
 ))
@@ -69,76 +67,34 @@ lazy val commonApi = createProject("common-api", inFile = Some("common/api"))(Se
   tapirEnumeratum,
   akkaHttpCors,
   jbcrypt
-)).dependsOn(commonModel)
-  .dependsOn(commonJson)
+)).dependsOn(commonJson)
   .dependsOn(core)
   .dependsOn(coreSqlStorage)
 
 
-// ---- Photo
+// ---- Photography
 
-lazy val photo = createProject("photo")()
+lazy val photography = createProject("photography")()
 
-lazy val photoEntities = createProject("photo-entities", inFile = Some("photo/entities"))()
+lazy val entities = createProject("photography-entities", inFile = Some("photography/entities"))(Seq(akkaStream))
 
-lazy val photoPorts = createProject("photo-ports", inFile = Some("photo/ports"))()
-  .dependsOn(photoEntities)
+lazy val ports = createProject("photography-ports", inFile = Some("photography/ports"))()
+  .dependsOn(entities)
 
-lazy val photoAdapters = createProject("photo-adapters", inFile = Some("photo/adapters"))()
-  .dependsOn(photoPorts)
+lazy val adapters = createProject("photography-adapters", inFile = Some("photography/adapters"))(Seq(
+  googleCloudStorage
+)).dependsOn(ports)
   .dependsOn(commonJson)
   .dependsOn(coreSqlStorage)
 
-lazy val photoInteractors = createProject("photo-interactors", inFile = Some("photo/interactors"))()
-  .dependsOn(photoPorts)
+lazy val interactors = createProject("photography-interactors", inFile = Some("photography/interactors"))()
+  .dependsOn(ports)
+  .dependsOn(core)
 
-
-// ---- Exif (Image metadata)
-
-lazy val exif = createProject("exif")()
-
-lazy val exifEntities = createProject("exif-entities", inFile = Some("exif/entities"))()
-
-lazy val exifPorts = createProject("exif-ports", inFile = Some("exif/ports"))()
-  .dependsOn(exifEntities)
-
-lazy val exifAdapters = createProject("exif-adapters", inFile = Some("exif/adapters"))()
-  .dependsOn(exifPorts)
-  .dependsOn(coreSqlStorage)
-
-lazy val exifInteractors = createProject("exif-interactors", inFile = Some("exif/interactors"))()
-  .dependsOn(exifPorts)
-
-
-// ---- Image
-
-lazy val image = createProject("image")()
-
-lazy val imageEntities = createProject("image-entities", inFile = Some("image/entities"))(Seq(
-  akkaStream
-))
-
-lazy val imagePorts = createProject("image-ports", inFile = Some("image/ports"))()
-  .dependsOn(imageEntities)
-
-lazy val imageAdapters = createProject("image-adapters", inFile = Some("image/adapters"))(Seq(
-  googleCloudStorage
-)).dependsOn(imagePorts)
-  .dependsOn(coreSqlStorage)
-
-lazy val imageInteractors = createProject("image-interactors", inFile = Some("image/interactors"))()
-  .dependsOn(imagePorts)
-
-// ---- API
-
-lazy val api = createProject("api", inFile = Some("api"))(Seq(scrimage))
-  .settings(Compile / mainClass := Some("backend.api.Api"))
+lazy val api = createProject("photography-api", inFile = Some("photography/api"))(Seq(scrimage))
+  .settings(Compile / mainClass := Some("backend.photography.api.Api"))
   .settings(ApiDocker.dockerSettings: _*)
   .enablePlugins(JavaAppPackaging, DockerPlugin)
   .dependsOn(commonApi)
-  .dependsOn(photoInteractors)
-  .dependsOn(photoAdapters)
-  .dependsOn(imageInteractors)
-  .dependsOn(imageAdapters)
-  .dependsOn(exifInteractors)
-  .dependsOn(exifAdapters)
+  .dependsOn(interactors)
+  .dependsOn(adapters)
