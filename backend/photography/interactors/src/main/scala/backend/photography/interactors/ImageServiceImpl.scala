@@ -1,32 +1,32 @@
 package backend.photography.interactors
 
 import backend.core.utils.EitherTExtensions
-import backend.photography.entities.image.ImageIO
 import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
-import backend.photography.interactors.ImageService.{MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE}
+import backend.photography.interactors.ImageServiceImpl.{MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE}
 import backend.photography.interactors.utils.{ExifUtil, ImageResizer}
 import backend.photography.interactors.validation.Validator
+import backend.photography.ports.interactors.ImageService
 import backend.photography.ports.repositories.{ImageExifRepository, ImageRepository}
 
 import java.io.File
 import scala.concurrent.{ExecutionContext, Future}
 
-object ImageService {
+object ImageServiceImpl {
   def apply(validator: Validator,
             imageRepository: ImageRepository,
             exifRepository: ImageExifRepository)
-           (implicit executionContext: ExecutionContext): ImageService =
-    new ImageService(validator, imageRepository, exifRepository)
+           (implicit executionContext: ExecutionContext): ImageServiceImpl =
+    new ImageServiceImpl(validator, imageRepository, exifRepository)
 
   private val MAX_IMAGE_SIZE = 4000
   private val MAX_THUMBNAIL_SIZE = 1200
 }
 
-class ImageService(validator: Validator,
-                   imageRepository: ImageRepository,
-                   exifRepository: ImageExifRepository)
-                  (implicit executionContext: ExecutionContext) extends EitherTExtensions with ImageIO {
+class ImageServiceImpl(validator: Validator,
+                       imageRepository: ImageRepository,
+                       exifRepository: ImageExifRepository)
+                      (implicit executionContext: ExecutionContext) extends ImageService with EitherTExtensions {
 
   def listImageIds: Future[PhotographyResponse[Seq[String]]] =
     imageRepository.listImageIds.toEitherT[PhotographyException].value
