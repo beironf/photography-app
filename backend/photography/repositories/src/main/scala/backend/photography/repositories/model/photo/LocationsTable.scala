@@ -1,4 +1,4 @@
-package backend.photography.adapters.model.photo
+package backend.photography.repositories.model.photo
 
 import backend.core.sqlstorage.postgres.PostgresTableHelper
 

@@ -1,9 +1,9 @@
-package backend.photography.adapters
+package backend.photography.repositories
 
 import backend.core.sqlstorage.DatabaseConnector
 import backend.core.sqlstorage.postgres.{DatabaseConnectorPostgres, PostgresMaterializerDBIO}
 import backend.core.utils.OptionTExtensions
-import backend.photography.adapters.model.photo.*
+import backend.photography.repositories.model.photo.*
 import backend.photography.entities.photo.{Photo, UpdatePhoto}
 import backend.photography.entities.photo.meta.Category.Category
 import backend.photography.entities.photo.meta.{Judgement, Location}

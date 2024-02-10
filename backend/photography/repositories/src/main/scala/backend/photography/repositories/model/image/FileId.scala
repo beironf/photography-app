@@ -1,4 +1,4 @@
-package backend.photography.adapters.model.image
+package backend.photography.repositories.model.image
 
 case class FileId(bucket: String,
                   path: String) {

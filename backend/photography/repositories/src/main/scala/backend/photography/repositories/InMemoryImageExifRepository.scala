@@ -1,4 +1,4 @@
-package backend.photography.adapters
+package backend.photography.repositories
 
 import backend.photography.entities.exif.*
 import backend.photography.ports.repositories.ImageExifRepository

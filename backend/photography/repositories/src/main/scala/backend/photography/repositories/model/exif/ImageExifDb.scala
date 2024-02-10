@@ -1,4 +1,4 @@
-package backend.photography.adapters.model.exif
+package backend.photography.repositories.model.exif
 
 import backend.photography.entities.exif.ImageExif
 

@@ -1,8 +1,8 @@
-package backend.photography.adapters
+package backend.photography.repositories
 
 import akka.stream.scaladsl.StreamConverters
 import backend.core.application.DefaultService
-import backend.photography.adapters.model.image.FileId
+import backend.photography.repositories.model.image.FileId
 import backend.photography.ports.repositories.ImageRepository
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.WriteChannel

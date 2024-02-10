@@ -1,4 +1,4 @@
-package backend.photography.adapters.model.photo
+package backend.photography.repositories.model.photo
 
 import backend.common.json.JsonSupport
 import backend.photography.entities.photo.meta.CameraTechnique.CameraTechnique

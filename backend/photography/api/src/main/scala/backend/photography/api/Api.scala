@@ -2,7 +2,7 @@ package backend.photography.api
 
 import backend.common.api.ApiApp
 import backend.core.sqlstorage.DatabaseConnector
-import backend.photography.adapters.{ImageExifRepositoryImpl, ImageRepositoryFirebase, ImageRepositoryLocal, PhotoRepositoryImpl}
+import backend.photography.repositories.*
 
 object Api extends App with ApiApp {
   private val isProduction = config.getString("environment.name") == "production"

@@ -1,4 +1,4 @@
-package backend.photography.adapters.model.photo
+package backend.photography.repositories.model.photo
 
 import backend.photography.entities.photo.Photo
 import backend.photography.entities.photo.gear.{Camera, Gear, Lens}

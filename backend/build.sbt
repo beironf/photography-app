@@ -81,9 +81,8 @@ lazy val entities = createProject("photography-entities", inFile = Some("photogr
 lazy val ports = createProject("photography-ports", inFile = Some("photography/ports"))()
   .dependsOn(entities)
 
-lazy val adapters = createProject("photography-adapters", inFile = Some("photography/adapters"))(Seq(
-  googleCloudStorage
-)).dependsOn(ports)
+lazy val repositories = createProject("photography-repositories", inFile = Some("photography/repositories"))(Seq(googleCloudStorage))
+  .dependsOn(ports)
   .dependsOn(commonJson)
   .dependsOn(coreSqlStorage)
 
@@ -97,4 +96,4 @@ lazy val api = createProject("photography-api", inFile = Some("photography/api")
   .enablePlugins(JavaAppPackaging, DockerPlugin)
   .dependsOn(commonApi)
   .dependsOn(interactors)
-  .dependsOn(adapters)
+  .dependsOn(repositories)

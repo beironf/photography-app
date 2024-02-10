@@ -1,4 +1,4 @@
-package backend.photography.adapters
+package backend.photography.repositories
 
 import akka.stream.scaladsl.FileIO
 import backend.core.application.DefaultService

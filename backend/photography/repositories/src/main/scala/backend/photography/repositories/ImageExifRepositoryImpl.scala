@@ -1,8 +1,8 @@
-package backend.photography.adapters
+package backend.photography.repositories
 
 import backend.core.sqlstorage.DatabaseConnector
 import backend.core.sqlstorage.postgres.{DatabaseConnectorPostgres, PostgresMaterializerDBIO}
-import backend.photography.adapters.model.exif.{ImagesExifTable, ImplicitImageExifConverter}
+import backend.photography.repositories.model.exif.{ImagesExifTable, ImplicitImageExifConverter}
 import backend.photography.entities.exif.ImageExif
 import backend.photography.ports.repositories.ImageExifRepository
 

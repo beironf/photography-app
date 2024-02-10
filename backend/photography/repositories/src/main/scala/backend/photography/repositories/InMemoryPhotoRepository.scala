@@ -1,4 +1,4 @@
-package backend.photography.adapters
+package backend.photography.repositories
 
 import backend.photography.entities.photo.meta.Category.Category
 import backend.photography.entities.photo.{Photo, UpdatePhoto}
