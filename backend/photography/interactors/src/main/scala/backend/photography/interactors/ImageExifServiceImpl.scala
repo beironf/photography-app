@@ -5,20 +5,21 @@ import backend.photography.entities.exif.ImageExif
 import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
 import backend.photography.interactors.validation.Validator
+import backend.photography.ports.interactors.ImageExifService
 import backend.photography.ports.repositories.ImageExifRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-object ImageExifService {
+object ImageExifServiceImpl {
   def apply(validator: Validator,
             repository: ImageExifRepository)
            (implicit executionContext: ExecutionContext): ImageExifService =
-    new ImageExifService(validator, repository)
+    new ImageExifServiceImpl(validator, repository)
 }
 
-class ImageExifService(validator: Validator,
-                       repository: ImageExifRepository)
-                      (implicit executionContext: ExecutionContext) extends EitherTExtensions {
+class ImageExifServiceImpl(validator: Validator,
+                           repository: ImageExifRepository)
+                          (implicit executionContext: ExecutionContext) extends ImageExifService with EitherTExtensions {
 
   def getExif(imageId: String): Future[PhotographyResponse[ImageExif]] = (for {
     exif <- validator.exifExists(imageId).toEitherT

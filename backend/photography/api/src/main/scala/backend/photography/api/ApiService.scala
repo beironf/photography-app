@@ -23,7 +23,7 @@ object ApiService {
     val validator = new Validator(photoRepository, imageRepository, exifRepository)
     val photoService = PhotoServiceImpl(validator, photoRepository)
     val imageService = ImageServiceImpl(validator, imageRepository, exifRepository)
-    val exifService = ImageExifService(validator, exifRepository)
+    val exifService = ImageExifServiceImpl(validator, exifRepository)
     new ApiService(photoService, imageService, exifService)
   }
 }
