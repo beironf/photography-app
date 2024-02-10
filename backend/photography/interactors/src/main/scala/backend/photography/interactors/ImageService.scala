@@ -5,6 +5,8 @@ import backend.photography.entities.image.ImageIO
 import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
 import backend.photography.interactors.ImageService.{MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE}
+import backend.photography.interactors.utils.{ExifUtil, ImageResizer}
+import backend.photography.interactors.validation.Validator
 import backend.photography.ports.{ImageExifRepository, ImageRepository}
 
 import java.io.File

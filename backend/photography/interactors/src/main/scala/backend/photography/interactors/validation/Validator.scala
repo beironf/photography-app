@@ -1,4 +1,4 @@
-package backend.photography.interactors
+package backend.photography.interactors.validation
 
 import backend.photography.entities.exif.ImageExif
 import backend.photography.entities.photo.Photo

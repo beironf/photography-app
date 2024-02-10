@@ -4,6 +4,7 @@ import backend.core.utils.EitherTExtensions
 import backend.photography.entities.exif.ImageExif
 import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
+import backend.photography.interactors.validation.Validator
 import backend.photography.ports.ImageExifRepository
 
 import scala.concurrent.{ExecutionContext, Future}

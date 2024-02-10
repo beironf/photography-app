@@ -1,4 +1,4 @@
-package backend.photography.interactors
+package backend.photography.interactors.utils
 
 import backend.core.application.DefaultService
 import com.sksamuel.scrimage.ImmutableImage
