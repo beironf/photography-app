@@ -14,11 +14,15 @@ trait ImageRepository extends ImageIO {
 
   def removeImage(imageId: String): Future[Unit]
 
+  def listThumbnailIds: Future[Seq[String]]
+
   def getThumbnailStream(imageId: String): Future[Option[ImageStream]]
 
   def uploadThumbnail(fileName: String, bytes: Array[Byte]): Future[Unit]
 
   def removeThumbnail(imageId: String): Future[Unit]
+
+  def listSiteImageFileNames: Future[Seq[String]]
 
   def getSiteImageStream(fileName: String): Future[Option[ImageStream]]
 

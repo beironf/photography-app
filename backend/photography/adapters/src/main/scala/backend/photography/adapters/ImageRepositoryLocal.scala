@@ -40,6 +40,14 @@ class ImageRepositoryLocal()
     deleteFile(fullPath(imageId, ImageType.FullSize))
       .map(_ => (): Unit)
 
+  def listThumbnailIds: Future[Seq[String]] = Future(
+    ThumbnailsPath.toFile.listFiles
+      .filter(f => f.isFile)
+      .map(_.getName)
+      .filter(_.endsWith(".jpg"))
+      .toSeq
+  )
+
   def getThumbnailStream(imageId: String): Future[Option[ImageStream]] =
     getFileStream(fullPath(imageId, ImageType.Thumbnail))
 
@@ -49,6 +57,14 @@ class ImageRepositoryLocal()
   def removeThumbnail(imageId: String): Future[Unit] =
     deleteFile(fullPath(imageId, ImageType.Thumbnail))
       .map(_ => (): Unit)
+
+  def listSiteImageFileNames: Future[Seq[String]] = Future(
+    SiteImagesPath.toFile.listFiles
+      .filter(f => f.isFile)
+      .map(_.getName)
+      .filter(name => name.endsWith(".jpg") || name.endsWith(".png"))
+      .toSeq
+  )
 
   def getSiteImageStream(fileName: String): Future[Option[ImageStream]] =
     getFileStream(fullPath(fileName, ImageType.Site))

@@ -1,12 +1,11 @@
-package backend.photography.api
+package backend.photography.interactors
 
 import backend.photography.entities.exif.ImageExif
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.metadata.ImageMetadata
 
 import java.io.File
-import java.time.Instant
-import java.time.ZoneId
+import java.time.{Instant, ZoneId}
 import java.time.format.DateTimeFormatter
 
 object ExifUtil {

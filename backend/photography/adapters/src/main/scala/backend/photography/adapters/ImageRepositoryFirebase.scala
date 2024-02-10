@@ -41,7 +41,7 @@ class ImageRepositoryFirebase()
     .getService
 
   def listImageIds: Future[Seq[String]] =
-    listBlobNames(ImageDirectory)
+    listBlobNames(ImageDirectory, Set(".jpg"))
 
   def getImageStream(imageId: String): Future[Option[ImageStream]] =
     getFileStream(toFileId(imageId, ImageDirectory))
@@ -52,6 +52,9 @@ class ImageRepositoryFirebase()
   def removeImage(imageId: String): Future[Unit] =
     deleteFile(toFileId(imageId, ImageDirectory))
 
+  def listThumbnailIds: Future[Seq[String]] =
+    listBlobNames(ThumbnailDirectory, Set(".jpg"))
+
   def getThumbnailStream(imageId: String): Future[Option[ImageStream]] =
     getFileStream(toFileId(imageId, ThumbnailDirectory))
 
@@ -61,14 +64,18 @@ class ImageRepositoryFirebase()
   def removeThumbnail(imageId: String): Future[Unit] =
     deleteFile(toFileId(imageId, ThumbnailDirectory))
 
+  def listSiteImageFileNames: Future[Seq[String]] =
+    listBlobNames(SiteImageDirectory, Set(".jpg", ".png"))
+
   def getSiteImageStream(fileName: String): Future[Option[ImageStream]] =
     getFileStream(toFileId(fileName, SiteImageDirectory))
 
-  private def listBlobNames(directory: String): Future[Seq[String]] = Future {
+  private def listBlobNames(directory: String,
+                            fileEndings: Set[String]): Future[Seq[String]] = Future {
     storage.list(BucketName, BlobListOption.currentDirectory, BlobListOption.prefix(s"$directory/"))
       .iterateAll().asScala
       .map(_.getName.split("/").last)
-      .filter(_.endsWith(".jpg"))
+      .filter(fileName => fileEndings.exists(fileName.endsWith))
       .toSeq
   }
 

@@ -1,4 +1,4 @@
-package backend.photography.api
+package backend.photography.interactors
 
 import backend.core.application.DefaultService
 import com.sksamuel.scrimage.ImmutableImage
@@ -14,8 +14,6 @@ object ImageResizer extends DefaultService {
     else if (ext.endsWith(".gif")) GifWriter.Default
     else JpegWriter.Default
   }
-
-  def writerFor(file: File): ImageWriter = writerFor(file.getName)
 
   def resizeImage(file: File, max: Int): Array[Byte] = {
     logger.info(s"Resizing file")

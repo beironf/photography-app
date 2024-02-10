@@ -1,29 +1,29 @@
 package backend.photography.interactors
 
+import backend.core.utils.EitherTExtensions
 import backend.photography.entities.exif.ImageExif
+import backend.photography.entities.response.Exceptions.PhotographyException
+import backend.photography.entities.response.Response.PhotographyResponse
 import backend.photography.ports.ImageExifRepository
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 object ImageExifService {
   def apply(validator: Validator,
-            repository: ImageExifRepository): ImageExifService =
+            repository: ImageExifRepository)
+           (implicit executionContext: ExecutionContext): ImageExifService =
     new ImageExifService(validator, repository)
 }
 
 class ImageExifService(validator: Validator,
-                       repository: ImageExifRepository) {
+                       repository: ImageExifRepository)
+                      (implicit executionContext: ExecutionContext) extends EitherTExtensions {
 
-  def getExif(imageId: String): Future[Option[ImageExif]] =
-    repository.getExif(imageId)
+  def getExif(imageId: String): Future[PhotographyResponse[ImageExif]] = (for {
+    exif <- validator.exifExists(imageId).toEitherT
+  } yield exif).value
 
-  def listExif(imageIds: Option[Seq[String]] = None): Future[Seq[(String, ImageExif)]] =
-    repository.listExif(imageIds)
-
-  def addExif(imageId: String, exif: ImageExif): Future[Unit] =
-    repository.addExif(imageId, exif)
-
-  def removeExif(imageId: String): Future[Unit] =
-    repository.removeExif(imageId)
+  def listExif(imageIds: Option[Seq[String]] = None): Future[PhotographyResponse[Seq[(String, ImageExif)]]] =
+    repository.listExif(imageIds).toEitherT[PhotographyException].value
 
 }

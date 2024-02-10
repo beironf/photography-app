@@ -3,47 +3,49 @@ package backend.photography.interactors
 import backend.core.utils.EitherTExtensions
 import backend.photography.entities.photo.meta.Category.Category
 import backend.photography.entities.photo.{Photo, UpdatePhoto}
+import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
 import backend.photography.ports.PhotoRepository
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 object PhotoService {
   def apply(validator: Validator,
-            repository: PhotoRepository): PhotoService =
+            repository: PhotoRepository)
+           (implicit executionContext: ExecutionContext): PhotoService =
     new PhotoService(validator, repository)
 }
 
 class PhotoService(validator: Validator,
-                   repository: PhotoRepository) extends EitherTExtensions {
+                   repository: PhotoRepository)
+                  (implicit executionContext: ExecutionContext) extends EitherTExtensions {
 
   def getPhoto(imageId: String): Future[PhotographyResponse[Photo]] =
     validator.photoExists(imageId)
 
-  def addPhoto(photo: Photo): Future[Unit] =
-    repository.addPhoto(photo)
+  def addPhoto(photo: Photo): Future[PhotographyResponse[Unit]] = (for {
+    _ <- validator.photoDoesNotExist(photo.imageId).toEitherT
+    _ <- repository.addPhoto(photo).toEitherT[PhotographyException]
+  } yield (): Unit).value
 
-  def updatePhoto(imageId: String, update: UpdatePhoto): Future[Unit] =
-    repository.updatePhoto(imageId, update)
+  def updatePhoto(imageId: String, update: UpdatePhoto): Future[PhotographyResponse[Unit]] = (for {
+    _ <- validator.photoExists(imageId).toEitherT
+    _ <- repository.updatePhoto(imageId, update).toEitherT[PhotographyException]
+  } yield (): Unit).value
 
-  def removePhoto(imageId: String): Future[Unit] =
-    repository.removePhoto(imageId)
+  def removePhoto(imageId: String): Future[PhotographyResponse[Unit]] = (for {
+    _ <- validator.photoExists(imageId).toEitherT
+    _ <- repository.removePhoto(imageId).toEitherT[PhotographyException]
+  } yield (): Unit).value
 
   def listPhotos(category: Option[Category] = None,
                  group: Option[String] = None,
                  rating: Option[Int] = None,
-                 inShowroom: Option[Boolean] = None): Future[Seq[Photo]] = for {
-    cat <- Future.apply(category.map(_.toDomain))
-      .recover { case _: NoSuchElementException => throw BadRequestException(s"'${category.get}' is not a valid category") }
-    photos <- repository.listPhotos(category, group, rating, inShowroom)
-    exifList <- exifService.listExif(Some(photos.map(_.imageId)))
-    width = exifList.map { case (imageId, exif) => imageId -> exif.width }.toMap
-    height = exifList.map { case (imageId, exif) => imageId -> exif.height }.toMap
-  } yield photos.sortBy(_.taken).reverse.map { photo =>
-    photo.toDtoWithRatio(width.getOrElse(photo.imageId, 1), height.getOrElse(photo.imageId, 1))
-  }
+                 inShowroom: Option[Boolean] = None): Future[PhotographyResponse[Seq[Photo]]] = (for {
+    photos <- repository.listPhotos(category, group, rating, inShowroom).toEitherT[PhotographyException]
+  } yield photos.sortBy(_.taken).reverse).value
 
-  def listPhotoGroups: Future[Seq[String]] =
-    repository.listPhotoGroups
+  def listPhotoGroups: Future[PhotographyResponse[Seq[String]]] =
+    repository.listPhotoGroups.toEitherT[PhotographyException].value
 
 }

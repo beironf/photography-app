@@ -87,11 +87,11 @@ lazy val adapters = createProject("photography-adapters", inFile = Some("photogr
   .dependsOn(commonJson)
   .dependsOn(coreSqlStorage)
 
-lazy val interactors = createProject("photography-interactors", inFile = Some("photography/interactors"))()
+lazy val interactors = createProject("photography-interactors", inFile = Some("photography/interactors"))(Seq(scrimage))
   .dependsOn(ports)
   .dependsOn(core)
 
-lazy val api = createProject("photography-api", inFile = Some("photography/api"))(Seq(scrimage))
+lazy val api = createProject("photography-api", inFile = Some("photography/api"))()
   .settings(Compile / mainClass := Some("backend.photography.api.Api"))
   .settings(ApiDocker.dockerSettings: _*)
   .enablePlugins(JavaAppPackaging, DockerPlugin)
