@@ -1,4 +1,4 @@
-package backend.photography.ports
+package backend.photography.ports.repositories
 
 import backend.photography.entities.exif.ImageExif
 

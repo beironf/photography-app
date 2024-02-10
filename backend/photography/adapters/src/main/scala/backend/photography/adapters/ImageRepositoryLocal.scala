@@ -4,7 +4,7 @@ import akka.stream.scaladsl.FileIO
 import backend.core.application.DefaultService
 import backend.photography.entities.image.ImageType.ImageType
 import backend.photography.entities.image.*
-import backend.photography.ports.ImageRepository
+import backend.photography.ports.repositories.ImageRepository
 
 import java.io.IOException
 import java.nio.file.{Files, Path, Paths}

@@ -4,7 +4,7 @@ import backend.photography.entities.exif.ImageExif
 import backend.photography.entities.photo.Photo
 import backend.photography.entities.response.Exceptions.*
 import backend.photography.entities.response.Response.PhotographyResponse
-import backend.photography.ports.{ImageExifRepository, ImageRepository, PhotoRepository}
+import backend.photography.ports.repositories.{ImageExifRepository, ImageRepository, PhotoRepository}
 import cats.implicits.catsSyntaxEitherId
 
 import scala.concurrent.{ExecutionContext, Future}

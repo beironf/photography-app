@@ -4,7 +4,7 @@ import backend.core.sqlstorage.DatabaseConnector
 import backend.core.sqlstorage.postgres.{DatabaseConnectorPostgres, PostgresMaterializerDBIO}
 import backend.photography.adapters.model.exif.{ImagesExifTable, ImplicitImageExifConverter}
 import backend.photography.entities.exif.ImageExif
-import backend.photography.ports.ImageExifRepository
+import backend.photography.ports.repositories.ImageExifRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 

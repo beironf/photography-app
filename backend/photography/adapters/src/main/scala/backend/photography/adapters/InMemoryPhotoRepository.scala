@@ -2,7 +2,7 @@ package backend.photography.adapters
 
 import backend.photography.entities.photo.meta.Category.Category
 import backend.photography.entities.photo.{Photo, UpdatePhoto}
-import backend.photography.ports.PhotoRepository
+import backend.photography.ports.repositories.PhotoRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 

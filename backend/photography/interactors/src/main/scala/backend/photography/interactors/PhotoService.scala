@@ -6,7 +6,7 @@ import backend.photography.entities.photo.{Photo, UpdatePhoto}
 import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
 import backend.photography.interactors.validation.Validator
-import backend.photography.ports.PhotoRepository
+import backend.photography.ports.repositories.PhotoRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 

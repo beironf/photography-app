@@ -3,7 +3,7 @@ package backend.photography.adapters
 import akka.stream.scaladsl.StreamConverters
 import backend.core.application.DefaultService
 import backend.photography.adapters.model.image.FileId
-import backend.photography.ports.ImageRepository
+import backend.photography.ports.repositories.ImageRepository
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.WriteChannel
 import com.google.cloud.storage.Storage.BlobListOption

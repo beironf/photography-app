@@ -1,7 +1,7 @@
 package backend.photography.adapters
 
 import backend.photography.entities.exif.*
-import backend.photography.ports.ImageExifRepository
+import backend.photography.ports.repositories.ImageExifRepository
 
 import scala.concurrent.Future
 

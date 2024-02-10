@@ -8,7 +8,7 @@ import backend.photography.api.model.enums.CategoryDto
 import backend.photography.entities.image.ImageIO
 import backend.photography.interactors.validation.Validator
 import backend.photography.interactors.{ImageExifService, ImageService, PhotoService}
-import backend.photography.ports.{ImageExifRepository, ImageRepository, PhotoRepository}
+import backend.photography.ports.repositories.{ImageExifRepository, ImageRepository, PhotoRepository}
 import sttp.capabilities.akka.AkkaStreams
 
 import java.time.Instant

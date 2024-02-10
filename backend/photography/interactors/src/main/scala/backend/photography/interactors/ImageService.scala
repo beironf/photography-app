@@ -7,7 +7,7 @@ import backend.photography.entities.response.Response.PhotographyResponse
 import backend.photography.interactors.ImageService.{MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE}
 import backend.photography.interactors.utils.{ExifUtil, ImageResizer}
 import backend.photography.interactors.validation.Validator
-import backend.photography.ports.{ImageExifRepository, ImageRepository}
+import backend.photography.ports.repositories.{ImageExifRepository, ImageRepository}
 
 import java.io.File
 import scala.concurrent.{ExecutionContext, Future}

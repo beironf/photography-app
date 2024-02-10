@@ -7,7 +7,7 @@ import backend.photography.adapters.model.photo.*
 import backend.photography.entities.photo.{Photo, UpdatePhoto}
 import backend.photography.entities.photo.meta.Category.Category
 import backend.photography.entities.photo.meta.{Judgement, Location}
-import backend.photography.ports.PhotoRepository
+import backend.photography.ports.repositories.PhotoRepository
 import com.rms.miu.slickcats.DBIOInstances.dbioInstance
 import slick.lifted.AbstractTable
 
