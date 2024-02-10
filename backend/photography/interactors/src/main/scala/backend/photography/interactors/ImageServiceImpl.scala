@@ -16,7 +16,7 @@ object ImageServiceImpl {
   def apply(validator: Validator,
             imageRepository: ImageRepository,
             exifRepository: ImageExifRepository)
-           (implicit executionContext: ExecutionContext): ImageServiceImpl =
+           (implicit executionContext: ExecutionContext): ImageService =
     new ImageServiceImpl(validator, imageRepository, exifRepository)
 
   private val MAX_IMAGE_SIZE = 4000

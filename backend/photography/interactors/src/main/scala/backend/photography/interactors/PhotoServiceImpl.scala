@@ -6,20 +6,21 @@ import backend.photography.entities.photo.{Photo, UpdatePhoto}
 import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
 import backend.photography.interactors.validation.Validator
+import backend.photography.ports.interactors.PhotoService
 import backend.photography.ports.repositories.PhotoRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-object PhotoService {
+object PhotoServiceImpl {
   def apply(validator: Validator,
             repository: PhotoRepository)
            (implicit executionContext: ExecutionContext): PhotoService =
-    new PhotoService(validator, repository)
+    new PhotoServiceImpl(validator, repository)
 }
 
-class PhotoService(validator: Validator,
-                   repository: PhotoRepository)
-                  (implicit executionContext: ExecutionContext) extends EitherTExtensions {
+class PhotoServiceImpl(validator: Validator,
+                       repository: PhotoRepository)
+                      (implicit executionContext: ExecutionContext) extends PhotoService with EitherTExtensions {
 
   def getPhoto(imageId: String): Future[PhotographyResponse[Photo]] =
     validator.photoExists(imageId)

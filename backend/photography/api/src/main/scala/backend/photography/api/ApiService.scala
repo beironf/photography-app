@@ -8,7 +8,7 @@ import backend.photography.api.model.enums.CategoryDto
 import backend.photography.entities.image.ImageIO
 import backend.photography.interactors.validation.Validator
 import backend.photography.interactors.*
-import backend.photography.ports.interactors.ImageService
+import backend.photography.ports.interactors.*
 import backend.photography.ports.repositories.*
 import sttp.capabilities.akka.AkkaStreams
 
@@ -21,7 +21,7 @@ object ApiService {
             exifRepository: ImageExifRepository)
            (implicit executionContext: ExecutionContext): ApiService = {
     val validator = new Validator(photoRepository, imageRepository, exifRepository)
-    val photoService = PhotoService(validator, photoRepository)
+    val photoService = PhotoServiceImpl(validator, photoRepository)
     val imageService = ImageServiceImpl(validator, imageRepository, exifRepository)
     val exifService = ImageExifService(validator, exifRepository)
     new ApiService(photoService, imageService, exifService)
