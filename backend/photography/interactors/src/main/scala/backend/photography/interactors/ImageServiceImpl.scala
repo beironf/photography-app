@@ -33,8 +33,8 @@ class ImageServiceImpl(validator: Validator,
 
   def getImageStream(imageId: String): Future[PhotographyResponse[ImageStream]] = (for {
     _ <- validator.imageExists(imageId).toEitherT
-    streamOpt <- imageRepository.getImageStream(imageId).toEitherT[PhotographyException]
-    stream = streamOpt.getOrElse(throw new RuntimeException(s"Image stream is None, imageId: $imageId"))
+    stream <- imageRepository.getImageStream(imageId).toEitherT(
+      ifNone = new PhotographyException(s"Image stream is None, imageId: $imageId"))
   } yield stream).value
 
   def uploadImage(fileNameOpt: Option[String], image: File): Future[PhotographyResponse[Unit]] = (for {
@@ -64,14 +64,14 @@ class ImageServiceImpl(validator: Validator,
 
   def getThumbnailStream(imageId: String): Future[PhotographyResponse[ImageStream]] = (for {
     _ <- validator.thumbnailExists(imageId).toEitherT
-    streamOpt <- imageRepository.getThumbnailStream(imageId).toEitherT[PhotographyException]
-    stream = streamOpt.getOrElse(throw new RuntimeException(s"Thumbnail stream is None, imageId: $imageId"))
+    stream <- imageRepository.getThumbnailStream(imageId).toEitherT(
+      ifNone = new PhotographyException(s"Thumbnail stream is None, imageId: $imageId"))
   } yield stream).value
 
   def getSiteImageStream(fileName: String): Future[PhotographyResponse[ImageStream]] = (for {
     _ <- validator.siteImageExists(fileName).toEitherT
-    streamOpt <- imageRepository.getSiteImageStream(fileName).toEitherT[PhotographyException]
-    stream = streamOpt.getOrElse(throw new RuntimeException(s"Site image stream is None, fileName: $fileName"))
+    stream <- imageRepository.getSiteImageStream(fileName).toEitherT(
+      ifNone = new PhotographyException(s"Site image stream is None, fileName: $fileName"))
   } yield stream).value
 
 }
