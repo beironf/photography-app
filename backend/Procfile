@@ -1,1 +1,1 @@
-web: api/target/universal/stage/bin/api -Dconfig.resource=production.conf
+web: photography/api/target/universal/stage/bin/api -Dconfig.resource=production.conf
