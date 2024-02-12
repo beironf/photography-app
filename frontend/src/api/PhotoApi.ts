@@ -83,10 +83,4 @@ export namespace PhotoApi {
       Authorization: `Bearer ${passwordToken}`,
     });
   }
-
-  export function removePhoto(id: string, passwordToken: string): void {
-    api.delete(`photos/${id}`, undefined, undefined, {
-      Authorization: `Bearer ${passwordToken}`,
-    });
-  }
 }

@@ -55,12 +55,12 @@ class PhotoRepositoryImpl(db: PostgresMaterializerDBIO,
       .map(_.getOrElse((): Unit))
   }
 
-  def removePhoto(imageId: String): Future[Unit] = db.run {
+  def removePhoto(imageId: String): Future[Unit] = db.runTransactionally {
     (for {
       photoDb <- getPhotoDb(imageId).toOptionT
+      _ <- removePhotoDb(imageId).toOptionT
       _ <- removeLocationDb(photoDb.locationId).toOptionT
       _ <- removeJudgementDb(photoDb.judgementId).toOptionT
-      _ <- removePhotoDb(imageId).toOptionT
     } yield (): Unit).value
       .map(_.getOrElse((): Unit))
   }

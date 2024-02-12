@@ -22,7 +22,7 @@ object ApiService {
            (implicit executionContext: ExecutionContext): ApiService = {
     val validator = new Validator(photoRepository, imageRepository, exifRepository)
     val photoService = PhotoServiceImpl(validator, photoRepository)
-    val imageService = ImageServiceImpl(validator, imageRepository, exifRepository)
+    val imageService = ImageServiceImpl(validator, imageRepository, exifRepository, photoRepository)
     val exifService = ImageExifServiceImpl(validator, exifRepository)
     new ApiService(photoService, imageService, exifService)
   }
@@ -64,10 +64,6 @@ class ApiService(photoService: PhotoService,
 
   def updatePhoto(imageId: String, updateDto: UpdatePhotoDto): Future[HttpResponse[Unit]] =
     photoService.updatePhoto(imageId, updateDto.toDomain)
-      .toHttpResponse(specificExceptionHandling)
-
-  def removePhoto(imageId: String): Future[HttpResponse[Unit]] =
-    photoService.removePhoto(imageId)
       .toHttpResponse(specificExceptionHandling)
 
   def getImage(imageId: String): Future[HttpResponse[AkkaStreams.BinaryStream]] =

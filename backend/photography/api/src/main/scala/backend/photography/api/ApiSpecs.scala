@@ -84,15 +84,6 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol with TapirCodecEnumeratu
       .out(statusCode(StatusCode.NoContent))
       .appendPasswordProtection
 
-  val removePhotoEndpoint: SecureHttpErrorEndpoint[String, Unit] =
-    photos
-      .name("removePhoto")
-      .delete
-      .in(path[String]("imageId"))
-      .errorOut(commonErrorsOut)
-      .out(statusCode(StatusCode.NoContent))
-      .appendPasswordProtection
-
   /**
    * ------- IMAGES -------
    */
@@ -145,6 +136,7 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol with TapirCodecEnumeratu
   val removeImageEndpoint: SecureHttpErrorEndpoint[String, Unit] =
     images
       .name("removeImage")
+      .description("Remove an image and its photo")
       .delete
       .in(path[String]("imageId"))
       .errorOut(commonErrorsOut)
@@ -192,7 +184,6 @@ object ApiSpecs extends EndpointsSpec with JsonProtocol with TapirCodecEnumeratu
     listPhotoGroupsEndpoint,
     addPhotoEndpoint,
     updatePhotoEndpoint,
-    removePhotoEndpoint,
     listImagesEndpoint,
     getImageEndpoint,
     uploadImageEndpoint,

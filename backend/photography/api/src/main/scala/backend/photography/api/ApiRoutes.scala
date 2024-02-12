@@ -45,11 +45,6 @@ class ApiRoutes(apiService: ApiService)
     implementation = (apiService.updatePhoto _).tupled
   )
 
-  private val removePhoto = secureEndpoint(
-    specification = removePhotoEndpoint,
-    implementation = apiService.removePhoto
-  )
-
   private val listImages = endpoint(
     specification = listImagesEndpoint,
     implementation = (_: Unit) => apiService.listImages
@@ -92,7 +87,6 @@ class ApiRoutes(apiService: ApiService)
     listPhotoGroups,
     addPhoto,
     updatePhoto,
-    removePhoto,
     listImages,
     getImage,
     uploadImage,

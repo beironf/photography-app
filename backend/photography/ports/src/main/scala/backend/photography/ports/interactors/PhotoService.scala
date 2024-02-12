@@ -15,8 +15,6 @@ trait PhotoService extends ImageIO {
 
   def updatePhoto(imageId: String, update: UpdatePhoto): Future[PhotographyResponse[Unit]]
 
-  def removePhoto(imageId: String): Future[PhotographyResponse[Unit]]
-
   def listPhotos(category: Option[Category] = None,
                  group: Option[String] = None,
                  rating: Option[Int] = None,

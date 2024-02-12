@@ -35,11 +35,6 @@ class PhotoServiceImpl(validator: Validator,
     _ <- repository.updatePhoto(imageId, update).toEitherT[PhotographyException]
   } yield (): Unit).value
 
-  def removePhoto(imageId: String): Future[PhotographyResponse[Unit]] = (for {
-    _ <- validator.photoExists(imageId).toEitherT
-    _ <- repository.removePhoto(imageId).toEitherT[PhotographyException]
-  } yield (): Unit).value
-
   def listPhotos(category: Option[Category] = None,
                  group: Option[String] = None,
                  rating: Option[Int] = None,

@@ -5,9 +5,9 @@ import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
 import backend.photography.interactors.ImageServiceImpl.{MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE}
 import backend.photography.interactors.utils.{ExifUtil, ImageResizer}
-import backend.photography.interactors.validation.Validator
+import backend.photography.interactors.validation.{Validator, ValidatorImplicits}
 import backend.photography.ports.interactors.ImageService
-import backend.photography.ports.repositories.{ImageExifRepository, ImageRepository}
+import backend.photography.ports.repositories.{ImageExifRepository, ImageRepository, PhotoRepository}
 
 import java.io.File
 import scala.concurrent.{ExecutionContext, Future}
@@ -15,9 +15,10 @@ import scala.concurrent.{ExecutionContext, Future}
 object ImageServiceImpl {
   def apply(validator: Validator,
             imageRepository: ImageRepository,
-            exifRepository: ImageExifRepository)
+            exifRepository: ImageExifRepository,
+            photoRepository: PhotoRepository)
            (implicit executionContext: ExecutionContext): ImageService =
-    new ImageServiceImpl(validator, imageRepository, exifRepository)
+    new ImageServiceImpl(validator, imageRepository, exifRepository, photoRepository)
 
   private val MAX_IMAGE_SIZE = 4000
   private val MAX_THUMBNAIL_SIZE = 1200
@@ -25,8 +26,11 @@ object ImageServiceImpl {
 
 class ImageServiceImpl(validator: Validator,
                        imageRepository: ImageRepository,
-                       exifRepository: ImageExifRepository)
-                      (implicit executionContext: ExecutionContext) extends ImageService with EitherTExtensions {
+                       exifRepository: ImageExifRepository,
+                       photoRepository: PhotoRepository)
+                      (implicit executionContext: ExecutionContext) extends ImageService
+  with EitherTExtensions
+  with ValidatorImplicits {
 
   def listImageIds: Future[PhotographyResponse[Seq[String]]] =
     imageRepository.listImageIds.toEitherT[PhotographyException].value
@@ -60,6 +64,10 @@ class ImageServiceImpl(validator: Validator,
     _ <- imageRepository.removeThumbnail(imageId).toEitherT[PhotographyException]
     _ <- exifRepository.removeExif(imageId).toEitherT[PhotographyException]
     _ <- imageRepository.removeImage(imageId).toEitherT[PhotographyException]
+    photoExists <- validator.photoExists(imageId).map(_.toBoolean).toEitherT
+    _ <-
+      if (photoExists) photoRepository.removePhoto(imageId).toEitherT[PhotographyException]
+      else Future.successful(()).toEitherT[PhotographyException]
   } yield (): Unit).value
 
   def getThumbnailStream(imageId: String): Future[PhotographyResponse[ImageStream]] = (for {
