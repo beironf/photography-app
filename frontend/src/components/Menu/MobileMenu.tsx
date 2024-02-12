@@ -52,8 +52,8 @@ export const MobileMenu: React.FunctionComponent<Props> = ({ items }) => {
         <Box sx={{ width: theme.mobileMenuDrawerWidth }}>
           <IconButton
             sx={{
-              left: theme.primaryPadding - 8,
-              top: theme.primaryPadding - 8,
+              left: theme.primaryPadding - 10,
+              top: theme.primaryPadding + 4,
               padding: '8px',
             }}
             onClick={() => setOpen(false)}

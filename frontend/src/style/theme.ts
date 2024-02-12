@@ -19,6 +19,7 @@ const deviceSensitive = (
 
 export const theme = {
   mode,
+  modeColor: mode === 'light' ? 'white' : 'black',
   modeContrastColor: mode === 'light' ? 'black' : 'white',
 
   primaryPadding: 20,

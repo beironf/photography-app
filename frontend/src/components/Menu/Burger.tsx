@@ -13,10 +13,12 @@ export const Burger: React.FunctionComponent<props> = ({ onClick }) => (
     onClick={() => onClick()}
     sx={{
       position: 'fixed',
-      top: theme.primaryPadding - 8,
-      left: theme.primaryPadding - 8,
+      top: theme.primaryPadding + 4,
+      left: theme.primaryPadding - 10,
       padding: '8px',
       color: theme.modeContrastColor,
+      backgroundColor: theme.modeColor,
+      border: '1px solid rgba(0, 0, 0, 0.1)',
       zIndex: 1000,
     }}
   >
