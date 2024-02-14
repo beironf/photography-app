@@ -98,14 +98,13 @@ The Scala backend API and the PostgreSQL database are both hosted by Heroku.
 #### Deploy API
 
 ```
-TODO: fill in here...
+./deploy-api.sh
 ```
 
 #### Connect to Database
 
 ```
 TODO: fill in here...
-photography-db --user=postgres --database=photography_db
 ```
 
 ### Firebase
