@@ -47,7 +47,7 @@ export const theme = {
   aboutContentMaxWidth: deviceSensitive(800, 800, 600),
   aboutSubtitleVariant: deviceSensitive('h5', 'h5', 'h6'),
   aboutBodyTextVariant: deviceSensitive('body1', 'body1', 'body2'),
-  aboutAvatarSize: 120,
+  aboutAvatarSize: 250,
 
   // Manage Photos
   managePhotosSelectedColor: 'DodgerBlue',
