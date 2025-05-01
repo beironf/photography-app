@@ -42,6 +42,7 @@ trait ImplicitEnumConversion {
       case Canon24_70L => Lens.Canon24_70L
       case Fujinon35 => Lens.Fujinon35
       case Fujinon16 => Lens.Fujinon16
+      case Fujinon33 => Lens.Fujinon33
       case Fujinon90 => Lens.Fujinon90
       case DJI6_7F1_7 => Lens.DJI6_7F1_7
     }
@@ -55,6 +56,7 @@ trait ImplicitEnumConversion {
       case Lens.Canon24_70L => Canon24_70L
       case Lens.Fujinon35 => Fujinon35
       case Lens.Fujinon16 => Fujinon16
+      case Lens.Fujinon33 => Fujinon33
       case Lens.Fujinon90 => Fujinon90
       case Lens.DJI6_7F1_7 => DJI6_7F1_7
     }

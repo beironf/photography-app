@@ -39,6 +39,7 @@ export enum Lens {
   FUJINON_35 = 'Fujinon 35mm f:2',
   DJI_MINI_3 = 'DJI 6.7mm f/1.7',
   FUJINON_16 = 'Fujinon 16mm f/1.4 R WR',
+  FUJINON_33 = 'Fujinon 33mm f/1.4 R LM WR',
   FUJINON_90 = 'Fujinon 90mm f/2 R LM WR',
 }
 
@@ -69,6 +70,9 @@ export const toLens = (
   }
   if (s.includes('XF16mmF1.4 R WR')) {
     return Lens.FUJINON_16;
+  }
+  if (s.includes('XF33mmF1.4 R LM WR')) {
+    return Lens.FUJINON_33;
   }
   if (s.includes('XF90mmF2 R LM WR')) {
     return Lens.FUJINON_90;

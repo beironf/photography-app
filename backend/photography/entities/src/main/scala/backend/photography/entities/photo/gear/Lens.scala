@@ -8,6 +8,7 @@ object Lens extends Enumeration {
       Canon24_70L,
       Fujinon35,
       Fujinon16,
+      Fujinon33,
       Fujinon90,
       DJI6_7F1_7 = Value
 }
