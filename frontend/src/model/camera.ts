@@ -46,9 +46,13 @@ export enum Lens {
 export const toLens = (
   s?: string,
   isX100F: boolean = false,
+  isDjiMini3: boolean = false,
 ): Lens | undefined => {
   if (isX100F) {
     return Lens.FUJINON_35;
+  }
+  if (isDjiMini3) {
+    return Lens.DJI_MINI_3;
   }
   if (s === undefined) {
     return undefined;
@@ -64,9 +68,6 @@ export const toLens = (
   }
   if (s.includes('EF70-300mm f/4-5.6 IS USM')) {
     return Lens.CANON_70_300;
-  }
-  if (s.includes('6.7 mm f/1.7')) {
-    return Lens.DJI_MINI_3;
   }
   if (s.includes('XF16mmF1.4 R WR')) {
     return Lens.FUJINON_16;
