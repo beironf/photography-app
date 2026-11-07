@@ -1,7 +1,6 @@
 package backend.photography.interactors.utils
 
 import backend.photography.entities.exif.ImageExif
-import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.metadata.ImageMetadata
 
 import java.io.File
@@ -18,6 +17,7 @@ object ExifUtil {
   private val ISO = 34855
   private val EXPOSURE_TIME = 33434
   private val DATE = 36867
+  private val ORIENTATION = 274
 
   private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss")
     .withZone(ZoneId.of("Europe/Stockholm"))
@@ -41,9 +41,10 @@ object ExifUtil {
     val exposureTime = getValue(EXPOSURE_TIME, useRawValue = true)
     val date = getValue(DATE, s => Instant.from(formatter.parse(s)))
 
-    val image = ImmutableImage.loader().fromFile(file)
-    val width = image.width
-    val height = image.height
+    // read from the file header to avoid decoding the image, swapped if the image is rotated 90 degrees
+    val (rawWidth, rawHeight) = ImageResizer.readDimensions(file)
+    val isRotated = getValue(ORIENTATION, _.toIntOption, useRawValue = true).flatten.exists(o => o >= 5 && o <= 8)
+    val (width, height) = if (isRotated) (rawHeight, rawWidth) else (rawWidth, rawHeight)
 
     ImageExif(cameraMake, cameraModel, lens, focalLength, fNumber, iso, exposureTime, date, width, height)
   }
