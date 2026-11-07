@@ -19,13 +19,15 @@ final class DatabaseConnectorPostgres(val dbConfig: Config) extends DatabaseConn
   val dbUser: String = dbConfig.getString("user")
   val dbPassword: String = dbConfig.getString("password")
 
+  private val jdbcUrlWithoutCredentials: String = jdbcUrl.split('?').head // remove user and password from url
+
   private val maxPoolSize: Int = dbConfig.getInt(s"max-pool-size")
   private val minIdleSize: Int = dbConfig.getInt(s"min-idle-size")
   private val connectionTimeout = dbConfig.getDuration("connection-timeout")
 
   private lazy val hikariDataSource: HikariDataSource = {
     val hikariConfig = new HikariConfig()
-    hikariConfig.setJdbcUrl(jdbcUrl.split('?').head) // remove user and password from url
+    hikariConfig.setJdbcUrl(jdbcUrlWithoutCredentials)
     hikariConfig.setUsername(dbUser)
     hikariConfig.setPassword(dbPassword)
     hikariConfig.setConnectionTimeout(connectionTimeout.toMillis)
@@ -49,7 +51,7 @@ final class DatabaseConnectorPostgres(val dbConfig: Config) extends DatabaseConn
   }
 
   lazy val db: profile.api.Database = {
-    logger.info(s"[databaseUrl: $jdbcUrl, databaseUser: $dbUser, maxPoolSize=$maxPoolSize] Connecting to database")
+    logger.info(s"[databaseUrl: $jdbcUrlWithoutCredentials, databaseUser: $dbUser, maxPoolSize=$maxPoolSize] Connecting to database")
     createDatabaseDef()
   }
 
