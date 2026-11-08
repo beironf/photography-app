@@ -46,9 +46,10 @@ class ImageServiceImpl(validator: Validator,
     _ <- validator.fileIsJPG(fileName).toEitherT[Future]
     _ <- validator.imageDoesNotExist(fileName).toEitherT
     exif = ExifUtil.getExif(image)
-    _ <- exifRepository.addExif(fileName, exif).toEitherT[PhotographyException]
     _ <- resizeAndUploadImage(fileName, image, MAX_IMAGE_SIZE, imageRepository.uploadImage).toEitherT[PhotographyException]
     _ <- resizeAndUploadImage(fileName, image, MAX_THUMBNAIL_SIZE, imageRepository.uploadThumbnail).toEitherT[PhotographyException]
+    // added last so that a failed upload does not leave an exif row behind
+    _ <- exifRepository.addExif(fileName, exif).toEitherT[PhotographyException]
   } yield (): Unit).value
 
   private def resizeAndUploadImage(fileName: String,

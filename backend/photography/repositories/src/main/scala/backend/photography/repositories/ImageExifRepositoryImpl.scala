@@ -31,7 +31,7 @@ class ImageExifRepositoryImpl(db: PostgresMaterializerDBIO,
   }.map(_.map(e => (e.imageId, e.toDomain)))
 
   def addExif(imageId: String, exif: ImageExif): Future[Unit] = db.run {
-    imagesExif += exif.toDbFormat(imageId)
+    imagesExif.insertOrUpdate(exif.toDbFormat(imageId))
   }.map(_ => (): Unit)
 
   def removeExif(imageId: String): Future[Unit] = db.run {
