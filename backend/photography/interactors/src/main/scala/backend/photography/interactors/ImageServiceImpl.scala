@@ -3,7 +3,7 @@ package backend.photography.interactors
 import backend.core.utils.EitherTExtensions
 import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
-import backend.photography.interactors.ImageServiceImpl.{IMAGE_PROCESSING_CONTEXT, MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE}
+import backend.photography.interactors.ImageServiceImpl.{MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE, processImage}
 import backend.photography.interactors.utils.{ExifUtil, ImageResizer}
 import backend.photography.interactors.validation.{Validator, ValidatorImplicits}
 import backend.photography.ports.interactors.ImageService
@@ -26,6 +26,10 @@ object ImageServiceImpl {
 
   // Images are processed one at a time to keep the memory usage bounded
   private val IMAGE_PROCESSING_CONTEXT = ExecutionContext.fromExecutor(Executors.newSingleThreadExecutor())
+
+  // A full gc afterwards lets the jvm shrink the heap and return the memory used for decoding to the OS
+  private def processImage[T](process: => T): Future[T] =
+    Future(try process finally System.gc())(IMAGE_PROCESSING_CONTEXT)
 }
 
 class ImageServiceImpl(validator: Validator,
@@ -50,7 +54,7 @@ class ImageServiceImpl(validator: Validator,
     _ <- validator.fileIsJPG(fileName).toEitherT[Future]
     _ <- validator.imageDoesNotExist(fileName).toEitherT
     exif = ExifUtil.getExif(image)
-    resized <- Future(ImageResizer.resizeImage(image, Seq(MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE)))(IMAGE_PROCESSING_CONTEXT).toEitherT[PhotographyException]
+    resized <- processImage(ImageResizer.resizeImage(image, Seq(MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE))).toEitherT[PhotographyException]
     _ <- imageRepository.uploadImage(fileName, resized.head).toEitherT[PhotographyException]
     _ <- imageRepository.uploadThumbnail(fileName, resized.last).toEitherT[PhotographyException]
     // added last so that a failed upload does not leave an exif row behind
