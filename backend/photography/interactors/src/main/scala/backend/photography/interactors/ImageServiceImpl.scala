@@ -3,13 +3,14 @@ package backend.photography.interactors
 import backend.core.utils.EitherTExtensions
 import backend.photography.entities.response.Exceptions.PhotographyException
 import backend.photography.entities.response.Response.PhotographyResponse
-import backend.photography.interactors.ImageServiceImpl.{MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE}
+import backend.photography.interactors.ImageServiceImpl.{IMAGE_PROCESSING_CONTEXT, MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE}
 import backend.photography.interactors.utils.{ExifUtil, ImageResizer}
 import backend.photography.interactors.validation.{Validator, ValidatorImplicits}
 import backend.photography.ports.interactors.ImageService
 import backend.photography.ports.repositories.{ImageExifRepository, ImageRepository, PhotoRepository}
 
 import java.io.File
+import java.util.concurrent.Executors
 import scala.concurrent.{ExecutionContext, Future}
 
 object ImageServiceImpl {
@@ -22,6 +23,9 @@ object ImageServiceImpl {
 
   private val MAX_IMAGE_SIZE = 4000
   private val MAX_THUMBNAIL_SIZE = 1200
+
+  // Images are processed one at a time to keep the memory usage bounded
+  private val IMAGE_PROCESSING_CONTEXT = ExecutionContext.fromExecutor(Executors.newSingleThreadExecutor())
 }
 
 class ImageServiceImpl(validator: Validator,
@@ -46,19 +50,12 @@ class ImageServiceImpl(validator: Validator,
     _ <- validator.fileIsJPG(fileName).toEitherT[Future]
     _ <- validator.imageDoesNotExist(fileName).toEitherT
     exif = ExifUtil.getExif(image)
-    _ <- resizeAndUploadImage(fileName, image, MAX_IMAGE_SIZE, imageRepository.uploadImage).toEitherT[PhotographyException]
-    _ <- resizeAndUploadImage(fileName, image, MAX_THUMBNAIL_SIZE, imageRepository.uploadThumbnail).toEitherT[PhotographyException]
+    resized <- Future(ImageResizer.resizeImage(image, Seq(MAX_IMAGE_SIZE, MAX_THUMBNAIL_SIZE)))(IMAGE_PROCESSING_CONTEXT).toEitherT[PhotographyException]
+    _ <- imageRepository.uploadImage(fileName, resized.head).toEitherT[PhotographyException]
+    _ <- imageRepository.uploadThumbnail(fileName, resized.last).toEitherT[PhotographyException]
     // added last so that a failed upload does not leave an exif row behind
     _ <- exifRepository.addExif(fileName, exif).toEitherT[PhotographyException]
   } yield (): Unit).value
-
-  private def resizeAndUploadImage(fileName: String,
-                                   file: File,
-                                   maxSize: Int,
-                                   upload: (String, Array[Byte]) => Future[Unit]): Future[Unit] = {
-    val resizedImage = ImageResizer.resizeImage(file, maxSize)
-    upload(fileName, resizedImage)
-  }
 
   def removeImage(imageId: String): Future[PhotographyResponse[Unit]] = (for {
     _ <- validator.imageExists(imageId).toEitherT
